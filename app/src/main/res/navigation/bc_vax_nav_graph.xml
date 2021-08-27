@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bc_vax_nav_graph"
+    app:startDestination="@id/barcodeScannerFragment">
+
+    <fragment
+        android:id="@+id/barcodeScannerFragment"
+        android:name="ca.bc.gov.health.ircreader.ui.scanner.BarcodeScannerFragment"
+        android:label="BarcodeScannerFragment"
+        tools:layout="@layout/fragment_barcode_scanner">
+        <action
+            android:id="@+id/action_barcodeScannerFragment_to_barcodeScanResultFragment"
+            app:destination="@id/barcodeScanResultFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/barcodeScanResultFragment"
+        android:name="ca.bc.gov.health.ircreader.ui.scanresult.BarcodeScanResultFragment"
+        android:label="BarcodeScanResultFragment"
+        tools:layout="@layout/fragment_barcode_scan_result" />
+
+</navigation>

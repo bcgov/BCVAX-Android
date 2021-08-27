@@ -1,0 +1,93 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 30
+
+    defaultConfig {
+        applicationId "ca.bc.gov.health.ircreader"
+        minSdk 27
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$versions.core_ktx"
+
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+
+    implementation "com.google.android.material:material:$versions.material"
+
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
+
+    //Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
+
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+
+    implementation "androidx.navigation:navigation-runtime-ktx:$versions.navigation"
+
+    //JatPack LiveData ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.viewmodel"
+
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.livedata"
+
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
+
+    //Dagger Hilt
+    implementation "com.google.dagger:hilt-android:$versions.hilt"
+
+    kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+
+    //Google BarcodeScanner
+    //TODO:- we may replace it with dynamic model download library
+    //implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.1'
+    implementation "com.google.mlkit:barcode-scanning:$versions.barcode_scanning"
+
+
+    //Camerax
+    //TODO: decide on usage of lifecycle, view and extensions lib
+    implementation "androidx.camera:camera-camera2:${versions.camerax}"
+
+    implementation "androidx.camera:camera-lifecycle:${versions.camerax}"
+
+    implementation "androidx.camera:camera-view:$versions.camerax_view"
+
+    implementation "androidx.camera:camera-extensions:$versions.camerax_extensions"
+
+
+    testImplementation "junit:junit:$versions.junit"
+
+    androidTestImplementation "androidx.test.ext:junit:$versions.ext_junit"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
+
+    //Dagger Hilt
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$versions.hilt"
+
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$versions.hilt"
+}
