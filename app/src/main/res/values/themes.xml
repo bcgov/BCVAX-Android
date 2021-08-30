@@ -1,4 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Splash screen theme -->
+    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:gravity">fill</item>
+    </style>
     <!-- Base application theme. -->
     <style name="Theme.BC_VAX" parent="Theme.MaterialComponents.Light.NoActionBar">
 

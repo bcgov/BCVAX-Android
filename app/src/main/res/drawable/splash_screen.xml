@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="?attr/colorPrimaryVariant"/>
+    <!--TODO dummy app icon needs to be replaced once splash screen design is finalized-->
+    <item android:drawable="@drawable/dummy_app_icon"
+        android:gravity="center"/>
+
+</layer-list>
