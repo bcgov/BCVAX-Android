@@ -13,10 +13,15 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import ca.bc.gov.health.ircreader.R
+import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
 import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
 import ca.bc.gov.health.ircreader.utils.viewBindings
 import dagger.hilt.android.AndroidEntryPoint
+import ca.bc.gov.health.ircreader.viewmodel.BarcodeScanResultViewModel
 
 /**
  * [BarcodeScanResultFragment]
@@ -50,13 +55,14 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
     private lateinit var viewLineTop: View
     private lateinit var viewLineBottom: View
     private lateinit var buttonScanAgain: Button
+    private lateinit var textViewBCLabel: TextView
+
+    private val args: BarcodeScanResultFragmentArgs by navArgs()
+    private val viewModel: BarcodeScanResultViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // TODO: 31/08/21 SafeArgs will be used here
-        userName = arguments?.get("userName") as String
-        vaccinationStatus = arguments?.getInt("vaccinationStatus")!!
+        viewModel.processShcUri(args.shcUri)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,30 +78,42 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
         viewLineTop = view.findViewById(R.id.viewLineTop)
         viewLineBottom = view.findViewById(R.id.viewLineBottom)
         buttonScanAgain = view.findViewById(R.id.buttonScanAgain)
+        textViewBCLabel = view.findViewById(R.id.textViewBCLabel)
 
 
+        viewModel.observeUserName().observe(viewLifecycleOwner, {
+            textViewUserName.text = it
+        })
 
-        textViewUserName.text = userName
-
-        when (vaccinationStatus){
-            0 -> {
-                textViewResult.text = getString(R.string.no_record_found)
-                viewStatusColor.setBackgroundColor(resources.getColor(R.color.grey, null))
-                viewLineLeft.visibility = View.INVISIBLE
-                viewLineRight.visibility = View.INVISIBLE
-                viewLineTop.visibility = View.INVISIBLE
-                viewLineBottom.visibility = View.INVISIBLE
+        /*
+        * Both of these variable control the UI for status screen
+        * vaccinationStatus = 0 is "No records found"
+        * vaccinationStatus = 1 is "Partially vaccinated"
+        * vaccinationStatus = 2 is "Fully vaccinated"
+        * */
+        viewModel.observeVaccinationStatus().observe(viewLifecycleOwner, {
+            when (it) {
+                0 -> {
+                    textViewResult.text = getString(R.string.no_record_found)
+                    viewStatusColor.setBackgroundColor(resources.getColor(R.color.grey, null))
+                    viewLineLeft.visibility = View.INVISIBLE
+                    viewLineRight.visibility = View.INVISIBLE
+                    viewLineTop.visibility = View.INVISIBLE
+                    viewLineBottom.visibility = View.INVISIBLE
+                    textViewBCLabel.visibility = View.INVISIBLE
+                }
+                1 -> {
+                    textViewResult.text = getString(R.string.partially_vaccinated)
+                    viewStatusColor.setBackgroundColor(resources.getColor(R.color.blue, null))
+                }
+                2 -> {
+                    imageViewRightTick.visibility = View.VISIBLE
+                    textViewResult.text = getString(R.string.vaccinated)
+                    viewStatusColor.setBackgroundColor(resources.getColor(R.color.green, null))
+                }
             }
-            1 -> {
-                textViewResult.text = getString(R.string.partially_vaccinated)
-                viewStatusColor.setBackgroundColor(resources.getColor(R.color.blue, null))
-            }
-            2 -> {
-                imageViewRightTick.visibility = View.VISIBLE
-                textViewResult.text = getString(R.string.vaccinated)
-                viewStatusColor.setBackgroundColor(resources.getColor(R.color.green, null))
-            }
-        }
+        })
+
 
         imageViewClose.setOnClickListener {
             NavHostFragment.findNavController(this).popBackStack()
@@ -104,6 +122,5 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
         buttonScanAgain.setOnClickListener {
             NavHostFragment.findNavController(this).popBackStack()
         }
-
     }
 }

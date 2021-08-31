@@ -22,6 +22,7 @@ import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScannerBinding
 import ca.bc.gov.health.ircreader.utils.viewBindings
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
@@ -36,18 +37,22 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
 
     private lateinit var cameraProviderFeature: ListenableFuture<ProcessCameraProvider>
 
-    private val cameraExecutor = Executors.newSingleThreadExecutor()
+    private lateinit var cameraExecutor: ExecutorService
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         cameraProviderFeature = ProcessCameraProvider.getInstance(requireContext())
 
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
         checkCameraPermission()
 
         binding.overlay.post {
             binding.overlay.setViewFinder()
         }
+
+        isRedirectionEnabled = true
     }
 
     override fun onDestroyView() {
