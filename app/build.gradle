@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
         applicationId "ca.bc.gov.health.ircreader"
         minSdk 27
-        targetSdk 30
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -92,4 +92,6 @@ dependencies {
     androidTestImplementation "com.google.dagger:hilt-android-testing:$versions.hilt"
 
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$versions.hilt"
+
+    implementation "androidx.core:core-splashscreen:$versions.splash"
 }

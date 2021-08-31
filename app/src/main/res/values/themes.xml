@@ -1,4 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Splash screen theme -->
+    <style name="Theme.BC_VAX.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">?attr/colorPrimaryVariant</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.BC_VAX</item>
+    </style>
     <!-- Base application theme. -->
     <style name="Theme.BC_VAX" parent="Theme.MaterialComponents.Light.NoActionBar">
 
