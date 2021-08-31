@@ -26,11 +26,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -43,6 +47,9 @@ dependencies {
     implementation "com.google.android.material:material:$versions.material"
 
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
+
+    //SPLASH
+    implementation "androidx.core:core-splashscreen:$versions.splash"
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
@@ -92,6 +99,4 @@ dependencies {
     androidTestImplementation "com.google.dagger:hilt-android-testing:$versions.hilt"
 
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$versions.hilt"
-
-    implementation "androidx.core:core-splashscreen:$versions.splash"
 }

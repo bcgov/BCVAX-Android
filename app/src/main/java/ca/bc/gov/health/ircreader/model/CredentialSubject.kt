@@ -9,4 +9,3 @@ data class CredentialSubject(
     val fhirVersion: String,
     val fhirBundle: FhirBundle
 )
-

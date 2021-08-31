@@ -98,8 +98,8 @@ class SHCDecoder {
      * @return [String] shcSignature
      */
     private fun decodeSHCSignature(payLoad: String): String {
-        //TODO: decide signature is required to be decoded
-        //return Base64.getUrlDecoder().decode(payLoad).decodeToString()
+        // TODO: decide signature is required to be decoded
+        // return Base64.getUrlDecoder().decode(payLoad).decodeToString()
         return payLoad
     }
 
@@ -127,17 +127,17 @@ class SHCDecoder {
      * @return encodedBase64 String
      */
     private fun shcUriToBase64(shcUri: String): String {
-        //REMOVE SHC PREFIX
+        // REMOVE SHC PREFIX
         val encodedBase64 = shcUri.removePrefix("shc:/")
 
         val size = (encodedBase64.length - 1)
 
-        //GET LIST WITH PAIRS OF DIGITS
+        // GET LIST WITH PAIRS OF DIGITS
         val pairs = encodedBase64.zipWithNext().slice(0..size step 2)
 
         val base64Builder = StringBuilder()
 
-        //PERFORM ASCII ENCODING
+        // PERFORM ASCII ENCODING
         pairs.forEach { pair ->
             val x = "${pair.first}${pair.second}".toIntOrNull()
             x.let {
