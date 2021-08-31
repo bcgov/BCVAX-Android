@@ -13,4 +13,39 @@
 
 
     </style>
+
+    <style name="TextHeader" parent="">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextName" parent="">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TextResult" parent="">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TextLabel" parent="">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="ButtonStyle" parent="">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>
