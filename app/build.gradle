@@ -93,5 +93,5 @@ dependencies {
 
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$versions.hilt"
 
-    implementation "androidx.core:core-splashscreen:1.0.0-alpha01"
+    implementation "androidx.core:core-splashscreen:$versions.splash"
 }
