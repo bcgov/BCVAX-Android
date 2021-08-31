@@ -6,21 +6,23 @@ import android.os.Bundle
 import android.util.Size
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
+import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import ca.bc.gov.health.ircreader.R
 import ca.bc.gov.health.ircreader.barcodeanalyzer.BarcodeAnalyzer
 import ca.bc.gov.health.ircreader.barcodeanalyzer.ScanningResultListener
-import ca.bc.gov.health.ircreader.utils.SHCDecoder
+import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScannerBinding
+import ca.bc.gov.health.ircreader.utils.viewBindings
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executors
-
 
 /**
  * [BarcodeScannerFragment]
@@ -28,28 +30,30 @@ import java.util.concurrent.Executors
  * @author Pinakin Kansara
  */
 @AndroidEntryPoint
-class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner) {
+class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), ScanningResultListener {
+
+    private val binding by viewBindings(FragmentBarcodeScannerBinding::bind)
 
     private lateinit var cameraProviderFeature: ListenableFuture<ProcessCameraProvider>
 
     private val cameraExecutor = Executors.newSingleThreadExecutor()
 
-    private lateinit var scannerPreview: PreviewView
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        scannerPreview = view.findViewById(R.id.scanner_preview)
         cameraProviderFeature = ProcessCameraProvider.getInstance(requireContext())
 
         checkCameraPermission()
+
+        binding.overlay.post {
+            binding.overlay.setViewFinder()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         cameraExecutor.shutdown()
     }
-
 
     /**
      * Check if permission for required feature is Granted or not.
@@ -63,9 +67,8 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner) {
             if (isGranted) {
                 cameraProvider()
             } else {
-                //TODO: Permission not Granted close the app
+                // TODO: Permission not Granted close the app
             }
-
         }
 
         when {
@@ -79,14 +82,13 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner) {
 
             shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
 
-                //TODO: Show educational screen.
+                // TODO: Show educational screen.
             }
 
             else -> {
                 requestPermission.launch(Manifest.permission.CAMERA)
             }
         }
-
     }
 
     private fun cameraProvider() {
@@ -94,44 +96,68 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner) {
             val cameraProvider = cameraProviderFeature.get()
             startCamera(cameraProvider)
         }, ContextCompat.getMainExecutor(requireContext()))
-    }
+        }
 
-    private fun startCamera(cameraProvider: ProcessCameraProvider) {
-        val cameraSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-            .build()
+        private fun startCamera(cameraProvider: ProcessCameraProvider) {
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
 
-        val preview = Preview.Builder().apply {
-            setTargetResolution(Size(scannerPreview.width, scannerPreview.height))
-        }.build()
+            val preview = getPreview()
 
-        val imageAnalysis = ImageAnalysis.Builder()
-            .setTargetResolution(Size(scannerPreview.width, scannerPreview.height))
+            val imageAnalysis = getImageAnalyzer()
+
+            imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))
+
+            cameraProvider.unbindAll()
+
+            val camera = cameraProvider.bindToLifecycle(
+                this, cameraSelector, preview, imageAnalysis
+            )
+
+            setFlash(camera)
+
+            preview.setSurfaceProvider(binding.scannerPreview.surfaceProvider)
+        }
+
+        private fun setFlash(camera: Camera) {
+            if (camera.cameraInfo.hasFlashUnit()) {
+                binding.checkboxFlashLight.visibility = View.VISIBLE
+
+                binding.checkboxFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+
+                    if (buttonView.isPressed) {
+                        camera.cameraControl.enableTorch(isChecked)
+                    }
+                }
+
+                camera.cameraInfo.torchState.observe(viewLifecycleOwner) {
+                    it?.let { torchState ->
+                        binding.checkboxFlashLight.isChecked = torchState == TorchState.ON
+                    }
+                }
+            }
+        }
+
+        private fun getImageAnalyzer() = ImageAnalysis.Builder()
+            .setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
 
-        imageAnalysis.setAnalyzer(
-            cameraExecutor,
-            BarcodeAnalyzer(object : ScanningResultListener {
-                override fun onScanned(result: String) {
-                    SHCDecoder().decode(result, onSuccess = {
-                        println("SHC ${it.payload}")
-                    }, onError = {
-                        println("SHC ${it.message}")
-                    })
-                }
+        private fun getPreview() = Preview.Builder().apply {
+            setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
+        }.build()
 
-                override fun onFailure() {
+        override fun onScanned(result: String) {
+            val action =
+                BarcodeScannerFragmentDirections
+                    .actionBarcodeScannerFragmentToBarcodeScanResultFragment(
+                        result
+                    )
+            findNavController().navigate(action)
+        }
 
-                }
-            })
-        )
-
-        cameraProvider.unbindAll()
-
-        cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
-        preview.setSurfaceProvider(scannerPreview.surfaceProvider)
-
-
+        override fun onFailure() {
+            TODO("Not yet implemented")
+        }
     }
-}

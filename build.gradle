@@ -13,6 +13,8 @@ buildscript {
         //Nav SafeARGS
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
 
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:5.14.3"
+
         //Dagger Hilt
         classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt"
 
@@ -21,6 +23,18 @@ buildscript {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+apply plugin: "com.diffplug.spotless"
+
+spotless {
+//    ratchetFrom 'origin/main'
+
+    kotlin {
+        target '**/*.kt'
+        ktlint().userData(['android': 'true', 'color': 'true', 'reporter': 'checkstyle', 'insert_final_newline': 'false'])
+        trimTrailingWhitespace()
+    }
+    kotlinGradle {
+        target '*.gradle.kts'
+        ktlint()
+    }
 }
