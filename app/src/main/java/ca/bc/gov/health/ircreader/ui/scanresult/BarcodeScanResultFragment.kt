@@ -12,7 +12,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import ca.bc.gov.health.ircreader.R
+import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
+import ca.bc.gov.health.ircreader.utils.viewBindings
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * [BarcodeScanResultFragment]
