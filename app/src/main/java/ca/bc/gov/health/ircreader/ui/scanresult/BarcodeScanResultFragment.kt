@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ca.bc.gov.health.ircreader.R
 import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
@@ -116,11 +117,11 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
 
 
         imageViewClose.setOnClickListener {
-            NavHostFragment.findNavController(this).popBackStack()
+            findNavController().popBackStack()
         }
 
         buttonScanAgain.setOnClickListener {
-            NavHostFragment.findNavController(this).popBackStack()
+            findNavController().popBackStack()
         }
     }
 }

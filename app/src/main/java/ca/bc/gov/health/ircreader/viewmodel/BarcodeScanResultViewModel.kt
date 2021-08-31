@@ -25,6 +25,6 @@ class BarcodeScanResultViewModel : ViewModel() {
         })
         // TODO: 01/09/21 Need to process the decoded data and update live data 
         userName.value = "Dummy User"
-        vaccinationStatus.value = 0
+        vaccinationStatus.value = 2
     }
 }
