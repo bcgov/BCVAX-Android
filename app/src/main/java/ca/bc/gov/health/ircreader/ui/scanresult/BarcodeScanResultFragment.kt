@@ -23,8 +23,12 @@ import dagger.hilt.android.AndroidEntryPoint
  *
  * @author Pinakin Kansara
  */
-
+@AndroidEntryPoint
 class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result) {
+
+    private val binding by viewBindings(FragmentBarcodeScanResultBinding::bind)
+
+    private val args: BarcodeScanResultFragmentArgs by navArgs()
 
     /*
     * Both of these variable control the UI for status screen
@@ -100,5 +104,6 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
         buttonScanAgain.setOnClickListener {
             NavHostFragment.findNavController(this).popBackStack()
         }
+
     }
 }
