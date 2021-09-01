@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BC Vaccine Card</string>
+    <string name="b_c_s_vaccine_card_verifier">B.C.\'s Vaccine Card Verifier</string>
+    <string name="british_columbia_official_result">British Columbia official result</string>
+    <string name="no_record_found">No Record Found</string>
+    <string name="partially_vaccinated">PARTIALLY\nVACCINATED</string>
+    <string name="vaccinated">Vaccinated</string>
+    <string name="scan_again">Scan Again</string>
 </resources>
