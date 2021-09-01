@@ -1,10 +1,6 @@
 package ca.bc.gov.health.ircreader.utils
 
-import ca.bc.gov.health.ircreader.model.Entry
 import ca.bc.gov.health.ircreader.model.SHCData
-import com.google.gson.Gson
-import java.lang.Exception
-import java.time.LocalDate
 
 class PayLoadProcessor {
 
@@ -35,11 +31,10 @@ class PayLoadProcessor {
     }*/
 
     fun fetchName(shcData: SHCData): String {
-        var entries: List<Entry> = mutableListOf()
-        entries = shcData.payload.vc.credentialSubject.fhirBundle.entry
+        val entries = shcData.payload.vc.credentialSubject.fhirBundle.entry
 
-        var name: String = ""
-        var familyName: String = ""
+        var name = ""
+        var familyName = ""
 
         try {
             entries.forEach { entry ->
@@ -48,7 +43,7 @@ class PayLoadProcessor {
                     familyName = entry.resource.name?.get(0)?.family.toString()
                 }
             }
-        } catch (e : Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 

@@ -19,6 +19,7 @@ import ca.bc.gov.health.ircreader.R
 import ca.bc.gov.health.ircreader.barcodeanalyzer.BarcodeAnalyzer
 import ca.bc.gov.health.ircreader.barcodeanalyzer.ScanningResultListener
 import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScannerBinding
+import ca.bc.gov.health.ircreader.model.SHCData
 import ca.bc.gov.health.ircreader.utils.viewBindings
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
@@ -103,71 +104,67 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
             val cameraProvider = cameraProviderFeature.get()
             startCamera(cameraProvider)
         }, ContextCompat.getMainExecutor(requireContext()))
-    }
+        }
 
-    private fun startCamera(cameraProvider: ProcessCameraProvider) {
-        val cameraSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+        private fun startCamera(cameraProvider: ProcessCameraProvider) {
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build()
+
+            val preview = getPreview()
+
+            val imageAnalysis = getImageAnalyzer()
+
+            imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))
+
+            cameraProvider.unbindAll()
+
+            val camera = cameraProvider.bindToLifecycle(
+                this, cameraSelector, preview, imageAnalysis
+            )
+
+            setFlash(camera)
+
+            preview.setSurfaceProvider(binding.scannerPreview.surfaceProvider)
+        }
+
+        private fun setFlash(camera: Camera) {
+            if (camera.cameraInfo.hasFlashUnit()) {
+                binding.checkboxFlashLight.visibility = View.VISIBLE
+
+                binding.checkboxFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+
+                    if (buttonView.isPressed) {
+                        camera.cameraControl.enableTorch(isChecked)
+                    }
+                }
+
+                camera.cameraInfo.torchState.observe(viewLifecycleOwner) {
+                    it?.let { torchState ->
+                        binding.checkboxFlashLight.isChecked = torchState == TorchState.ON
+                    }
+                }
+            }
+        }
+
+        private fun getImageAnalyzer() = ImageAnalysis.Builder()
+            .setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
 
-        val preview = getPreview()
+        private fun getPreview() = Preview.Builder().apply {
+            setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
+        }.build()
 
-        val imageAnalysis = getImageAnalyzer()
-
-        imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))
-
-        cameraProvider.unbindAll()
-
-        val camera = cameraProvider.bindToLifecycle(
-            this, cameraSelector, preview, imageAnalysis
-        )
-
-        setFlash(camera)
-
-        preview.setSurfaceProvider(binding.scannerPreview.surfaceProvider)
-    }
-
-    private fun setFlash(camera: Camera) {
-        if (camera.cameraInfo.hasFlashUnit()) {
-            binding.checkboxFlashLight.visibility = View.VISIBLE
-
-            binding.checkboxFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
-
-                if (buttonView.isPressed) {
-                    camera.cameraControl.enableTorch(isChecked)
-                }
-            }
-
-            camera.cameraInfo.torchState.observe(viewLifecycleOwner) {
-                it?.let { torchState ->
-                    binding.checkboxFlashLight.isChecked = torchState == TorchState.ON
-                }
+        override fun onScanned(shcData: SHCData) {
+            if (isRedirectionEnabled) {
+                isRedirectionEnabled = false
+                val action = BarcodeScannerFragmentDirections.actionBarcodeScannerFragmentToBarcodeScanResultFragment(shcData)
+                findNavController().navigate(action)
             }
         }
-    }
 
-    private fun getImageAnalyzer() = ImageAnalysis.Builder()
-        .setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
-        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-        .build()
-
-    private fun getPreview() = Preview.Builder().apply {
-        setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
-    }.build()
-
-    override fun onScanned(result: String) {
-        if (isRedirectionEnabled) {
-            isRedirectionEnabled = false
-            val action =
-                BarcodeScannerFragmentDirections
-                    .actionBarcodeScannerFragmentToBarcodeScanResultFragment(
-                        result
-                    )
-            findNavController().navigate(action)
+        override fun onFailure() {
+            TODO("Not yet implemented")
         }
     }
-
-    override fun onFailure() {
-        TODO("Not yet implemented")
-    }
-}

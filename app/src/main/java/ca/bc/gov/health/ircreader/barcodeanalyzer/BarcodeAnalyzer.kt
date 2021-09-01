@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
+import ca.bc.gov.health.ircreader.utils.SHCDecoder
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 
@@ -31,7 +32,14 @@ class BarcodeAnalyzer(private val listener: ScanningResultListener) : ImageAnaly
                         val rawValue = barcode?.rawValue
                         rawValue?.let {
                             Log.d("Barcode", it)
-                            listener.onScanned(it)
+                            val decoder = SHCDecoder()
+                            decoder.decode(
+                                it, onSuccess = { shcData ->
+                                    listener.onScanned(shcData)
+                                },
+                                onError = {
+                                }
+                            )
                         }
                     }
 
