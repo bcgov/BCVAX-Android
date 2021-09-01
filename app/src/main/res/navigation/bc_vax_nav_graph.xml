@@ -22,9 +22,12 @@
         android:name="ca.bc.gov.health.ircreader.ui.scanresult.BarcodeScanResultFragment"
         android:label="BarcodeScanResultFragment"
         tools:layout="@layout/fragment_barcode_scan_result" >
+
         <argument
-            android:name="shcUri"
-            app:argType="string" />
+            android:name="shcData"
+            app:argType="ca.bc.gov.health.ircreader.model.SHCData"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

@@ -1,10 +1,14 @@
 package ca.bc.gov.health.ircreader.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  * [Resource]
  *
  * @author Pinakin Kansara
  */
+@Parcelize
 data class Resource(
     val resourceType: String,
     val name: List<Name>? = null,
@@ -15,4 +19,4 @@ data class Resource(
     val occurrenceDateTime: String? = null,
     val performer: List<Performer>? = null,
     val lotNumber: String? = null
-)
+) : Parcelable
