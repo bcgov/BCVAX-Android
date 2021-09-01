@@ -2,6 +2,7 @@ package ca.bc.gov.health.ircreader.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ca.bc.gov.health.ircreader.utils.PayLoadProcessor
 import ca.bc.gov.health.ircreader.utils.SHCDecoder
 
 class BarcodeScanResultViewModel : ViewModel() {
@@ -20,11 +21,10 @@ class BarcodeScanResultViewModel : ViewModel() {
     fun processShcUri(shcUri: String) {
         SHCDecoder().decode(shcUri, onSuccess = {
             println("SHC ${it.payload}")
+            userName.value = PayLoadProcessor().fetchName(it)
+            vaccinationStatus.value = 2 // TODO: 01/09/21 hard coded value for testing 
         }, onError = {
             println("SHC ${it.message}")
         })
-        // TODO: 01/09/21 Need to process the decoded data and update live data 
-        userName.value = "Dummy User"
-        vaccinationStatus.value = 2
     }
 }

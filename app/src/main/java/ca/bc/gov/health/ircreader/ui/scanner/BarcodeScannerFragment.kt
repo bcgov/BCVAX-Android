@@ -39,6 +39,8 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
 
     private lateinit var cameraExecutor: ExecutorService
 
+    private var isRedirectionEnabled: Boolean = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -101,59 +103,61 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
             val cameraProvider = cameraProviderFeature.get()
             startCamera(cameraProvider)
         }, ContextCompat.getMainExecutor(requireContext()))
-        }
+    }
 
-        private fun startCamera(cameraProvider: ProcessCameraProvider) {
-            val cameraSelector = CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build()
+    private fun startCamera(cameraProvider: ProcessCameraProvider) {
+        val cameraSelector = CameraSelector.Builder()
+            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+            .build()
 
-            val preview = getPreview()
+        val preview = getPreview()
 
-            val imageAnalysis = getImageAnalyzer()
+        val imageAnalysis = getImageAnalyzer()
 
-            imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))
+        imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))
 
-            cameraProvider.unbindAll()
+        cameraProvider.unbindAll()
 
-            val camera = cameraProvider.bindToLifecycle(
-                this, cameraSelector, preview, imageAnalysis
-            )
+        val camera = cameraProvider.bindToLifecycle(
+            this, cameraSelector, preview, imageAnalysis
+        )
 
-            setFlash(camera)
+        setFlash(camera)
 
-            preview.setSurfaceProvider(binding.scannerPreview.surfaceProvider)
-        }
+        preview.setSurfaceProvider(binding.scannerPreview.surfaceProvider)
+    }
 
-        private fun setFlash(camera: Camera) {
-            if (camera.cameraInfo.hasFlashUnit()) {
-                binding.checkboxFlashLight.visibility = View.VISIBLE
+    private fun setFlash(camera: Camera) {
+        if (camera.cameraInfo.hasFlashUnit()) {
+            binding.checkboxFlashLight.visibility = View.VISIBLE
 
-                binding.checkboxFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
+            binding.checkboxFlashLight.setOnCheckedChangeListener { buttonView, isChecked ->
 
-                    if (buttonView.isPressed) {
-                        camera.cameraControl.enableTorch(isChecked)
-                    }
+                if (buttonView.isPressed) {
+                    camera.cameraControl.enableTorch(isChecked)
                 }
+            }
 
-                camera.cameraInfo.torchState.observe(viewLifecycleOwner) {
-                    it?.let { torchState ->
-                        binding.checkboxFlashLight.isChecked = torchState == TorchState.ON
-                    }
+            camera.cameraInfo.torchState.observe(viewLifecycleOwner) {
+                it?.let { torchState ->
+                    binding.checkboxFlashLight.isChecked = torchState == TorchState.ON
                 }
             }
         }
+    }
 
-        private fun getImageAnalyzer() = ImageAnalysis.Builder()
-            .setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .build()
+    private fun getImageAnalyzer() = ImageAnalysis.Builder()
+        .setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
+        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+        .build()
 
-        private fun getPreview() = Preview.Builder().apply {
-            setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
-        }.build()
+    private fun getPreview() = Preview.Builder().apply {
+        setTargetResolution(Size(binding.scannerPreview.width, binding.scannerPreview.height))
+    }.build()
 
-        override fun onScanned(result: String) {
+    override fun onScanned(result: String) {
+        if (isRedirectionEnabled) {
+            isRedirectionEnabled = false
             val action =
                 BarcodeScannerFragmentDirections
                     .actionBarcodeScannerFragmentToBarcodeScanResultFragment(
@@ -161,8 +165,9 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
                     )
             findNavController().navigate(action)
         }
-
-        override fun onFailure() {
-            TODO("Not yet implemented")
-        }
     }
+
+    override fun onFailure() {
+        TODO("Not yet implemented")
+    }
+}

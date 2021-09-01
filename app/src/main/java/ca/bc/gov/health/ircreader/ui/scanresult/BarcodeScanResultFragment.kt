@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ca.bc.gov.health.ircreader.R
 import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
-import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
 import ca.bc.gov.health.ircreader.utils.viewBindings
 import dagger.hilt.android.AndroidEntryPoint
 import ca.bc.gov.health.ircreader.viewmodel.BarcodeScanResultViewModel
@@ -34,16 +33,14 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
 
     private val binding by viewBindings(FragmentBarcodeScanResultBinding::bind)
 
-    private val args: BarcodeScanResultFragmentArgs by navArgs()
-
     /*
     * Both of these variable control the UI for status screen
     * vaccinationStatus = 0 is "No records found"
     * vaccinationStatus = 1 is "Partially vaccinated"
     * vaccinationStatus = 2 is "Fully vaccinated"
     * */
-    private var userName : String = ""
-    private var vaccinationStatus : Int = 0
+    private var userName: String = ""
+    private var vaccinationStatus: Int = 0
 
     // TODO: 31/08/21 For some reason View Binding is getting detected, using findViewByID for the time being
     private lateinit var textViewUserName: TextView
