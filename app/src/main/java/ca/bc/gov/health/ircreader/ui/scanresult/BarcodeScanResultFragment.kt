@@ -1,27 +1,19 @@
 package ca.bc.gov.health.ircreader.ui.scanresult
 
-import android.graphics.Color
-import android.os.Binder
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.navArgs
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ca.bc.gov.health.ircreader.R
 import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
 import ca.bc.gov.health.ircreader.utils.viewBindings
-import dagger.hilt.android.AndroidEntryPoint
 import ca.bc.gov.health.ircreader.viewmodel.BarcodeScanResultViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * [BarcodeScanResultFragment]
