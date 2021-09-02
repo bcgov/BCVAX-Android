@@ -1,4 +1,4 @@
-package ca.bc.gov.vaxcheck.ui.scanresult
+package ca.bc.gov.health.ircreader.ui.scanresult
 
 import android.os.Bundle
 import android.view.View
@@ -6,10 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import ca.bc.gov.vaxcheck.R
-import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScanResultBinding
-import ca.bc.gov.vaxcheck.utils.viewBindings
-import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
+import ca.bc.gov.health.ircreader.R
+import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
+import ca.bc.gov.health.ircreader.utils.PayLoadProcessor
+import ca.bc.gov.health.ircreader.utils.viewBindings
+import ca.bc.gov.health.ircreader.viewmodel.BarcodeScanResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -52,9 +53,9 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
         * vaccinationStatus = 1 is "Partially vaccinated"
         * vaccinationStatus = 2 is "Fully vaccinated"
         * */
-        viewModel.observeVaccinationStatus().observe(viewLifecycleOwner, {
-            when (it) {
-                0 -> {
+        viewModel.observeVaccinationStatus().observe(viewLifecycleOwner, { immuStatus ->
+            when (immuStatus!!) {
+                PayLoadProcessor.ImmuStatus.NO_RECORD -> {
                     binding.textViewName.text = getString(R.string.no_record_found)
                     binding.viewStatusColor.setBackgroundColor(
                         resources.getColor(
@@ -68,7 +69,7 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                     binding.viewLineBottom.visibility = View.INVISIBLE
                     binding.textViewBCLabel.visibility = View.INVISIBLE
                 }
-                1 -> {
+                PayLoadProcessor.ImmuStatus.PARTIALLY_IMMUNIZED  -> {
                     binding.textViewResult.text = getString(R.string.partially_vaccinated)
                     binding.viewStatusColor.setBackgroundColor(
                         resources.getColor(
@@ -77,7 +78,7 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                         )
                     )
                 }
-                2 -> {
+                PayLoadProcessor.ImmuStatus.FULLY_IMMUNIZED  -> {
                     binding.imageViewRightTick.visibility = View.VISIBLE
                     binding.textViewResult.text = getString(R.string.vaccinated)
                     binding.viewStatusColor.setBackgroundColor(
