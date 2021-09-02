@@ -1,4 +1,4 @@
-package ca.bc.gov.vaxcheck.ui.scanresult
+package ca.bc.gov.health.ircreader.ui.scanresult
 
 import android.os.Bundle
 import android.view.View
@@ -6,10 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import ca.bc.gov.vaxcheck.R
-import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScanResultBinding
-import ca.bc.gov.vaxcheck.utils.viewBindings
-import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
+import ca.bc.gov.health.ircreader.R
+import ca.bc.gov.health.ircreader.databinding.FragmentBarcodeScanResultBinding
+import ca.bc.gov.health.ircreader.utils.PayLoadProcessor
+import ca.bc.gov.health.ircreader.utils.viewBindings
+import ca.bc.gov.health.ircreader.viewmodel.BarcodeScanResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
