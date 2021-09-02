@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/barcodeScannerFragment"
-        android:name="ca.bc.gov.health.ircreader.ui.scanner.BarcodeScannerFragment"
+        android:name="ca.bc.gov.vaxcheck.ui.scanner.BarcodeScannerFragment"
         android:label="BarcodeScannerFragment"
         tools:layout="@layout/fragment_barcode_scanner">
         <action
@@ -19,13 +19,13 @@
 
     <fragment
         android:id="@+id/barcodeScanResultFragment"
-        android:name="ca.bc.gov.health.ircreader.ui.scanresult.BarcodeScanResultFragment"
+        android:name="ca.bc.gov.vaxcheck.ui.scanresult.BarcodeScanResultFragment"
         android:label="BarcodeScanResultFragment"
         tools:layout="@layout/fragment_barcode_scan_result" >
 
         <argument
             android:name="shcData"
-            app:argType="ca.bc.gov.health.ircreader.model.SHCData"
+            app:argType="ca.bc.gov.vaxcheck.model.SHCData"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
