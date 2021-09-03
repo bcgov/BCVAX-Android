@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bc_vax_nav_graph"
-    app:startDestination="@id/barcodeScannerFragment">
+    app:startDestination="@id/onBoardingFragment">
 
     <fragment
         android:id="@+id/barcodeScannerFragment"
@@ -29,5 +29,10 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="ca.bc.gov.vaxcheck.ui.custom.OnBoardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding" />
 
 </navigation>
