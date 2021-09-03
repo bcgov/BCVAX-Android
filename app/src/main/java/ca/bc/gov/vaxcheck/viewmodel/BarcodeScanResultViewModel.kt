@@ -8,18 +8,18 @@ import ca.bc.gov.vaxcheck.utils.PayLoadProcessor
 class BarcodeScanResultViewModel : ViewModel() {
 
     private val userName: MutableLiveData<String> = MutableLiveData()
-    private val vaccinationStatus: MutableLiveData<Int> = MutableLiveData()
+    private val vaccinationStatus: MutableLiveData<PayLoadProcessor.ImmuStatus> = MutableLiveData()
 
     fun observeUserName(): MutableLiveData<String> {
         return userName
     }
 
-    fun observeVaccinationStatus(): MutableLiveData<Int> {
+    fun observeVaccinationStatus(): MutableLiveData<PayLoadProcessor.ImmuStatus> {
         return vaccinationStatus
     }
 
     fun processShcUri(shcData: SHCData) {
         userName.value = PayLoadProcessor().fetchName(shcData)
-        vaccinationStatus.value = 2 // TODO: 01/09/21 hard coded value for testing
+        vaccinationStatus.value = PayLoadProcessor().fetchImmuStatus(shcData)
     }
 }
