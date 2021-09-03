@@ -8,4 +8,6 @@
     <string name="scan_again">Scan Again</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bc_vaccine_card_verifier">BC Vaccine Card Verifier</string>
+    <string name="businesses_can_scan_official_digital_or_paper_bc_vaccine_cards">Businesses can scan official digital or paper BC vaccine cards</string>
 </resources>

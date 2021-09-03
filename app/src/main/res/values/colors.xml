@@ -6,4 +6,6 @@
     <color name="navy_blue">#082B55</color>
     <color name="barcode_reticle_background">#99000000</color>
     <color name="barcode_reticle_stroke">#ffffff</color>
+    <color name="dark_blue">#003366</color>
+    <color name="black">#000000</color>
 </resources>
