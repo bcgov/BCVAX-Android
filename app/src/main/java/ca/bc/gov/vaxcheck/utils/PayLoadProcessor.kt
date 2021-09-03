@@ -1,6 +1,9 @@
 package ca.bc.gov.vaxcheck.utils
 
+
+import ca.bc.gov.vaxcheck.model.Entry
 import ca.bc.gov.vaxcheck.model.SHCData
+import com.google.gson.Gson
 
 class PayLoadProcessor {
 
