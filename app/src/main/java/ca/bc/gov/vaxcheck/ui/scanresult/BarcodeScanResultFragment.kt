@@ -11,7 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScanResultBinding
-import ca.bc.gov.vaxcheck.utils.PayLoadProcessor
+import ca.bc.gov.vaxcheck.model.ImmunizationStatus
+import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
 import ca.bc.gov.vaxcheck.utils.viewBindings
 import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +36,8 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        args.shcData?.let { viewModel.processShcUri(it) }
+
+        viewModel.processShcUri(args.shcUri, requireContext().readJsonFromAsset("jwks.json"))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,26 +56,22 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
         sceneNoRecord =
             Scene.getSceneForLayout(binding.sceneRoot, R.layout.scene_no_record, requireContext())
 
-        viewModel.observeUserName().observe(viewLifecycleOwner, {
-            binding.textViewName.text = it
-        })
-
-        viewModel.observeVaccinationStatus().observe(viewLifecycleOwner, { immuStatus ->
-            when (immuStatus!!) {
-                PayLoadProcessor.ImmuStatus.NO_RECORD -> {
-                    sceneNoRecord.enter()
-                }
-                PayLoadProcessor.ImmuStatus.PARTIALLY_IMMUNIZED -> {
-                    scenePartiallyVaccinated.enter()
-                }
-                PayLoadProcessor.ImmuStatus.FULLY_IMMUNIZED -> {
-                    sceneFullyVaccinated.enter()
+        viewModel.status.observe(viewLifecycleOwner, { status ->
+            if (status != null) {
+                binding.textViewName.text = status.first
+                when (status.second) {
+                    ImmunizationStatus.FULLY_IMMUNIZED -> {
+                        sceneFullyVaccinated.enter()
+                    }
+                    ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
+                        scenePartiallyVaccinated.enter()
+                    }
+                    ImmunizationStatus.NO_RECORD -> {
+                        sceneNoRecord.enter()
+                    }
                 }
             }
 
-            /*
-            * To remove status screen after 10 seconds
-            * */
             val countDownTimer = object : CountDownTimer(10000, 1000) {
 
                 override fun onTick(millisUntilFinished: Long) {}
@@ -85,7 +83,6 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                 }
             }
             countDownTimer.start()
-
         })
 
         binding.buttonScanAgain.setOnClickListener {

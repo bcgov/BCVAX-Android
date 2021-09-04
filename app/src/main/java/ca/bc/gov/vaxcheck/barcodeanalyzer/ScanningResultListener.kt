@@ -1,8 +1,20 @@
 package ca.bc.gov.vaxcheck.barcodeanalyzer
 
-import ca.bc.gov.vaxcheck.model.SHCData
-
+/**
+ * [ScanningResultListener]
+ *
+ * @author Pinakin Kansara
+ */
 interface ScanningResultListener {
-    fun onScanned(shcData: SHCData)
+    /**
+     * Called upon successful barcode scan.
+     *
+     * @param shcUri String
+     */
+    fun onScanned(shcUri: String)
+
+    /**
+     * Called upon error in barcode scan.
+     */
     fun onFailure()
 }

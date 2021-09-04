@@ -35,13 +35,14 @@
 
     <TextView
         android:id="@+id/textViewResult"
-        style="@style/TextResult"
+        style="?textAppearanceHeadline1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="120dp"
         android:layout_marginEnd="16dp"
         android:text="@string/partially_vaccinated"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,13 +50,14 @@
 
     <TextView
         android:id="@+id/textViewBCLabel"
-        style="@style/TextLabel"
+        style="?textAppearanceBody1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/british_columbia_official_result"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

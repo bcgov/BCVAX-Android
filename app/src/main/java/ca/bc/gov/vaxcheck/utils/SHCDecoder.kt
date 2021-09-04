@@ -1,10 +1,23 @@
 package ca.bc.gov.vaxcheck.utils
 
+import ca.bc.gov.vaxcheck.model.ImmunizationStatus
+import ca.bc.gov.vaxcheck.model.Jwks
+import ca.bc.gov.vaxcheck.model.JwksKey
 import ca.bc.gov.vaxcheck.model.SHCData
 import ca.bc.gov.vaxcheck.model.SHCHeader
 import ca.bc.gov.vaxcheck.model.SHCPayload
 import com.google.gson.Gson
-import java.util.Base64
+import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.impl.crypto.DefaultJwtSignatureValidator
+import io.jsonwebtoken.io.Decoders
+import org.bouncycastle.jce.ECNamedCurveTable
+import org.bouncycastle.jce.spec.ECNamedCurveSpec
+import java.math.BigInteger
+import java.security.KeyFactory
+import java.security.interfaces.ECPublicKey
+import java.security.spec.ECPoint
+import java.security.spec.ECPublicKeySpec
+import java.util.*
 import java.util.zip.DataFormatException
 import java.util.zip.Inflater
 
@@ -23,27 +36,140 @@ class SHCDecoder {
         const val INVALID_PAYLOAD = 100
         const val INVALID_PAYLOAD_DATA_FORMAT = 1001
         const val INVALID_PAYLOAD_EXCEPTION_MESSAGE = "ERROR PROCESSING SHC PAYLOAD"
+        const val INVALID_SIGNATURE_KEY = 2001
+
+        const val IMMUNIZATION = "Immunization"
+        const val PATIENT = "Patient"
+        const val JANSSEN_SNOWMED =
+            "28951000087107" // TODO: 03/09/21 This will be removed in future
+        const val JANSSEN_CVX = "212"
+    }
+
+    private val algorithm = SignatureAlgorithm.ES256
+
+    /**
+     * Performs signature verification on the provided shcUri
+     * and provides ImmunizationStatus.
+     *
+     * @param [shcUri] from barcode and [jwks] from json.
+     * @return Immunization status from given SHCData or exception if signature or payload is not valid.
+     */
+    fun getImmunizationStatus(shcUri: String, jwks: String): Pair<String, ImmunizationStatus> {
+
+        if (jwks.isBlank() || jwks.isEmpty()) {
+            throw SHCDecoderException(INVALID_SIGNATURE_KEY, "JWKS should not be empty or blank")
+        }
+
+        val jwks = Gson().fromJson(jwks, Jwks::class.java)
+
+        if (jwks == null || jwks.keys.isNullOrEmpty()) {
+            throw SHCDecoderException(INVALID_SIGNATURE_KEY, "JWKS Key not found.")
+        }
+
+        val jwkSigned = shcUriToBase64(shcUri)
+
+        val key = getPublicKey(jwks.keys.first())
+
+        if (!isValidSignature(key, jwkSigned)) {
+            throw SHCDecoderException(INVALID_SIGNATURE_KEY, "Signing keys are not valid")
+        }
+
+        val shcData = decodeBase64EncodedSHCPayload(jwkSigned)
+
+        return determineImmunizationStatus(shcData)
     }
 
     /**
-     * @return
+     * Helper method to fetch Immunization status.
+     *
+     * @param shcData SHCData
+     * @return [Pair] patient name & Immunization status
      */
-    fun decode(
-        shcUri: String,
-        onSuccess: (shcData: SHCData) -> Unit,
-        onError: (error: SHCDecoderException) -> Unit
-    ) {
+    private fun determineImmunizationStatus(shcData: SHCData): Pair<String, ImmunizationStatus> {
+        val entries = shcData.payload.vc.credentialSubject.fhirBundle.entry
 
-        try {
-            val base64EncodedSHCPayload = shcUriToBase64(shcUri)
-            onSuccess(decodeBase64EncodedSHCPayload(base64EncodedSHCPayload))
-        } catch (e: DataFormatException) {
-            onError(SHCDecoderException(INVALID_PAYLOAD_DATA_FORMAT, e.message))
-        } catch (e: SHCDecoderException) {
-            onError(e)
-        } catch (e: Exception) {
-            onError(SHCDecoderException(INVALID_PAYLOAD, e.message))
+        val names = entries.map { entry ->
+            if (entry.resource.resourceType.contains(PATIENT)) {
+                val name = entry.resource.name?.firstOrNull()
+                "${name?.given?.firstOrNull()} ${name?.family?.firstOrNull()}"
+            } else {
+                "Name not found!"
+            }
         }
+
+        var vaccines = 0
+        var onDoseVaccines = 0
+
+        entries.forEach { entry ->
+            if (entry.resource.resourceType.contains(IMMUNIZATION)) {
+                val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
+                vaxCode?.let { code ->
+                    if (code.contentEquals(JANSSEN_CVX) || code.contentEquals(
+                            JANSSEN_SNOWMED
+                        )
+                    ) {
+                        onDoseVaccines++
+                    } else {
+                        vaccines++
+                    }
+                }
+            }
+        }
+
+        val status = when {
+            onDoseVaccines > 0 || vaccines > 1 -> {
+                ImmunizationStatus.FULLY_IMMUNIZED
+            }
+            vaccines > 0 -> {
+                ImmunizationStatus.PARTIALLY_IMMUNIZED
+            }
+            else -> {
+                ImmunizationStatus.NO_RECORD
+            }
+        }
+
+        return Pair(names.first(), status)
+    }
+
+    /**
+     * Helper method to get [ECPublicKey] for JWS verification.
+     *
+     * @param jwksKey JwksKey
+     * @return [ECPublicKey] used for signature verification
+     */
+    private fun getPublicKey(jwksKey: JwksKey): ECPublicKey {
+        val name = "secp256r1"
+
+        val params = ECNamedCurveTable.getParameterSpec(name)
+        val spec =
+            ECNamedCurveSpec(name, params.curve, params.g, params.n, params.h, params.seed)
+
+        val parsedX = BigInteger(1, Base64.getUrlDecoder().decode(jwksKey.x))
+        val parsedY = BigInteger(1, Base64.getUrlDecoder().decode(jwksKey.y))
+        val point = ECPoint(parsedX, parsedY)
+        val key = KeyFactory
+            .getInstance("EC")
+            .generatePublic(ECPublicKeySpec(point, spec)) as ECPublicKey
+        algorithm.assertValidVerificationKey(key)
+        return key
+    }
+
+    /**
+     * Helper method to verify that payload is signed or forged.
+     *
+     * @param [key] EcPublicKey and [jwkSigned] String
+     * @return true is payload is signed with valid signature else false
+     */
+    private fun isValidSignature(key: ECPublicKey, jwkSigned: String): Boolean {
+        val jwksParts = jwkSigned.split('.')
+        if (jwksParts.isNullOrEmpty() || jwksParts.size != 3) {
+            throw SHCDecoderException(INVALID_PAYLOAD, INVALID_PAYLOAD_EXCEPTION_MESSAGE)
+        }
+        val jwsWithoutSig = jwksParts[0] + "." + jwksParts[1]
+        val jwsSig = jwksParts[2]
+
+        val validator = DefaultJwtSignatureValidator(algorithm, key, Decoders.BASE64URL)
+        return validator.isValid(jwsWithoutSig, jwsSig)
     }
 
     /**
