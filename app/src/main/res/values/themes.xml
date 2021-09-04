@@ -15,13 +15,15 @@
     </style>
 
     <style name="TextHeader" parent="">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/bc_sans_bold</item>
         <item name="android:textColor">@android:color/primary_text_dark</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextName" parent="">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/bc_sans_bold</item>
         <item name="android:textColor">@android:color/primary_text_dark</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAllCaps">true</item>
@@ -30,13 +32,15 @@
 
     <style name="TextResult" parent="">
         <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/bc_sans_bold</item>
         <item name="android:textColor">@android:color/primary_text_dark</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textAlignment">center</item>
     </style>
 
     <style name="TextLabel" parent="">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/bc_sans_regular</item>
         <item name="android:textColor">@android:color/primary_text_dark</item>
         <item name="android:textAlignment">center</item>
     </style>

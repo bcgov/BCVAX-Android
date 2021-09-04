@@ -4,7 +4,7 @@
     <string name="british_columbia_official_result">British Columbia official result</string>
     <string name="no_record_found">No Record Found</string>
     <string name="partially_vaccinated">PARTIALLY\nVACCINATED</string>
-    <string name="vaccinated">Vaccinated</string>
+    <string name="vaccinated">VACCINATED</string>
     <string name="scan_again">Scan Again</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

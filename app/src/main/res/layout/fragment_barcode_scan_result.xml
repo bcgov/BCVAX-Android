@@ -39,7 +39,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bc_gov_logo"
+        app:srcCompat="@drawable/ic_bc_logo"
         tools:ignore="ContentDescription" />
 
     <View
@@ -55,14 +55,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/viewStatusColor"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/scene_root"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#459C48"
+        android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewBlue"
         app:layout_constraintVertical_bias="1.0" />
@@ -74,116 +74,24 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="#FF9800"
+        android:background="#FAA500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLabel" />
 
-    <View
-        android:id="@+id/viewLineTop"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="16dp"
-        android:background="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewBlue" />
-
-    <View
-        android:id="@+id/viewLineBottom"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="140dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <View
-        android:id="@+id/viewLineLeft"
-        android:layout_width="5dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/viewLineBottom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewLineTop" />
-
-    <View
-        android:id="@+id/viewLineRight"
-        android:layout_width="5dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/viewLineBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewLineTop" />
-
-    <TextView
-        android:id="@+id/textViewResult"
-        style="@style/TextResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/viewLineRight"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toEndOf="@+id/viewLineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewRightTick"
-        tools:text="Vaccinated" />
-
-    <TextView
-        android:id="@+id/textViewBCLabel"
-        style="@style/TextLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/british_columbia_official_result"
-        app:layout_constraintEnd_toStartOf="@+id/viewLineRight"
-        app:layout_constraintStart_toEndOf="@+id/viewLineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/textViewResult" />
-
-    <ImageView
-        android:id="@+id/imageViewRightTick"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/viewLineBottom"
-        app:layout_constraintEnd_toStartOf="@+id/viewLineRight"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toEndOf="@+id/viewLineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/viewLineTop"
-        app:layout_constraintVertical_bias="0.33"
-        app:srcCompat="@drawable/check"
-        tools:ignore="ContentDescription"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:id="@+id/imageViewClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
-    <Button
+    <ImageButton
         android:id="@+id/buttonScanAgain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="250dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/ic_secondary_button"
         android:text="@string/scan_again"
-        style="@style/ButtonStyle"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
