@@ -86,15 +86,8 @@ class SHCDecoderTest {
 
         var shcData: SHCData? = null
         val decoder = SHCDecoder()
-        decoder.decode(
-            shcUri,
-            onSuccess =
-            {
-                shcData = it
-            },
-            onError = {
-            }
-        )
+
+        decoder.getImmunizationStatus(shcUri,key)
 
         decoder.getImmunizationStatus(shcUri,key)
 

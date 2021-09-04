@@ -88,19 +88,22 @@ class SHCDecoder {
     private fun determineImmunizationStatus(shcData: SHCData): Pair<String, ImmunizationStatus> {
         val entries = shcData.payload.vc.credentialSubject.fhirBundle.entry
 
-        val names = entries.map { entry ->
-            if (entry.resource.resourceType.contains(PATIENT)) {
-                val name = entry.resource.name?.firstOrNull()
-                "${name?.given?.firstOrNull()} ${name?.family?.firstOrNull()}"
-            } else {
+        val names = entries.filter { entry ->
+            entry.resource.resourceType.contains(PATIENT)
+        }.map { entry ->
+            val name = entry.resource.name?.firstOrNull()
+            if(name != null){
+                "${name.given.joinToString(" ")} ${name.family}"
+            }else {
                 "Name not found!"
             }
         }
 
         var vaccines = 0
-        var onDoseVaccines = 0
+        var oneDoseVaccines = 0
 
         entries.forEach { entry ->
+
             if (entry.resource.resourceType.contains(IMMUNIZATION)) {
                 val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
                 vaxCode?.let { code ->
@@ -108,7 +111,7 @@ class SHCDecoder {
                             JANSSEN_SNOWMED
                         )
                     ) {
-                        onDoseVaccines++
+                        oneDoseVaccines++
                     } else {
                         vaccines++
                     }
@@ -117,7 +120,7 @@ class SHCDecoder {
         }
 
         val status = when {
-            onDoseVaccines > 0 || vaccines > 1 -> {
+            oneDoseVaccines > 0 || vaccines > 1 -> {
                 ImmunizationStatus.FULLY_IMMUNIZED
             }
             vaccines > 0 -> {
