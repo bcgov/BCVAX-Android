@@ -2,7 +2,6 @@ package ca.bc.gov.vaxcheck.ui.scanresult
 
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.system.Os.bind
 import android.transition.Scene
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -59,7 +58,7 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
 
         viewModel.status.observe(viewLifecycleOwner, { status ->
             if (status != null) {
-                binding.textViewName.text = status.first
+                binding.txtFullName.text = status.first
                 when (status.second) {
                     ImmunizationStatus.FULLY_IMMUNIZED -> {
                         sceneFullyVaccinated.enter()
@@ -67,7 +66,10 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                     ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
                         scenePartiallyVaccinated.enter()
                     }
-                    ImmunizationStatus.NO_RECORD -> {
+                    ImmunizationStatus.INVALID_QR_CODE -> {
+                        sceneNoRecord.enter()
+                    }
+                    else -> {
                         sceneNoRecord.enter()
                     }
                 }

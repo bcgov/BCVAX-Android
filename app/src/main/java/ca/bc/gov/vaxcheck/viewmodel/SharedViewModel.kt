@@ -7,9 +7,13 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import ca.bc.gov.vaxcheck.utils.DataStoreRepo
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
+/**
+ *[SharedViewModel]
+ *
+ * @author Amit Metri
+ */
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
 
     private val dataStoreRepo = DataStoreRepo(application.applicationContext)
@@ -18,8 +22,8 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         return dataStoreRepo.readFromDataStore(key).asLiveData()
     }
 
-    fun writeFirstLaunch(key: String , value: Boolean){
-        viewModelScope.launch(Dispatchers.IO){
+    fun writeFirstLaunch(key: String, value: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepo.saveToDataStore(key, value)
         }
     }

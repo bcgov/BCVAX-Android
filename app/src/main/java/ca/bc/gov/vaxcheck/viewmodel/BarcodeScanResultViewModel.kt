@@ -27,7 +27,7 @@ class BarcodeScanResultViewModel @Inject constructor(
         try {
             _status.value = shcDecoder.getImmunizationStatus(shcUri, jwks)
         } catch (e: Exception) {
-            _status.value = Pair("No name found", ImmunizationStatus.NO_RECORD)
+            _status.value = Pair("No name found", ImmunizationStatus.INVALID_QR_CODE)
         }
     }
 }

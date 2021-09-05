@@ -33,6 +33,7 @@ class BarcodeAnalyzer(private val listener: ScanningResultListener) : ImageAnaly
                         if (barcode != null && barcode.format != Barcode.FORMAT_QR_CODE) {
                             listener.onFailure()
                             isScanning = false
+                            return@let
                         }
                         val rawValue = barcode?.rawValue
                         rawValue?.let {

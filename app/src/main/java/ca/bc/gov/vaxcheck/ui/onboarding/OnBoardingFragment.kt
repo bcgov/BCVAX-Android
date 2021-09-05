@@ -26,7 +26,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.button.setOnClickListener {
+        binding.btnStartScanning.setOnClickListener {
             sharedViewModel.writeFirstLaunch(BarcodeScannerFragment.ON_BOARDING_SHOWN, true)
         }
 

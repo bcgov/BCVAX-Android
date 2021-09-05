@@ -33,6 +33,14 @@
             @style/BC_VAX.TextAppearance.MaterialComponents.Headline2
         </item>
 
+        <item name="textAppearanceHeadline3">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline3
+        </item>
+
+        <item name="textAppearanceHeadline4">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline4
+        </item>
+
         <item name="textAppearanceBody1">@style/BC_VAX.TextAppearance.MaterialComponents.Body1
         </item>
 

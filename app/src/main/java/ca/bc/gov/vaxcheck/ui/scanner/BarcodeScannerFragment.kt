@@ -96,9 +96,11 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
 
         if (::cameraExecutor.isInitialized) {
             cameraExecutor.shutdown()
+
         }
 
         super.onDestroyView()
+
     }
 
     /**
