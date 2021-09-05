@@ -93,11 +93,11 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
     }
 
     override fun onDestroyView() {
-        try {
+
+        if (::cameraExecutor.isInitialized) {
             cameraExecutor.shutdown()
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
+
         super.onDestroyView()
     }
 

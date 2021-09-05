@@ -13,7 +13,7 @@
         <action
             android:id="@+id/action_barcodeScannerFragment_to_barcodeScanResultFragment"
             app:destination="@id/barcodeScanResultFragment"
-            app:enterAnim="@android:anim/slide_in_left"
+            app:enterAnim="@anim/slide_up"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
