@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/textViewResult"
-        style="@style/TextResult"
+        style="?textAppearanceHeadline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -49,7 +49,7 @@
 
     <TextView
         android:id="@+id/textViewBCLabel"
-        style="@style/TextLabel"
+        style="?textAppearanceBody1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

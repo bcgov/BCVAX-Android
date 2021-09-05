@@ -25,8 +25,6 @@ import ca.bc.gov.vaxcheck.barcodeanalyzer.ScanningResultListener
 import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScannerBinding
 import ca.bc.gov.vaxcheck.utils.viewBindings
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
-import com.google.common.util.concurrent.ListenableFuture
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.ExecutorService
