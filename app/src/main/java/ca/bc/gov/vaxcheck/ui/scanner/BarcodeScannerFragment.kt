@@ -17,7 +17,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import ca.bc.gov.vaxcheck.R
@@ -28,8 +27,8 @@ import ca.bc.gov.vaxcheck.utils.viewBindings
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -53,7 +52,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
 
     private lateinit var camera: Camera
 
-    private val sharedViewModel : SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -75,32 +74,33 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        cameraExecutor = Executors.newSingleThreadExecutor()
+        sharedViewModel.isOnBoardingShown(ON_BOARDING_SHOWN)
+            .observe(viewLifecycleOwner, { isOnBoardingShown ->
+                if (!isOnBoardingShown) {
+                    val startDestination = findNavController().graph.startDestination
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(startDestination, true)
+                        .build()
+                    findNavController().navigate(R.id.onBoardingFragment, null, navOptions)
+                } else {
+                    cameraExecutor = Executors.newSingleThreadExecutor()
 
-        checkCameraPermission()
+                    checkCameraPermission()
 
-        binding.overlay.post {
-            binding.overlay.setViewFinder()
-        }
-
-        sharedViewModel.isOnBoardingShown(ON_BOARDING_SHOWN).observe(viewLifecycleOwner, { isOnBoardingShown ->
-            if(!isOnBoardingShown){
-                val startDestination = findNavController().graph.startDestination
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(startDestination, true)
-                    .build()
-                findNavController().navigate(R.id.onBoardingFragment, null, navOptions)
-            }
-        })
+                    binding.overlay.post {
+                        binding.overlay.setViewFinder()
+                    }
+                }
+            })
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         try {
             cameraExecutor.shutdown()
-        } catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
+        super.onDestroyView()
     }
 
     /**
@@ -240,7 +240,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
             .show()
     }
 
-    companion object{
+    companion object {
         const val ON_BOARDING_SHOWN = "ON_BOARDING_SHOWN"
     }
 }
