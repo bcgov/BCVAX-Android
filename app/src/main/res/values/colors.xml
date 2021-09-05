@@ -8,4 +8,9 @@
     <color name="barcode_reticle_stroke">#ffffff</color>
     <color name="dark_blue">#003366</color>
     <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FAA500</color>
+    <color name="status_green">#2E8540</color>
+    <color name="status_blue">#38598A</color>
+    <color name="ic_launcher_background">#1A5A95</color>
 </resources>

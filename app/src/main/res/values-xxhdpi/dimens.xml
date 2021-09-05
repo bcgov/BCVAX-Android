@@ -2,15 +2,15 @@
 <resources>
 
     <!-- Dimens for scanner result screen -->
-    <dimen name="text_view_name_margin_top">40dp</dimen>
-    <dimen name="view_blue_margin_bottom">-40dp</dimen>
-    <dimen name="view_yellow_margin_top">24dp</dimen>
-    <dimen name="button_scan_margin_bottom">32dp</dimen>
+    <dimen name="text_full_name_margin_top">40dp</dimen>
+    <dimen name="view_partially_vaccinated_blue_box_margin_bottom">-40dp</dimen>
+    <dimen name="view_divider_line_margin_top">24dp</dimen>
+    <dimen name="btn_scan_next_margin_bottom">32dp</dimen>
 
     <!-- Dimens for fully vaccinated scene -->
     <dimen name="rect_line_margin_top">32dp</dimen>
     <dimen name="rect_line_margin_bottom">-39dp</dimen>
-    <dimen name="text_result_margin_top">8dp</dimen>
+    <dimen name="text_status_margin_top">8dp</dimen>
     <dimen name="text_bc_label_margin_top">8dp</dimen>
     <dimen name="image_right_tick_margin_top">80dp</dimen>
 

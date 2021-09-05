@@ -2,65 +2,49 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <View
-        android:id="@+id/viewStatusColor"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#38598A"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+    android:layout_height="match_parent"
+    android:background="@color/status_blue">
 
     <View
         android:id="@+id/viewRectangleLine"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/medium"
         android:layout_marginTop="@dimen/dotted_rect_line_margin_top"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/medium"
         android:layout_marginBottom="@dimen/dotted_rect_line_margin_bottom"
         android:background="@drawable/dotted_rectangle"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewBCLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_bc_official_result"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/textViewResult"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_status"
         style="?textAppearanceHeadline1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/medium"
         android:layout_marginTop="@dimen/partial_text_result_margin_top"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/medium"
         android:text="@string/partially_vaccinated"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewBCLabel"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_bc_official_result"
         style="?textAppearanceBody1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="@dimen/medium"
+        android:layout_marginEnd="@dimen/medium"
         android:text="@string/british_columbia_official_result"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewResult" />
-
+        app:layout_constraintTop_toBottomOf="@+id/txt_status" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

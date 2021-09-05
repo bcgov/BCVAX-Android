@@ -5,55 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewLabel"
-        style="?textAppearanceHeadline2"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_app_name"
+        style="?textAppearanceHeadline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/large"
         android:text="@string/b_c_s_vaccine_card_verifier"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/img_app_logo" />
 
-    <TextView
-        android:id="@+id/textViewName"
-        style="?textAppearanceHeadline2"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_full_name"
+        style="?textAppearanceHeadline3"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large"
+        android:layout_marginTop="@dimen/text_full_name_margin_top"
+        android:layout_marginEnd="@dimen/large"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/text_view_name_margin_top"
-        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewYellow"
         tools:text="JEAN SMITH" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_app_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/large"
+        android:layout_marginTop="@dimen/small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_bc_logo"
-        tools:ignore="ContentDescription" />
+        app:srcCompat="@drawable/ic_bc_logo" />
 
     <View
         android:id="@+id/viewBlue"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/view_blue_margin_bottom"
-        android:background="#082B55"
+        android:layout_marginBottom="@dimen/view_partially_vaccinated_blue_box_margin_bottom"
+        android:background="@color/navy_blue"
         android:elevation="-1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewName"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_full_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,39 +57,36 @@
         android:id="@+id/scene_root"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@android:color/white"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewBlue"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/viewBlue" />
 
     <View
         android:id="@+id/viewYellow"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/view_yellow_margin_top"
-        android:layout_marginEnd="16dp"
-        android:background="#FAA500"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="@dimen/view_divider_line_margin_top"
+        android:layout_marginEnd="@dimen/medium"
+        android:background="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_app_name" />
 
+    <!--TODO: Convert to material button with outline style-->
     <ImageButton
         android:id="@+id/buttonScanAgain"
         android:layout_width="250dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="@dimen/button_scan_margin_bottom"
+        android:layout_marginBottom="@dimen/btn_scan_next_margin_bottom"
         android:background="@drawable/ic_secondary_button"
         android:elevation="2dp"
         android:text="@string/scan_again"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="ContentDescription" />
 
