@@ -113,4 +113,7 @@ dependencies {
     androidTestImplementation "com.google.dagger:hilt-android-testing:$versions.hilt"
 
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$versions.hilt"
+
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:$versions.datastore"
 }

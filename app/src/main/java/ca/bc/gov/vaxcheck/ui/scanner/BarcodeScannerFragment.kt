@@ -16,14 +16,20 @@ import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.barcodeanalyzer.BarcodeAnalyzer
 import ca.bc.gov.vaxcheck.barcodeanalyzer.ScanningResultListener
 import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScannerBinding
 import ca.bc.gov.vaxcheck.utils.viewBindings
+import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Exception
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -46,6 +52,8 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
     private lateinit var imageAnalysis: ImageAnalysis
 
     private lateinit var camera: Camera
+
+    private val sharedViewModel : SharedViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -74,14 +82,25 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
         binding.overlay.post {
             binding.overlay.setViewFinder()
         }
+
+        sharedViewModel.isOnBoardingShown(ON_BOARDING_SHOWN).observe(viewLifecycleOwner, { isOnBoardingShown ->
+            if(!isOnBoardingShown){
+                val startDestination = findNavController().graph.startDestination
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(startDestination, true)
+                    .build()
+                findNavController().navigate(R.id.onBoardingFragment, null, navOptions)
+            }
+        })
     }
 
     override fun onDestroyView() {
-
-        cameraExecutor.shutdown()
-
         super.onDestroyView()
-
+        try {
+            cameraExecutor.shutdown()
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     /**
@@ -219,5 +238,9 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
                 dialog.dismiss()
             }
             .show()
+    }
+
+    companion object{
+        const val ON_BOARDING_SHOWN = "ON_BOARDING_SHOWN"
     }
 }
