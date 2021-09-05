@@ -2,6 +2,7 @@ package ca.bc.gov.vaxcheck.ui.scanresult
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.system.Os.bind
 import android.transition.Scene
 import android.view.View
 import androidx.fragment.app.Fragment

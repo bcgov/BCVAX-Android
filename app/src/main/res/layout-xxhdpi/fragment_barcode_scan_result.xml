@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/textViewLabel"
-        style="?textAppearanceHeadline2"
+        style="@style/TextHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -19,10 +19,8 @@
 
     <TextView
         android:id="@+id/textViewName"
-        style="?textAppearanceHeadline2"
+        style="@style/TextName"
         android:layout_width="0dp"
-        android:textAlignment="center"
-        android:textAllCaps="true"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
@@ -86,7 +84,7 @@
         android:id="@+id/buttonScanAgain"
         android:layout_width="250dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/ic_secondary_button"
         android:elevation="2dp"
         android:text="@string/scan_again"
@@ -95,6 +93,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
