@@ -25,7 +25,7 @@
         android:textAllCaps="true"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -48,7 +48,7 @@
         android:id="@+id/viewBlue"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginBottom="-40dp"
+        android:layout_marginBottom="-24dp"
         android:background="#082B55"
         android:elevation="-1dp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewName"
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="#FAA500"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
         android:id="@+id/buttonScanAgain"
         android:layout_width="250dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/ic_secondary_button"
         android:elevation="2dp"
         android:text="@string/scan_again"
@@ -95,6 +95,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

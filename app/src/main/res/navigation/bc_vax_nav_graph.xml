@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bc_vax_nav_graph"
-    app:startDestination="@id/onBoardingFragment">
+    app:startDestination="@id/barcodeScannerFragment">
 
     <fragment
         android:id="@+id/barcodeScannerFragment"

@@ -86,7 +86,7 @@
         android:id="@+id/buttonScanAgain"
         android:layout_width="250dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/ic_secondary_button"
         android:elevation="2dp"
         android:text="@string/scan_again"
@@ -95,6 +95,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
