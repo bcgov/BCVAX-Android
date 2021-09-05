@@ -14,24 +14,21 @@
             android:id="@+id/action_barcodeScannerFragment_to_barcodeScanResultFragment"
             app:destination="@id/barcodeScanResultFragment"
             app:enterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
         android:id="@+id/barcodeScanResultFragment"
         android:name="ca.bc.gov.vaxcheck.ui.scanresult.BarcodeScanResultFragment"
         android:label="BarcodeScanResultFragment"
-        tools:layout="@layout/fragment_barcode_scan_result" >
-
+        tools:layout="@layout/fragment_barcode_scan_result">
         <argument
-            android:name="shcData"
-            app:argType="ca.bc.gov.vaxcheck.model.SHCData"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:name="shcUri"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="ca.bc.gov.vaxcheck.ui.custom.OnBoardingFragment"
+        android:name="ca.bc.gov.vaxcheck.ui.onboarding.OnBoardingFragment"
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding" />
 

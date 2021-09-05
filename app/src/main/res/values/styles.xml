@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Button style-->
+    <style name="BC_VAX.Widget.MaterialComponents.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="backgroundTint">@android:color/white</item>
+    </style>
+
+</resources>

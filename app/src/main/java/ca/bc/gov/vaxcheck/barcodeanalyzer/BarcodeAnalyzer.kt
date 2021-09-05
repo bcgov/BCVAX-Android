@@ -4,12 +4,13 @@ import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import ca.bc.gov.vaxcheck.utils.SHCDecoder
+import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 
 /**
  * [BarcodeAnalyzer]
+ *
  * @author Pinakin Kansara
  */
 class BarcodeAnalyzer(private val listener: ScanningResultListener) : ImageAnalysis.Analyzer {
@@ -29,28 +30,26 @@ class BarcodeAnalyzer(private val listener: ScanningResultListener) : ImageAnaly
                 .addOnSuccessListener { barcodes ->
 
                     barcodes.firstOrNull().let { barcode ->
+                        if (barcode != null && barcode.format != Barcode.FORMAT_QR_CODE) {
+                            listener.onFailure()
+                            isScanning = false
+                        }
                         val rawValue = barcode?.rawValue
                         rawValue?.let {
                             Log.d("Barcode", it)
-                            val decoder = SHCDecoder()
-                            decoder.decode(
-                                it, onSuccess = { shcData ->
-                                    listener.onScanned(shcData)
-                                },
-                                onError = {
-                                }
-                            )
+                            listener.onScanned(it)
+                            isScanning = false
                         }
                     }
-
                     isScanning = false
-                    imageProxy.close()
+
                 }
                 .addOnFailureListener {
-
-                    isScanning = false
-                    imageProxy.close()
                     listener.onFailure()
+                    isScanning = false
+                }
+                .addOnCompleteListener {
+                    imageProxy.close()
                 }
         }
     }

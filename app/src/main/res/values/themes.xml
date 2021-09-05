@@ -1,55 +1,47 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Splash screen theme -->
-    <style name="Theme.BC_VAX.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">?attr/colorPrimaryVariant</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
-        <item name="postSplashScreenTheme">@style/Theme.BC_VAX</item>
+    <style name="Theme.BC_VAX.Splash">
+        <item name="android:windowBackground">@drawable/bc_splash_background</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">@color/navy_blue</item>
     </style>
+
+
     <!-- Base application theme. -->
     <style name="Theme.BC_VAX" parent="Theme.MaterialComponents.Light.NoActionBar">
 
+        <item name="colorPrimary">@color/navy_blue</item>
 
-        <item name="android:statusBarColor" tools:targetApi="l">@color/navy_blue</item>
+        <item name="colorPrimaryVariant">@color/navy_blue</item>
 
+        <item name="colorSecondary">@color/navy_blue</item>
+
+        <item name="colorSecondaryVariant">@color/navy_blue</item>
+
+        <item name="android:colorBackground">@android:color/white</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">?colorPrimaryVariant</item>
+
+        <!--TYPOGRAPHY-->
+        <item name="textAppearanceHeadline1">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline1
+        </item>
+
+        <item name="textAppearanceHeadline2">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline2
+        </item>
+
+        <item name="textAppearanceBody1">@style/BC_VAX.TextAppearance.MaterialComponents.Body1
+        </item>
+
+        <item name="textAppearanceButton">@style/BC_VAX.TextAppearance.MaterialComponents.Button
+        </item>
+
+        <!--COMPONENT STYLES-->
+        <item name="materialButtonStyle">@style/BC_VAX.Widget.MaterialComponents.Button</item>
 
     </style>
 
-    <style name="TextHeader" parent="">
-        <item name="android:textSize">18sp</item>
-        <item name="fontFamily">@font/bc_sans_bold</item>
-        <item name="android:textColor">@android:color/primary_text_dark</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextName" parent="">
-        <item name="android:textSize">20sp</item>
-        <item name="fontFamily">@font/bc_sans_bold</item>
-        <item name="android:textColor">@android:color/primary_text_dark</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="TextResult" parent="">
-        <item name="android:textSize">32sp</item>
-        <item name="fontFamily">@font/bc_sans_bold</item>
-        <item name="android:textColor">@android:color/primary_text_dark</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="TextLabel" parent="">
-        <item name="android:textSize">12sp</item>
-        <item name="fontFamily">@font/bc_sans_regular</item>
-        <item name="android:textColor">@android:color/primary_text_dark</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="ButtonStyle" parent="">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@android:color/primary_text_light</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:backgroundTint">@android:color/white</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
 </resources>

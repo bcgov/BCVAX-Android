@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/textViewLabel"
-        style="@style/TextHeader"
+        style="?textAppearanceHeadline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -19,8 +19,10 @@
 
     <TextView
         android:id="@+id/textViewName"
-        style="@style/TextName"
+        style="?textAppearanceHeadline2"
         android:layout_width="0dp"
+        android:textAlignment="center"
+        android:textAllCaps="true"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"

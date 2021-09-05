@@ -2,8 +2,8 @@ package ca.bc.gov.vaxcheck
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
+
 
 /**
  * [MainActivity]
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        setTheme(R.style.Theme_BC_VAX)
         setContentView(R.layout.activity_main)
     }
 }
