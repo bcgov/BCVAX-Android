@@ -89,7 +89,6 @@ class SHCDecoderTest {
 
         decoder.getImmunizationStatus(shcUri,key)
 
-        decoder.getImmunizationStatus(shcUri,key)
 
         val expectedSHCData = getSampleShcData()
 
@@ -233,6 +232,6 @@ class SHCDecoderTest {
 
     private fun getSampleSHCSignature(): String {
         return "u6SYMX4jg5dqZC11PONhujPOZlKBwY2J5SKf1u3" +
-            "UWzQiBAywPCcUocFHbLvbXVL32Sp5QsT_8a7WqjexwRtWcQ"
+                "UWzQiBAywPCcUocFHbLvbXVL32Sp5QsT_8a7WqjexwRtWcQ"
     }
 }

@@ -17,16 +17,25 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.barcodeanalyzer.BarcodeAnalyzer
 import ca.bc.gov.vaxcheck.barcodeanalyzer.ScanningResultListener
 import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScannerBinding
+import ca.bc.gov.vaxcheck.model.ImmunizationStatus
+import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
 import ca.bc.gov.vaxcheck.utils.viewBindings
+import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -51,6 +60,8 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
     private lateinit var camera: Camera
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    private val viewModel: BarcodeScanResultViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -90,6 +101,28 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
                     }
                 }
             })
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                viewModel.status.collect { status ->
+                    when (status.second) {
+                        ImmunizationStatus.FULLY_IMMUNIZED,
+                        ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
+                            sharedViewModel.setStatus(status)
+                            findNavController().navigate(R.id.action_barcodeScannerFragment_to_barcodeScanResultFragment)
+                        }
+
+                        ImmunizationStatus.INVALID_QR_CODE -> {
+                            onFailure()
+                        }
+                    }
+                }
+            }
+
+        }
+
     }
 
     override fun onDestroyView() {
@@ -213,10 +246,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
         //When barcode is not supported
         imageAnalysis.clearAnalyzer()
 
-        val action = BarcodeScannerFragmentDirections
-            .actionBarcodeScannerFragmentToBarcodeScanResultFragment(shcUri)
-
-        findNavController().navigate(action)
+        viewModel.processShcUri(shcUri, requireContext().readJsonFromAsset("jwks.json"))
 
     }
 
@@ -230,7 +260,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.bc_invalid_barcode_title))
             .setMessage(getString(R.string.bc_invalid_barcode_message))
-            .setPositiveButton(getString(R.string.scan_again)) { dialog, which ->
+            .setPositiveButton(getString(R.string.scan_next)) { dialog, which ->
 
                 //Attach analyzer again to start analysis.
                 imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))

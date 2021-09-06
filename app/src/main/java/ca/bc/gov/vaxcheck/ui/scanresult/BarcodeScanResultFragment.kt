@@ -5,16 +5,14 @@ import android.os.CountDownTimer
 import android.transition.Scene
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScanResultBinding
 import ca.bc.gov.vaxcheck.model.ImmunizationStatus
-import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
 import ca.bc.gov.vaxcheck.utils.viewBindings
-import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
+import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -27,18 +25,14 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
 
     private val binding by viewBindings(FragmentBarcodeScanResultBinding::bind)
 
-    private val args: BarcodeScanResultFragmentArgs by navArgs()
-    private val viewModel: BarcodeScanResultViewModel by viewModels()
+
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     private lateinit var sceneFullyVaccinated: Scene
+
     private lateinit var scenePartiallyVaccinated: Scene
+
     private lateinit var sceneNoRecord: Scene
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel.processShcUri(args.shcUri, requireContext().readJsonFromAsset("jwks.json"))
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +50,7 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
         sceneNoRecord =
             Scene.getSceneForLayout(binding.sceneRoot, R.layout.scene_no_record, requireContext())
 
-        viewModel.status.observe(viewLifecycleOwner, { status ->
+        sharedViewModel.status.observe(viewLifecycleOwner, { status ->
             if (status != null) {
                 binding.txtFullName.text = status.first
                 when (status.second) {
@@ -67,9 +61,6 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                         scenePartiallyVaccinated.enter()
                     }
                     ImmunizationStatus.INVALID_QR_CODE -> {
-                        sceneNoRecord.enter()
-                    }
-                    else -> {
                         sceneNoRecord.enter()
                     }
                 }
