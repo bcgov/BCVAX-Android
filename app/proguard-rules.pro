@@ -20,6 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+#KEEP MODEL
+-keep class ca.bc.gov.vaxcheck.model.** { *; }
 
 #JJWKT
 -keepattributes InnerClasses

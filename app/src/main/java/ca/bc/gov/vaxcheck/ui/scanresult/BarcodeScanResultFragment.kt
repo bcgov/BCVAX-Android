@@ -79,7 +79,7 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
             countDownTimer.start()
         })
 
-        binding.buttonScanAgain.setOnClickListener {
+        binding.buttonScanNext.setOnClickListener {
             findNavController().popBackStack()
         }
     }

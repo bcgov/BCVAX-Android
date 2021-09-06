@@ -7,6 +7,16 @@
         <item name="backgroundTint">@android:color/white</item>
     </style>
 
+    <style name="BC_VAX.Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeWidth">2dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="fontFamily">@font/bc_sans_bold</item>
+        <item name="android:lineSpacingMultiplier">0.1</item>
+        <item name="strokeColor">@color/dark_blue</item>
+    </style>
+
+
     <!--ICON Only Button style-->
     <style name="Widget.BC_VAX.Button.OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="iconPadding">0dp</item>

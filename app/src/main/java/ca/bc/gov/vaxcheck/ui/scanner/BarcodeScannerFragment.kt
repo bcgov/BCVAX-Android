@@ -259,6 +259,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.bc_invalid_barcode_title))
+            .setCancelable(false)
             .setMessage(getString(R.string.bc_invalid_barcode_message))
             .setPositiveButton(getString(R.string.scan_next)) { dialog, which ->
 
