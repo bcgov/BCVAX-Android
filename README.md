@@ -1,1 +1,1 @@
-# BCVAX-Android
+# BC Vaccine Card-Android

@@ -1,10 +1,58 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Splash screen theme -->
+    <style name="Theme.BC_VAX.Splash">
+        <item name="android:windowBackground">@drawable/bc_splash_background</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">@color/navy_blue</item>
+    </style>
+
+
     <!-- Base application theme. -->
     <style name="Theme.BC_VAX" parent="Theme.MaterialComponents.Light.NoActionBar">
 
+        <item name="colorPrimary">@color/navy_blue</item>
 
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="colorPrimaryVariant">@color/navy_blue</item>
 
+        <item name="colorSecondary">@color/navy_blue</item>
+
+        <item name="colorSecondaryVariant">@color/navy_blue</item>
+
+        <item name="android:colorBackground">@android:color/white</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">?colorPrimaryVariant</item>
+
+        <!--TYPOGRAPHY-->
+        <item name="textAppearanceHeadline1">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline1
+        </item>
+
+        <item name="textAppearanceHeadline2">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline2
+        </item>
+
+        <item name="textAppearanceHeadline3">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline3
+        </item>
+
+        <item name="textAppearanceHeadline4">
+            @style/BC_VAX.TextAppearance.MaterialComponents.Headline4
+        </item>
+
+        <item name="textAppearanceBody1">@style/BC_VAX.TextAppearance.MaterialComponents.Body1
+        </item>
+
+        <item name="textAppearanceButton">@style/BC_VAX.TextAppearance.MaterialComponents.Button
+        </item>
+
+        <!--COMPONENT STYLES-->
+        <item name="materialButtonStyle">@style/BC_VAX.Widget.MaterialComponents.Button</item>
+        <item name="materialButtonOutlinedStyle">
+            @style/BC_VAX.Widget.MaterialComponents.Button.OutlinedButton
+        </item>
 
     </style>
+
 </resources>

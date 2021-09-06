@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.onboarding.OnBoardingFragment">
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_educational_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/xl"
+        android:src="@drawable/ic_educational_mobile"
+        app:layout_constraintBottom_toTopOf="@+id/txt_app_name_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!--TODO: Convert to material button with start icon-->
+    <ImageButton
+        android:id="@+id/btn_start_scanning"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:layout_marginTop="@dimen/xl"
+        android:background="@drawable/ic_primary_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_onboarding_instruction_msg"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_app_name_title"
+        style="?textAppearanceHeadline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bc_vaccine_card_verifier"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.566" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_onboarding_instruction_msg"
+        style="?textAppearanceHeadline4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/xl"
+        android:layout_marginTop="@dimen/xl"
+        android:layout_marginEnd="@dimen/xl"
+        android:text="@string/businesses_can_scan_official_digital_or_paper_bc_vaccine_cards"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_app_name_title" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+

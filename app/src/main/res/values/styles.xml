@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Button style-->
+    <style name="BC_VAX.Widget.MaterialComponents.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="backgroundTint">@android:color/white</item>
+    </style>
+
+    <style name="BC_VAX.Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeWidth">2dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="fontFamily">@font/bc_sans_bold</item>
+        <item name="android:lineSpacingMultiplier">0.1</item>
+        <item name="strokeColor">@color/dark_blue</item>
+    </style>
+
+
+    <!--ICON Only Button style-->
+    <style name="Widget.BC_VAX.Button.OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+</resources>

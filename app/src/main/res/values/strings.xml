@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">BCVAX-Android</string>
+    <string name="app_name">BC Vaccine Card Verifier</string>
+    <string name="b_c_s_vaccine_card_verifier">B.C.\'s Vaccine Card Verifier</string>
+    <string name="british_columbia_official_result">British Columbia official result</string>
+    <string name="no_record_found">No Record Found</string>
+    <string name="invalid_qr_code">Invalid QR Code</string>
+    <string name="partially_vaccinated">PARTIALLY\nVACCINATED</string>
+    <string name="vaccinated">VACCINATED</string>
+    <string name="scan_next">Scan Next</string>
+
+    <string name="bc_vaccine_card_verifier">BC Vaccine Card Verifier</string>
+    <string name="businesses_can_scan_official_digital_or_paper_bc_vaccine_cards">Businesses can scan official digital or paper BC vaccine cards</string>
+
+    <string name="bc_invalid_barcode_title">Invalid QR Code</string>
+    <string name="bc_invalid_barcode_message">Please scan an official BC Vaccine Card QR Code.</string>
+
+    <string name="bc_permission_required_title">Oops!</string>
+    <string name="bc_permission_message">This app require camera permission, It is important to grant this permission in order to scan the barcode.\nTo enable permission goto settings and grant permission.</string>
+    <string name="exit">Exit</string>
 </resources>

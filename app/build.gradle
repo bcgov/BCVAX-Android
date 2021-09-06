@@ -2,18 +2,19 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
 }
 
 android {
-    compileSdk 30
+    compileSdk 31
 
     defaultConfig {
-        applicationId "ca.bc.gov.health.ircreader"
+        applicationId "ca.bc.gov.vaxcheck"
         minSdk 27
-        targetSdk 30
-        versionCode 1
+        targetSdk 31
+        versionCode 10
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -21,16 +22,43 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "version"
+    productFlavors {
+
+        demo{
+            dimension "version"
+            versionNameSuffix "-demo"
+        }
+        stage {
+            dimension "version"
+            versionNameSuffix "-stage"
+        }
+
+        prod {
+            dimension "version"
+        }
+    }
+
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -79,6 +107,20 @@ dependencies {
 
     implementation "androidx.camera:camera-extensions:$versions.camerax_extensions"
 
+    //GSOn
+    implementation "com.google.code.gson:gson:$versions.gson"
+
+    //JWT library
+    api "io.jsonwebtoken:jjwt-api:$versions.jjwt"
+    implementation "io.jsonwebtoken:jjwt-impl:$versions.jjwt"
+    implementation("io.jsonwebtoken:jjwt-orgjson:$versions.jjwt") {
+        exclude group: 'org.json', module: 'json' //provided by Android natively
+    }
+
+    implementation "org.bouncycastle:bcprov-jdk15on:$versions.bouncycastle"
+
+    // https://stackoverflow.com/questions/29402155/android-unit-test-not-mocked
+    testImplementation 'org.json:json:20210307'
 
     testImplementation "junit:junit:$versions.junit"
 
@@ -90,4 +132,7 @@ dependencies {
     androidTestImplementation "com.google.dagger:hilt-android-testing:$versions.hilt"
 
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$versions.hilt"
+
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:$versions.datastore"
 }

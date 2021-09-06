@@ -1,6 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_app_name"
+        style="?textAppearanceHeadline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large"
+        android:text="@string/b_c_s_vaccine_card_verifier"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_app_logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_full_name"
+        style="?textAppearanceHeadline3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large"
+        android:layout_marginTop="@dimen/text_full_name_margin_top"
+        android:layout_marginEnd="@dimen/large"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewYellow"
+        tools:text="JEAN SMITH" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_app_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large"
+        android:layout_marginTop="@dimen/small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_bc_logo" />
+
+    <View
+        android:id="@+id/viewBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/view_partially_vaccinated_blue_box_margin_bottom"
+        android:background="@color/navy_blue"
+        android:elevation="-1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_full_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/scene_root"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewBlue" />
+
+    <View
+        android:id="@+id/viewYellow"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginStart="@dimen/medium"
+        android:layout_marginTop="@dimen/view_divider_line_margin_top"
+        android:layout_marginEnd="@dimen/medium"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_app_name" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonScanNext"
+        android:layout_width="250dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="@dimen/btn_scan_next_margin_bottom"
+        android:elevation="2dp"
+        style="?materialButtonOutlinedStyle"
+        android:text="@string/scan_next"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
