@@ -21,11 +21,7 @@
         android:id="@+id/barcodeScanResultFragment"
         android:name="ca.bc.gov.vaxcheck.ui.scanresult.BarcodeScanResultFragment"
         android:label="BarcodeScanResultFragment"
-        tools:layout="@layout/fragment_barcode_scan_result">
-        <argument
-            android:name="shcUri"
-            app:argType="string" />
-    </fragment>
+        tools:layout="@layout/fragment_barcode_scan_result"/>
     <fragment
         android:id="@+id/onBoardingFragment"
         android:name="ca.bc.gov.vaxcheck.ui.onboarding.OnBoardingFragment"

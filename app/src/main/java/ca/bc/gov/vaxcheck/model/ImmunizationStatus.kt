@@ -8,6 +8,5 @@ package ca.bc.gov.vaxcheck.model
 enum class ImmunizationStatus {
     FULLY_IMMUNIZED,
     PARTIALLY_IMMUNIZED,
-    INVALID_QR_CODE,
-    NO_RECORD;
+    INVALID_QR_CODE
 }

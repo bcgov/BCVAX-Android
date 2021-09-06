@@ -92,9 +92,9 @@ class SHCDecoder {
             entry.resource.resourceType.contains(PATIENT)
         }.map { entry ->
             val name = entry.resource.name?.firstOrNull()
-            if(name != null){
+            if (name != null) {
                 "${name.given.joinToString(" ")} ${name.family}"
-            }else {
+            } else {
                 "Name not found!"
             }
         }
@@ -127,7 +127,7 @@ class SHCDecoder {
                 ImmunizationStatus.PARTIALLY_IMMUNIZED
             }
             else -> {
-                ImmunizationStatus.NO_RECORD
+                ImmunizationStatus.INVALID_QR_CODE
             }
         }
 

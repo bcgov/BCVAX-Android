@@ -83,7 +83,7 @@
         android:layout_marginBottom="@dimen/btn_scan_next_margin_bottom"
         android:background="@drawable/ic_secondary_button"
         android:elevation="2dp"
-        android:text="@string/scan_again"
+        android:text="@string/scan_next"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
