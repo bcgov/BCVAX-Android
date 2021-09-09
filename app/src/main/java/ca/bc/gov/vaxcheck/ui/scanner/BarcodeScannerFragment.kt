@@ -2,7 +2,9 @@ package ca.bc.gov.vaxcheck.ui.scanner
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Size
 import android.view.View
@@ -29,6 +31,7 @@ import ca.bc.gov.vaxcheck.barcodeanalyzer.ScanningResultListener
 import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScannerBinding
 import ca.bc.gov.vaxcheck.model.ImmunizationStatus
 import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
+import ca.bc.gov.vaxcheck.utils.setSpannableLink
 import ca.bc.gov.vaxcheck.utils.viewBindings
 import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
@@ -72,9 +75,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
             if (isGranted) {
                 setUpCamera()
             } else {
-                //TODO: Add Optional screen that explain why your app require permission
-                //For now closing the app
-                findNavController().popBackStack()
+                showRationalDialog()
             }
         }
     }
@@ -111,7 +112,9 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
                         ImmunizationStatus.FULLY_IMMUNIZED,
                         ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
                             sharedViewModel.setStatus(status)
-                            findNavController().navigate(R.id.action_barcodeScannerFragment_to_barcodeScanResultFragment)
+                            findNavController().navigate(
+                                R.id.action_barcodeScannerFragment_to_barcodeScanResultFragment
+                            )
                         }
 
                         ImmunizationStatus.INVALID_QR_CODE -> {
@@ -123,6 +126,11 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
 
         }
 
+        binding.txtPrivacyPolicy.setSpannableLink {
+            val uri = Uri.parse("https://www2.gov.bc.ca/gov/content/covid-19/vaccine/proof/businesses#app-privacy-policy")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            requireContext().startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
@@ -163,9 +171,12 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
     private fun showRationalDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.bc_permission_required_title))
+            .setCancelable(false)
             .setMessage(getString(R.string.bc_permission_message))
             .setNegativeButton(getString(R.string.exit)) { dialog, which ->
-                findNavController().popBackStack()
+                if (!findNavController().popBackStack() || !findNavController().navigateUp()) {
+                    requireActivity().finish()
+                }
                 dialog.dismiss()
             }
             .show()
@@ -193,31 +204,52 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
 
-        val resolution = Size(
-            binding.scannerPreview.width,
-            binding.scannerPreview.height
-        )
-        val preview = Preview.Builder()
-            .apply {
-                setTargetResolution(resolution)
-            }.build()
+        val hasCamera = cameraProvider.hasCamera(cameraSelector)
 
-        imageAnalysis = ImageAnalysis.Builder()
-            .setTargetResolution(resolution)
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .build()
+        if (hasCamera) {
 
-        imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))
+            val resolution = Size(
+                binding.scannerPreview.width,
+                binding.scannerPreview.height
+            )
+            val preview = Preview.Builder()
+                .apply {
+                    setTargetResolution(resolution)
+                }.build()
+
+            imageAnalysis = ImageAnalysis.Builder()
+                .setTargetResolution(resolution)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build()
+
+            imageAnalysis.setAnalyzer(cameraExecutor, BarcodeAnalyzer(this))
 
 
-        cameraProvider.unbindAll()
+            cameraProvider.unbindAll()
 
-        camera = cameraProvider.bindToLifecycle(
-            viewLifecycleOwner, cameraSelector, preview, imageAnalysis
-        )
+            camera = cameraProvider.bindToLifecycle(
+                viewLifecycleOwner, cameraSelector, preview, imageAnalysis
+            )
 
-        preview.setSurfaceProvider(binding.scannerPreview.surfaceProvider)
+            preview.setSurfaceProvider(binding.scannerPreview.surfaceProvider)
 
+        } else {
+            showNoCameraAlertDialog()
+        }
+    }
+
+    private fun showNoCameraAlertDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.bc_no_rear_camera_title))
+            .setCancelable(false)
+            .setMessage(getString(R.string.bc_nor_rear_camera_message))
+            .setNegativeButton(getString(R.string.exit)) { dialog, which ->
+                if (!findNavController().popBackStack() || !findNavController().navigateUp()) {
+                    requireActivity().finish()
+                }
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun enableFlashControl() {
