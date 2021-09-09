@@ -16,6 +16,27 @@
         <item name="strokeColor">@color/dark_blue</item>
     </style>
 
+    <style name="BC_VAX.Widget.MaterialComponents.Button.TextButton.Icon" parent="Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="android:paddingStart">@dimen/xl</item>
+        <item name="android:paddingEnd">@dimen/xl</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/dark_blue</item>
+        <item name="fontFamily">@font/bc_sans_bold</item>
+        <item name="android:lineSpacingMultiplier">0.1</item>
+    </style>
+
+    <style name="BC_VAX.Widget.MaterialComponents.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:paddingStart">@dimen/xl</item>
+        <item name="android:paddingEnd">@dimen/xl</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/bc_sans_bold</item>
+        <item name="android:lineSpacingMultiplier">0.1</item>
+    </style>
 
     <!--ICON Only Button style-->
     <style name="Widget.BC_VAX.Button.OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">

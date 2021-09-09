@@ -13,28 +13,32 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/xl"
         android:src="@drawable/ic_educational_mobile"
-        app:layout_constraintBottom_toTopOf="@+id/txt_app_name_title"
+        app:layout_constraintBottom_toTopOf="@+id/txt_camera_permission_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!--TODO: Convert to material button with start icon-->
-    <ImageButton
-        android:id="@+id/btn_start_scanning"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_allow_camera_permission"
         android:layout_width="wrap_content"
-        android:layout_height="41dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/xl"
-        android:background="@drawable/ic_primary_button"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="start"
+        app:iconTint="@color/white"
+        app:iconPadding="12dp"
+        style="@style/BC_VAX.Widget.MaterialComponents.Button.TextButton.Icon"
+        android:text="@string/bc_btn_allow_camera_access"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_onboarding_instruction_msg"
+        app:layout_constraintTop_toBottomOf="@+id/txt_bc_camera_permission_message"
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txt_app_name_title"
+        android:id="@+id/txt_camera_permission_title"
         style="?textAppearanceHeadline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bc_vaccine_card_verifier"
+        android:text="@string/bc_camera_permission_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,17 +46,31 @@
         app:layout_constraintVertical_bias="0.566" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txt_onboarding_instruction_msg"
+        android:id="@+id/txt_bc_camera_permission_message"
         style="?textAppearanceHeadline4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/xl"
         android:layout_marginTop="@dimen/xl"
         android:layout_marginEnd="@dimen/xl"
-        android:text="@string/businesses_can_scan_official_digital_or_paper_bc_vaccine_cards"
+        android:text="@string/bc_camera_permission_message"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_app_name_title" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_camera_permission_title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_privacy_policy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/btn_privacy_policy"
+        android:background="@color/dark_blue"
+        android:paddingTop="@dimen/medium"
+        android:paddingBottom="@dimen/medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
