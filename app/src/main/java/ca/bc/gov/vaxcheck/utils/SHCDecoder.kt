@@ -17,7 +17,7 @@ import java.security.KeyFactory
 import java.security.interfaces.ECPublicKey
 import java.security.spec.ECPoint
 import java.security.spec.ECPublicKeySpec
-import java.util.*
+import java.util.Base64
 import java.util.zip.DataFormatException
 import java.util.zip.Inflater
 
