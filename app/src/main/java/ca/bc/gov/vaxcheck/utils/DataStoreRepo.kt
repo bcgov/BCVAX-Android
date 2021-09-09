@@ -14,8 +14,9 @@ const val PREFERENCE_NAME = BuildConfig.APPLICATION_ID + "_preferences"
 
 class DataStoreRepo(var context: Context) {
 
-    companion object{
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCE_NAME)
+    companion object {
+        private val Context.dataStore: DataStore<Preferences>
+                by preferencesDataStore(name = PREFERENCE_NAME)
     }
 
     suspend fun saveToDataStore(key: String, value: Boolean) {
