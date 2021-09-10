@@ -1,4 +1,4 @@
-# BCVAX-Android
+# BC Vaccine Card Verifier-Android
 
 #### BC Vaccine Card Verifier App is used to scan the QR generated from HealthGateway app and shows the vaccination status of a person. This is for Businesses from the province of British Columbia.
 
@@ -21,8 +21,6 @@
 ## Project Resources
 ---
 
-List any external project resources. Possible resources include:
-
 - [Google Play TBD](TBD)
 
 ## Architecture
@@ -39,7 +37,7 @@ Architecture: __MVVM__
 
 Dependency Injection: __Hilt__
 
-Concurrency: __Coroutines__
+Concurrency: __Coroutines, Kotlin Flow__
 
 ### Folder Structure
 barcodeanalyser, DI, model, UI, utils, viewModel are placed under project package. barcodeanalyser and utils contains the business logic.
@@ -96,13 +94,13 @@ In version name 1.2, 1 stands for major change and 2 stands of minor change or p
 
 How is the app deployed and where?
 
-__Example:__ Builds generated manually, distributed through Google Play. CI/CD implementation is in progress
+Builds generated manually, distributed through Google Play. CI/CD implementation is in progress
 
 ### External
 
 How is the app deployed and where?
 
-__Example:__ Builds generated manually, distributed through Google Play.
+Builds generated manually, distributed through Google Play.
 
 ## Contributors
 ---
