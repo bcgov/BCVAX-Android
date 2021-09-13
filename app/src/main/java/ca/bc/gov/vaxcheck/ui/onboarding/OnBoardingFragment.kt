@@ -38,11 +38,11 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnAllowCameraPermission.setOnClickListener {
-            sharedViewModel.writeFirstLaunch(BarcodeScannerFragment.ON_BOARDING_SHOWN, true)
+            sharedViewModel.writeFirstLaunch()
         }
 
 
-        sharedViewModel.isOnBoardingShown(BarcodeScannerFragment.ON_BOARDING_SHOWN)
+        sharedViewModel.isOnBoardingShown()
             .observe(viewLifecycleOwner, { isOnBoardingShown ->
                 if (isOnBoardingShown) {
                     val navOptions = NavOptions.Builder()

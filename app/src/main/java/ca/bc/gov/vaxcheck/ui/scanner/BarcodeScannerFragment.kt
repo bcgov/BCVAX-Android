@@ -84,7 +84,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.isOnBoardingShown(ON_BOARDING_SHOWN)
+        sharedViewModel.isOnBoardingShown()
             .observe(viewLifecycleOwner, { isOnBoardingShown ->
                 if (!isOnBoardingShown) {
                     val startDestination = findNavController().graph.startDestination
