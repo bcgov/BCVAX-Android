@@ -1,17 +1,14 @@
 package ca.bc.gov.vaxcheck.di
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import ca.bc.gov.vaxcheck.data.local.PREFERENCE_NAME
+import ca.bc.gov.vaxcheck.data.local.DataStoreRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCE_NAME)
 
 /**
  * [DataStoreModule]
@@ -23,7 +20,6 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PRE
 class DataStoreModule {
 
     @Provides
-    fun providesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-        return context.dataStore
-    }
+    @Singleton
+    fun providesDataStore(@ApplicationContext context: Context) = DataStoreRepo(context)
 }
