@@ -1,6 +1,5 @@
 package ca.bc.gov.vaxcheck.barcodeanalyzer
 
-import android.util.Log
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -37,7 +36,6 @@ class BarcodeAnalyzer(private val listener: ScanningResultListener) : ImageAnaly
                         }
                         val rawValue = barcode?.rawValue
                         rawValue?.let {
-                            Log.d("Barcode", it)
                             listener.onScanned(it)
                             isScanning = false
                         }
