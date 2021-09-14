@@ -15,6 +15,13 @@
             app:destination="@id/barcodeScanResultFragment"
             app:enterAnim="@anim/slide_up"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_barcodeScannerFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -22,10 +29,30 @@
         android:name="ca.bc.gov.vaxcheck.ui.scanresult.BarcodeScanResultFragment"
         android:label="BarcodeScanResultFragment"
         tools:layout="@layout/fragment_barcode_scan_result"/>
+
     <fragment
         android:id="@+id/onBoardingFragment"
         android:name="ca.bc.gov.vaxcheck.ui.onboarding.OnBoardingFragment"
         android:label="fragment_onboarding"
-        tools:layout="@layout/fragment_onboarding" />
+        tools:layout="@layout/fragment_onboarding" >
+        <action
+            android:id="@+id/action_onBoardingFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="ca.bc.gov.vaxcheck.ui.webview.WebViewFragment"
+        android:label="fragment_web_view"
+        tools:layout="@layout/fragment_web_view" >
+        <argument
+            android:name="url"
+            app:argType="string"
+            android:defaultValue="page_not_found" />
+    </fragment>
 
 </navigation>
