@@ -100,10 +100,7 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
         }
 
         binding.txtPrivacyPolicy.setSpannableLink {
-            val uri =
-                Uri.parse("https://www2.gov.bc.ca/gov/content/covid-19/vaccine/proof/businesses#app-privacy-policy")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            requireContext().startActivity(intent)
+           findNavController().navigate(R.id.action_barcodeScannerFragment_to_webViewFragment)
         }
     }
 

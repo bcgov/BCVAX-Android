@@ -72,6 +72,8 @@ dependencies {
 
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
 
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipe_refresh_layout"
+
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
 
