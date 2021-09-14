@@ -56,12 +56,25 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                 when (status.second) {
                     ImmunizationStatus.FULLY_IMMUNIZED -> {
                         sceneFullyVaccinated.enter()
+                        sceneFullyVaccinated.sceneRoot.findViewById<View>(R.id.buttonScanNext)
+                            .setOnClickListener {
+                            findNavController().popBackStack()
+                        }
                     }
                     ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
                         scenePartiallyVaccinated.enter()
+                        scenePartiallyVaccinated.sceneRoot.findViewById<View>(R.id.buttonScanNext)
+                            .setOnClickListener {
+                                findNavController().popBackStack()
+                            }
+
                     }
                     ImmunizationStatus.INVALID_QR_CODE -> {
                         sceneNoRecord.enter()
+                        sceneNoRecord.sceneRoot.findViewById<View>(R.id.buttonScanNext)
+                            .setOnClickListener {
+                                findNavController().popBackStack()
+                            }
                     }
                 }
             }
@@ -78,9 +91,5 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
             }
             countDownTimer.start()
         })
-
-        binding.buttonScanNext.setOnClickListener {
-            findNavController().popBackStack()
-        }
     }
 }

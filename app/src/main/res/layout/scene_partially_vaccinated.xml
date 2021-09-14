@@ -1,50 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/status_blue">
 
-    <View
-        android:id="@+id/viewRectangleLine"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/medium"
-        android:layout_marginTop="@dimen/dotted_rect_line_margin_top"
-        android:layout_marginEnd="@dimen/medium"
-        android:layout_marginBottom="@dimen/dotted_rect_line_margin_bottom"
-        android:background="@drawable/dotted_rectangle"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_bc_official_result"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txt_status"
-        style="?textAppearanceHeadline1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium"
-        android:layout_marginTop="@dimen/partial_text_result_margin_top"
-        android:layout_marginEnd="@dimen/medium"
-        android:text="@string/partially_vaccinated"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/txt_bc_official_result"
-        style="?textAppearanceBody1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium"
-        android:layout_marginTop="@dimen/medium"
-        android:layout_marginEnd="@dimen/medium"
-        android:text="@string/british_columbia_official_result"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_status" />
+            <View
+                android:id="@+id/viewRectangleLine"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/medium"
+                android:layout_marginTop="@dimen/dotted_rect_line_margin_top"
+                android:layout_marginEnd="@dimen/medium"
+                android:layout_marginBottom="@dimen/dotted_rect_line_margin_bottom"
+                android:background="@drawable/dotted_rectangle"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_bc_official_result"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txt_status"
+                style="?textAppearanceHeadline1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium"
+                android:layout_marginTop="@dimen/partial_text_result_margin_top"
+                android:layout_marginEnd="@dimen/medium"
+                android:text="@string/partially_vaccinated"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/txt_bc_official_result"
+                style="?textAppearanceBody1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium"
+                android:layout_marginTop="@dimen/medium"
+                android:layout_marginEnd="@dimen/medium"
+                android:text="@string/british_columbia_official_result"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_status" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonScanNext"
+                style="?materialButtonOutlinedStyle"
+                android:layout_width="250dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginBottom="16dp"
+                android:elevation="2dp"
+                android:text="@string/scan_next"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewRectangleLine"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
