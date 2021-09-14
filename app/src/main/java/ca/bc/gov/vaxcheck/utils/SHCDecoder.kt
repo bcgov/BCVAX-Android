@@ -257,7 +257,7 @@ class SHCDecoder {
      */
     private fun shcUriToBase64(shcUri: String): String {
         // REMOVE SHC PREFIX
-        val encodedBase64 = shcUri.removePrefix("shc:/")
+        val encodedBase64 = shcUri.lowercase().removePrefix("shc:/")
 
         val size = (encodedBase64.length - 1)
 
