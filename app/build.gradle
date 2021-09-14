@@ -72,7 +72,7 @@ dependencies {
 
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipe_refresh_layout"
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation"

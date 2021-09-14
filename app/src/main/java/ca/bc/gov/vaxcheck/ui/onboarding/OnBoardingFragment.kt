@@ -1,7 +1,6 @@
 package ca.bc.gov.vaxcheck.ui.onboarding
 
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -62,11 +61,7 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
         }
 
         binding.txtPrivacyPolicy.setSpannableLink {
-            val uri =
-                Uri.parse(getString(R.string.url_privacy_policy))
-            val action = OnBoardingFragmentDirections
-                .actionOnBoardingFragmentToWebViewFragment(uri.toString())
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.action_onBoardingFragment_to_webViewFragment)
         }
     }
 }
