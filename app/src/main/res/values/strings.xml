@@ -27,4 +27,6 @@
     <string name="bc_nor_rear_camera_message">Oops, It seems your device does not have a rear camera\nWe do not support scanning BC Vaccine Card QR codes using the front camera at the moment.</string>
 
     <string name="btn_privacy_policy">Privacy Policy</string>
+    <string name="no_internet">No Internet!</string>
+    <string name="close">Close</string>
 </resources>
