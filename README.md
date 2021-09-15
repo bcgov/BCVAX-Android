@@ -21,7 +21,7 @@
 ## Project Resources
 ---
 
-- [Google Play TBD](TBD)
+- [Google Play](https://play.google.com/store/apps/details?id=ca.bc.gov.vaxcheck)
 
 ## Architecture
 ---
