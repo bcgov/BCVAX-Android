@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.databinding.FragmentOnboardingBinding
 import ca.bc.gov.vaxcheck.utils.setSpannableLink
+import ca.bc.gov.vaxcheck.utils.toast
 import ca.bc.gov.vaxcheck.utils.viewBindings
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,13 +65,17 @@ class OnBoardingFragment : Fragment(R.layout.fragment_onboarding) {
         }
 
         binding.txtPrivacyPolicy.setSpannableLink {
-            val webpage: Uri = Uri.parse(getString(R.string.url_privacy_policy))
-            val intent = Intent(Intent.ACTION_VIEW, webpage)
-            try {
-                startActivity(intent)
-            } catch (e: Exception) {
-                Toast.makeText(context, getString(R.string.no_app_found), Toast.LENGTH_LONG).show()
-            }
+            showPrivacyPolicy()
+        }
+    }
+
+    private fun showPrivacyPolicy() {
+        val webpage: Uri = Uri.parse(getString(R.string.url_privacy_policy))
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            context?.toast(getString(R.string.no_app_found))
         }
     }
 }
