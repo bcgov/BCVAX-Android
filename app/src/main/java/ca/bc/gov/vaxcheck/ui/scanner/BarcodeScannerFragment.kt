@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Size
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
@@ -32,6 +33,7 @@ import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScannerBinding
 import ca.bc.gov.vaxcheck.model.ImmunizationStatus
 import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
 import ca.bc.gov.vaxcheck.utils.setSpannableLink
+import ca.bc.gov.vaxcheck.utils.toast
 import ca.bc.gov.vaxcheck.utils.viewBindings
 import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
@@ -100,7 +102,17 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
         }
 
         binding.txtPrivacyPolicy.setSpannableLink {
-           findNavController().navigate(R.id.action_barcodeScannerFragment_to_webViewFragment)
+            showPrivacyPolicy()
+        }
+    }
+
+    private fun showPrivacyPolicy() {
+        val webpage: Uri = Uri.parse(getString(R.string.url_privacy_policy))
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            context?.toast(getString(R.string.no_app_found))
         }
     }
 
