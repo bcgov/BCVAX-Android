@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="small">4dp</dimen>
+    <dimen name="medium">8dp</dimen>
+    <dimen name="large">12dp</dimen>
+    <dimen name="xl">16dp</dimen>
+    <dimen name="xxl">32dp</dimen>
+
     <!-- Dimens for scanner result screen -->
     <dimen name="text_full_name_margin_top">24dp</dimen>
     <dimen name="view_partially_vaccinated_blue_box_margin_bottom">-24dp</dimen>
     <dimen name="view_divider_line_margin_top">16dp</dimen>
-    <dimen name="btn_scan_next_margin_bottom">16dp</dimen>
 
     <!-- Dimens for fully vaccinated scene -->
-    <dimen name="rect_line_margin_top">32dp</dimen>
     <dimen name="rect_line_margin_bottom">-40dp</dimen>
-    <dimen name="text_status_margin_top">8dp</dimen>
-    <dimen name="text_bc_label_margin_top">8dp</dimen>
-    <dimen name="image_right_tick_margin_top">80dp</dimen>
+    <dimen name="image_right_tick_margin_top">38dp</dimen>
 
     <!-- Dimens for partially vaccinated scene -->
-    <dimen name="dotted_rect_line_margin_top">32dp</dimen>
-    <dimen name="dotted_rect_line_margin_bottom">-40dp</dimen>
-    <dimen name="partial_text_result_margin_top">80dp</dimen>
+    <dimen name="partial_text_result_margin_top">38dp</dimen>
+
+    <!--Dimens for on-boarding screen -->
+    <dimen name="ic_educational_mobile_width">81dp</dimen>
+    <dimen name="ic_educational_mobile_height">153dp</dimen>
 
 </resources>

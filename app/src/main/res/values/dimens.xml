@@ -5,6 +5,7 @@
     <dimen name="medium">16dp</dimen>
     <dimen name="large">24dp</dimen>
     <dimen name="xl">32dp</dimen>
+    <dimen name="xxl">64dp</dimen>
 
     <dimen name="barcode_reticle_stroke_width">4dp</dimen>
     <dimen name="barcode_reticle_corner_radius">8dp</dimen>
@@ -13,18 +14,16 @@
     <dimen name="text_full_name_margin_top">40dp</dimen>
     <dimen name="view_partially_vaccinated_blue_box_margin_bottom">-40dp</dimen>
     <dimen name="view_divider_line_margin_top">24dp</dimen>
-    <dimen name="btn_scan_next_margin_bottom">64dp</dimen>
 
     <!-- Dimens for fully vaccinated scene -->
-    <dimen name="rect_line_margin_top">40dp</dimen>
     <dimen name="rect_line_margin_bottom">-60dp</dimen>
-    <dimen name="text_status_margin_top">16dp</dimen>
-    <dimen name="text_bc_label_margin_top">16dp</dimen>
-    <dimen name="image_right_tick_margin_top">120dp</dimen>
+    <dimen name="image_right_tick_margin_top">70dp</dimen>
 
     <!-- Dimens for partially vaccinated scene -->
-    <dimen name="dotted_rect_line_margin_top">40dp</dimen>
-    <dimen name="dotted_rect_line_margin_bottom">-60dp</dimen>
-    <dimen name="partial_text_result_margin_top">120dp</dimen>
+    <dimen name="partial_text_result_margin_top">70dp</dimen>
+
+    <!-- Dimens for on-boarding screen -->
+    <dimen name="ic_educational_mobile_width">129dp</dimen>
+    <dimen name="ic_educational_mobile_height">232dp</dimen>
 
 </resources>
