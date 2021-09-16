@@ -29,4 +29,5 @@
     <string name="btn_privacy_policy">Privacy Policy</string>
     <string name="no_internet">No Internet!</string>
     <string name="close">Close</string>
+    <string name="no_app_found">No app found to open link!</string>
 </resources>

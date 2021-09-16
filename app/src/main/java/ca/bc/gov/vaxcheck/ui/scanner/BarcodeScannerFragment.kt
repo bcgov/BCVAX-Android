@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Size
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
@@ -100,7 +101,13 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
         }
 
         binding.txtPrivacyPolicy.setSpannableLink {
-           findNavController().navigate(R.id.action_barcodeScannerFragment_to_webViewFragment)
+            val webpage: Uri = Uri.parse(getString(R.string.url_privacy_policy))
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(context, getString(R.string.no_app_found), Toast.LENGTH_LONG).show()
+            }
         }
     }
 
