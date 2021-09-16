@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import ca.bc.gov.vaxcheck.R
 
 /**
@@ -46,3 +47,6 @@ fun TextView.setSpannableLink(text: String? = null, onClick: () -> Unit) {
     this.setText(spannableString, TextView.BufferType.SPANNABLE)
     this.movementMethod = LinkMovementMethod.getInstance()
 }
+
+fun Context.toast(message: String)
+        = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
