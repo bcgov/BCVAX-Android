@@ -75,18 +75,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_app_name" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonScanNext"
-        android:layout_width="250dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="@dimen/btn_scan_next_margin_bottom"
-        android:elevation="2dp"
-        style="?materialButtonOutlinedStyle"
-        android:text="@string/scan_next"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

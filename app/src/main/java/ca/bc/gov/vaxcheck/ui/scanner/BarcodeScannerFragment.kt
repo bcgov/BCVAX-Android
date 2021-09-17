@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Size
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
@@ -32,6 +33,7 @@ import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScannerBinding
 import ca.bc.gov.vaxcheck.model.ImmunizationStatus
 import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
 import ca.bc.gov.vaxcheck.utils.setSpannableLink
+import ca.bc.gov.vaxcheck.utils.toast
 import ca.bc.gov.vaxcheck.utils.viewBindings
 import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
@@ -84,15 +86,40 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedViewModel.isOnBoardingShown(ON_BOARDING_SHOWN)
-            .observe(viewLifecycleOwner, { isOnBoardingShown ->
-                if (!isOnBoardingShown) {
-                    val startDestination = findNavController().graph.startDestination
-                    val navOptions = NavOptions.Builder()
-                        .setPopUpTo(startDestination, true)
-                        .build()
-                    findNavController().navigate(R.id.onBoardingFragment, null, navOptions)
-                } else {
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                launch {
+                    collectOnBoardingFlow()
+                }
+                launch {
+                    collectImmunizationStatus()
+                }
+
+            }
+
+        }
+
+        binding.txtPrivacyPolicy.setSpannableLink {
+            showPrivacyPolicy()
+        }
+    }
+
+    private fun showPrivacyPolicy() {
+        val webpage: Uri = Uri.parse(getString(R.string.url_privacy_policy))
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            context?.toast(getString(R.string.no_app_found))
+        }
+    }
+
+    private suspend fun collectOnBoardingFlow() {
+        sharedViewModel.isOnBoardingShown.collect { shown ->
+            when (shown) {
+                true -> {
                     cameraExecutor = Executors.newSingleThreadExecutor()
 
                     checkCameraPermission()
@@ -101,35 +128,33 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
                         binding.overlay.setViewFinder()
                     }
                 }
-            })
 
-        viewLifecycleOwner.lifecycleScope.launch {
-
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                viewModel.status.collect { status ->
-                    when (status.second) {
-                        ImmunizationStatus.FULLY_IMMUNIZED,
-                        ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
-                            sharedViewModel.setStatus(status)
-                            findNavController().navigate(
-                                R.id.action_barcodeScannerFragment_to_barcodeScanResultFragment
-                            )
-                        }
-
-                        ImmunizationStatus.INVALID_QR_CODE -> {
-                            onFailure()
-                        }
-                    }
+                false -> {
+                    val startDestination = findNavController().graph.startDestination
+                    val navOptions = NavOptions.Builder()
+                        .setPopUpTo(startDestination, true)
+                        .build()
+                    findNavController().navigate(R.id.onBoardingFragment, null, navOptions)
                 }
             }
-
         }
+    }
 
-        binding.txtPrivacyPolicy.setSpannableLink {
-            val uri = Uri.parse("https://www2.gov.bc.ca/gov/content/covid-19/vaccine/proof/businesses#app-privacy-policy")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            requireContext().startActivity(intent)
+    private suspend fun collectImmunizationStatus() {
+        viewModel.status.collect { status ->
+            when (status.second) {
+                ImmunizationStatus.FULLY_IMMUNIZED,
+                ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
+                    sharedViewModel.setStatus(status)
+                    findNavController().navigate(
+                        R.id.action_barcodeScannerFragment_to_barcodeScanResultFragment
+                    )
+                }
+
+                ImmunizationStatus.INVALID_QR_CODE -> {
+                    onFailure()
+                }
+            }
         }
     }
 
