@@ -90,6 +90,7 @@ dependencies {
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
+    implementation files('src/main/libs/shcDecoder-dev-release.aar')
 
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
