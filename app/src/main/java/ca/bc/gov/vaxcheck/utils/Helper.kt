@@ -3,8 +3,6 @@ package ca.bc.gov.vaxcheck.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 class Helper {
 
@@ -27,5 +25,4 @@ class Helper {
         }
         return false
     }
-
 }

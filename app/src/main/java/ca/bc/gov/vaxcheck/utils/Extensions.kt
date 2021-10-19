@@ -29,7 +29,6 @@ fun TextView.setSpannableLink(text: String? = null, onClick: () -> Unit) {
     val clickableSpan = object : ClickableSpan() {
         override fun onClick(p0: View) {
             onClick()
-
         }
 
         override fun updateDrawState(ds: TextPaint) {
@@ -48,5 +47,5 @@ fun TextView.setSpannableLink(text: String? = null, onClick: () -> Unit) {
     this.movementMethod = LinkMovementMethod.getInstance()
 }
 
-fun Context.toast(message: String)
-        = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+fun Context.toast(message: String) =
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
