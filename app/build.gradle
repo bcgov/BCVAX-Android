@@ -30,13 +30,9 @@ android {
     flavorDimensions "version"
     productFlavors {
 
-        demo{
+        dev{
             dimension "version"
-            versionNameSuffix "-demo"
-        }
-        stage {
-            dimension "version"
-            versionNameSuffix "-stage"
+            versionNameSuffix "-dev"
         }
 
         prod {
@@ -90,8 +86,7 @@ dependencies {
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
-    demoImplementation files('src/main/libs/shcDecoder-dev-release.aar')
-    prodImplementation files('src/prod/libs/shcDecoder-prod-release.aar')
+    implementation project(path: ':shcDecoder')
 
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
@@ -111,20 +106,6 @@ dependencies {
 
     implementation "androidx.camera:camera-extensions:$versions.camerax_extensions"
 
-    //GSOn
-    implementation "com.google.code.gson:gson:$versions.gson"
-
-    //JWT library
-    api "io.jsonwebtoken:jjwt-api:$versions.jjwt"
-    implementation "io.jsonwebtoken:jjwt-impl:$versions.jjwt"
-    implementation("io.jsonwebtoken:jjwt-orgjson:$versions.jjwt") {
-        exclude group: 'org.json', module: 'json' //provided by Android natively
-    }
-
-    implementation "org.bouncycastle:bcprov-jdk15on:$versions.bouncycastle"
-
-    // https://stackoverflow.com/questions/29402155/android-unit-test-not-mocked
-    testImplementation 'org.json:json:20210307'
 
     testImplementation "junit:junit:$versions.junit"
 

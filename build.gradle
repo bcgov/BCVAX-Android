@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$versions.gradle"
 
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
 
         //Nav SafeARGS
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
@@ -29,7 +29,8 @@ spotless {
 //    ratchetFrom 'origin/main'
 
     kotlin {
-        target '**/*.kt'
+        target 'src/main/**/*.kt'
+
         ktlint().userData(['android': 'true', 'color': 'true', 'reporter': 'checkstyle', 'insert_final_newline': 'false'])
         trimTrailingWhitespace()
     }

@@ -1,0 +1,77 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 27
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+
+        dev {
+            dimension "version"
+            versionNameSuffix "-dev"
+            resValue "string","issuer_url","https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
+            resValue "string","rules_url","https://phsasmarthealthcard-dev.azurewebsites.net/v1/Covid19Proof/.well-known/rules.json"
+        }
+
+
+        prod {
+            dimension "version"
+            resValue "string","issuer_url","https://smarthealthcard.phsa.ca/v1/trusted/.well-known/issuers.json"
+            resValue "string","rules_url","https://smarthealthcard.phsa.ca/v1/Covid19Proof/.well-known/rules.json"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.6.0'
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:$versions.datastore"
+
+    //GSOn
+    implementation "com.google.code.gson:gson:$versions.gson"
+
+    //JWT library
+    api "io.jsonwebtoken:jjwt-api:$versions.jjwt"
+    implementation "io.jsonwebtoken:jjwt-impl:$versions.jjwt"
+    implementation("io.jsonwebtoken:jjwt-orgjson:$versions.jjwt") {
+        exclude group: 'org.json', module: 'json' //provided by Android natively
+    }
+
+    implementation "org.bouncycastle:bcprov-jdk15on:$versions.bouncycastle"
+
+    // https://stackoverflow.com/questions/29402155/android-unit-test-not-mocked
+    testImplementation 'org.json:json:20210307'
+
+    testImplementation "junit:junit:$versions.junit"
+
+    androidTestImplementation "androidx.test.ext:junit:$versions.ext_junit"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
+}
