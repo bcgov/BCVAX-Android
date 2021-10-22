@@ -7,8 +7,6 @@ import ca.bc.gov.shcdecoder.BcCardVerifier
 import ca.bc.gov.shcdecoder.model.ImmunizationRecord
 import ca.bc.gov.shcdecoder.model.ImmunizationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Calendar
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -16,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 /**
  * [BarcodeScanResultViewModel]
@@ -46,8 +45,7 @@ class BarcodeScanResultViewModel @Inject constructor(
                     ImmunizationRecord(
                         "record.first()",
                         "record.first().second",
-                        ImmunizationStatus.INVALID_QR_CODE,
-                        Calendar.getInstance().timeInMillis
+                        ImmunizationStatus.INVALID_QR_CODE
                     )
                 )
             }

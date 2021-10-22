@@ -63,7 +63,7 @@ android {
 }
 
 dependencies {
-
+//    implementation fileTree(dir: "src/**/libs", include: ["*.jar", "*.aar"])
     implementation "androidx.core:core-ktx:$versions.core_ktx"
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
@@ -90,7 +90,8 @@ dependencies {
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
-    implementation files('src/main/libs/shcDecoder-dev-release.aar')
+    demoImplementation files('src/main/libs/shcDecoder-dev-release.aar')
+    prodImplementation files('src/prod/libs/shcDecoder-prod-release.aar')
 
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
