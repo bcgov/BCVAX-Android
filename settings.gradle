@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "BCVAX-Android"
 include ':app'
+include ':shcDecoder'
