@@ -31,12 +31,11 @@ class BcCardVerifier(
             )
         }
 
-        val ruleSet = keysRepository.getRuleSetForIssuer(iss)
+        val ruleSet = keysRepository.getRuleSetForIssuer(iss) ?: throw SHCDecoderException(
+            SHCDecoderException.ID_SIGNATURE_KEY_NOT_FOUND,
+            SHCDecoderException.MESSAGE_SIGNATURE_KEY_NOT_FOUND
+        )
 
-        return if (ruleSet == null) {
-            shcDecoder.determineImmunizationStatus(shcUri)
-        } else {
-            shcDecoder.determineImmunizationStatus(shcUri, ruleSet)
-        }
+        return shcDecoder.determineImmunizationStatus(shcUri, ruleSet)
     }
 }

@@ -44,7 +44,12 @@ class KeysRepository(
 
     fun getRuleSetForIssuer(iss: String): Rule? {
 
-        val rule = fileUtils.getRuleSetForIssuer(iss)
+        var rule: Rule? = null
+        try {
+            rule = fileUtils.getRuleSetForIssuer(iss)
+        } catch (e: Exception) {
+
+        }
 
         if (rule != null) {
             return rule
