@@ -1,0 +1,47 @@
+{
+  "publishDateTime": "2021-10-19T23:40:29.6568937+00:00",
+  "ruleSet": [
+    {
+      "mixTypesAllowed": true,
+      "mixTypesRuRequired": 2,
+      "ruRequired": 2,
+      "intervalRequired": false,
+      "daysSinceLastInterval": 14,
+      "ruleTarget": "https://smarthealthcard.phsa.ca/v1/trusted/.well-known/issuers.json",
+      "version": "V1",
+      "vaccinationRules": [
+        {
+          "cvxCode": "208",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "207",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "210",
+          "type": 2,
+          "ru": 1
+        },
+        {
+          "cvxCode": "212",
+          "type": 2,
+          "ru": 2
+        },
+        {
+          "cvxCode": "511",
+          "type": 3,
+          "ru": 1
+        },
+        {
+          "cvxCode": "510",
+          "type": 3,
+          "ru": 1
+        }
+      ]
+    }
+  ],
+  "ruleSetVersion": "V1"
+}

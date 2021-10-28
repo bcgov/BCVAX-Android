@@ -41,7 +41,6 @@ class BarcodeAnalyzer(private val listener: ScanningResultListener) : ImageAnaly
                         }
                     }
                     isScanning = false
-
                 }
                 .addOnFailureListener {
                     listener.onFailure()

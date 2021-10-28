@@ -1,10 +1,13 @@
 package ca.bc.gov.vaxcheck.di
 
-import ca.bc.gov.vaxcheck.utils.SHCDecoder
+import android.content.Context
+import ca.bc.gov.shcdecoder.BcCardVerifier
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 /**
  * [DecoderModule]
@@ -16,11 +19,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 class DecoderModule {
 
-    /**
-     * This method will provide dependency resolution for shcDecoder.
-     *
-     * @return SHCDecoder singleton instance
-     */
     @Provides
-    fun providesSHCDecoder() = SHCDecoder()
+    @Singleton
+    fun provideBCVerifier(@ApplicationContext context: Context) = BcCardVerifier(context)
 }

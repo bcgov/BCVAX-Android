@@ -15,13 +15,7 @@
             app:destination="@id/barcodeScanResultFragment"
             app:enterAnim="@anim/slide_up"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_barcodeScannerFragment_to_webViewFragment"
-            app:destination="@id/webViewFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
     </fragment>
 
     <fragment
@@ -35,19 +29,8 @@
         android:name="ca.bc.gov.vaxcheck.ui.onboarding.OnBoardingFragment"
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding">
-        <action
-            android:id="@+id/action_onBoardingFragment_to_webViewFragment"
-            app:destination="@id/webViewFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
     </fragment>
 
-    <fragment
-        android:id="@+id/webViewFragment"
-        android:name="ca.bc.gov.vaxcheck.ui.webview.PrivacyPolicyFragment"
-        android:label="fragment_web_view"
-        tools:layout="@layout/fragment_privacy_policy" />
 
 </navigation>

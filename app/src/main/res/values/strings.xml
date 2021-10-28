@@ -8,26 +8,22 @@
     <string name="vaccinated">VACCINATED</string>
     <string name="scan_next">Scan Next</string>
 
-    <string name="bc_vaccine_card_verifier">BC Vaccine Card Verifier</string>
-    <string name="businesses_can_scan_official_digital_or_paper_bc_vaccine_cards">Businesses can scan official digital or paper BC vaccine cards</string>
 
     <string name="bc_camera_permission_title">Allow Camera Access</string>
-    <string name="bc_camera_permission_message">We need permission to access your camera to be able to scan BC Vaccine Card QR codes</string>
+    <string name="bc_camera_permission_message">We need permission to access your camera to be able to scan an official proof of vaccination.</string>
     <string name="bc_btn_allow_camera_access">Allow access</string>
 
     <string name="bc_invalid_barcode_title">Invalid QR Code</string>
-    <string name="bc_invalid_barcode_message">Please scan an official BC Vaccine Card QR Code.</string>
+    <string name="bc_invalid_barcode_message">Please scan an official proof of vaccination.</string>
 
     <string name="bc_permission_required_title">Oops!</string>
-    <string name="bc_permission_message">This app requires camera permission. This permission is required in order to scan BC Vaccine Card QR codes.\nTo enable camera access go to settings to grant permissions.</string>
+    <string name="bc_permission_message">This app requires camera permission. This permission is required in order to scan an official proof of vaccination.\nTo enable camera access go to settings to grant permissions.</string>
     <string name="exit">Exit</string>
-    <string name="btn_ok">OK</string>
 
     <string name="bc_no_rear_camera_title">Oops!</string>
-    <string name="bc_nor_rear_camera_message">Oops, It seems your device does not have a rear camera\nWe do not support scanning BC Vaccine Card QR codes using the front camera at the moment.</string>
+    <string name="bc_nor_rear_camera_message">Oops, It seems your device does not have a rear camera\nWe do not support scanning an official proof of vaccination using the front camera at the moment.</string>
 
     <string name="btn_privacy_policy">Privacy Policy</string>
-    <string name="no_internet">No Internet!</string>
-    <string name="close">Close</string>
+
     <string name="no_app_found">No app found to open link!</string>
 </resources>

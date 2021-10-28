@@ -1,0 +1,77 @@
+{
+  "publishDateTime": "2021-10-05T06:31:14.6109848+00:00",
+  "ruleSet": [
+    {
+      "mixTypesAllowed": false,
+      "mixTypesRuRequired": 3,
+      "ruRequired": 2,
+      "intervalRequired": true,
+      "daysSinceLastInterval": 21,
+      "ruleTarget": "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json",
+      "version": "V1",
+      "vaccinationRules": [
+        {
+          "cvxCode": "208",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "207",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "210",
+          "type": 2,
+          "ru": 1
+        },
+        {
+          "cvxCode": "212",
+          "type": 2,
+          "ru": 2
+        },
+        {
+          "cvxCode": "211",
+          "type": 2,
+          "ru": 1
+        }
+      ]
+    },
+    {
+      "mixTypesAllowed": true,
+      "mixTypesRuRequired": 3,
+      "ruRequired": 4,
+      "intervalRequired": true,
+      "daysSinceLastInterval": 10,
+      "ruleTarget": "https://pvc.service.yukon.ca/test/issuer/.well-known/jwks.json",
+      "version": "V1",
+      "vaccinationRules": [
+        {
+          "cvxCode": "208",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "207",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "210",
+          "type": 2,
+          "ru": 1
+        },
+        {
+          "cvxCode": "212",
+          "type": 2,
+          "ru": 2
+        },
+        {
+          "cvxCode": "211",
+          "type": 2,
+          "ru": 1
+        }
+      ]
+    }
+  ]
+}

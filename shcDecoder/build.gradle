@@ -1,0 +1,159 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'maven-publish'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 27
+        targetSdk 31
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "version"
+    productFlavors {
+
+        dev {
+            dimension "version"
+            resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/Covid19Proof/.well-known/rules.json"
+        }
+
+
+        prod {
+            dimension "version"
+            resValue "string", "issuer_url", "https://smarthealthcard.phsa.ca/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://smarthealthcard.phsa.ca/v1/Covid19Proof/.well-known/rules.json"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.6.0'
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:$versions.datastore"
+
+    //GSOn
+    implementation "com.google.code.gson:gson:$versions.gson"
+
+    //JWT library
+    api "io.jsonwebtoken:jjwt-api:$versions.jjwt"
+    implementation "io.jsonwebtoken:jjwt-impl:$versions.jjwt"
+    implementation("io.jsonwebtoken:jjwt-orgjson:$versions.jjwt") {
+        exclude group: 'org.json', module: 'json' //provided by Android natively
+    }
+
+    implementation "org.bouncycastle:bcprov-jdk15on:$versions.bouncycastle"
+
+    // https://stackoverflow.com/questions/29402155/android-unit-test-not-mocked
+    testImplementation 'org.json:json:20210307'
+
+    testImplementation "junit:junit:$versions.junit"
+
+    androidTestImplementation "androidx.test.ext:junit:$versions.ext_junit"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso"
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "sources"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+
+            devRelease(MavenPublication){
+
+                groupId = 'ca.bc.gov'
+                artifactId = 'shcdecoder-dev'
+
+                version = versions.shcdecoder
+                artifact("$buildDir/outputs/aar/shcDecoder-dev-release.aar")
+                artifact(sourceJar)
+
+                pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                    configurations.api.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+
+                    configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+
+            prodRelease(MavenPublication) {
+
+                groupId = 'ca.bc.gov'
+                artifactId = 'shcdecoder'
+
+                version = versions.shcdecoder
+                artifact("$buildDir/outputs/aar/shcDecoder-prod-release.aar")
+                artifact(sourceJar)
+
+                pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                    configurations.api.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+
+                    configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+
+                url = "https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android"
+                def localProperties = new Properties()
+                localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+                credentials {
+                    username = localProperties['GITHUB_USER']
+                    password = localProperties['GITHUB_TOKEN']
+                }
+            }
+        }
+    }
+}
