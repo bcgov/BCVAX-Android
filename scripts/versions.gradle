@@ -2,7 +2,7 @@
 def versions = [:]
 
 versions.kotlin = "1.5.30"
-versions.gradle = '7.0.2'
+versions.gradle = '7.0.3'
 
 versions.datastore = "1.0.0"
 
@@ -34,6 +34,8 @@ versions.gson = "2.8.8"
 
 versions.jjwt = "0.11.1"
 versions.bouncycastle = "1.69"
+
+versions.shcdecoder = "1.0.4"
 
 versions.junit = "4.13.2"
 versions.ext_junit = "1.1.3"

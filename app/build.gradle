@@ -14,8 +14,8 @@ android {
         applicationId "ca.bc.gov.vaxcheck"
         minSdk 27
         targetSdk 31
-        versionCode 12
-        versionName "1.0.1"
+        versionCode 18
+        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,13 +30,9 @@ android {
     flavorDimensions "version"
     productFlavors {
 
-        demo{
+        dev{
             dimension "version"
-            versionNameSuffix "-demo"
-        }
-        stage {
-            dimension "version"
-            versionNameSuffix "-stage"
+            versionNameSuffix "-dev"
         }
 
         prod {
@@ -63,7 +59,7 @@ android {
 }
 
 dependencies {
-
+//    implementation fileTree(dir: "src/**/libs", include: ["*.jar", "*.aar"])
     implementation "androidx.core:core-ktx:$versions.core_ktx"
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
@@ -90,6 +86,10 @@ dependencies {
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
+//    implementation project(path: ':shcDecoder')
+    
+    devImplementation "ca.bc.gov:shcdecoder-dev:$versions.shcdecoder"
+    prodImplementation "ca.bc.gov:shcdecoder:$versions.shcdecoder"
 
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
@@ -109,20 +109,6 @@ dependencies {
 
     implementation "androidx.camera:camera-extensions:$versions.camerax_extensions"
 
-    //GSOn
-    implementation "com.google.code.gson:gson:$versions.gson"
-
-    //JWT library
-    api "io.jsonwebtoken:jjwt-api:$versions.jjwt"
-    implementation "io.jsonwebtoken:jjwt-impl:$versions.jjwt"
-    implementation("io.jsonwebtoken:jjwt-orgjson:$versions.jjwt") {
-        exclude group: 'org.json', module: 'json' //provided by Android natively
-    }
-
-    implementation "org.bouncycastle:bcprov-jdk15on:$versions.bouncycastle"
-
-    // https://stackoverflow.com/questions/29402155/android-unit-test-not-mocked
-    testImplementation 'org.json:json:20210307'
 
     testImplementation "junit:junit:$versions.junit"
 

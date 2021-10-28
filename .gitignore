@@ -13,6 +13,7 @@
 /.idea/misc.xml
 /.idea/compiler.xml
 /.idea/deploymentTargetDropDown.xml
+/.idea/jarRepositories.xml
 .DS_Store
 /build
 /captures
