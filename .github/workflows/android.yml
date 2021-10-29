@@ -1,0 +1,49 @@
+name: Android CI/CD
+
+on:
+  pull_request:
+    branches:
+      - develop
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Clean build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check out
+        uses: actions/checkout@v2
+      - name: github user name
+        env:
+          USER: ${{ secrets.USER }}
+        run: echo USER=\"$USER\" > local.properties
+      - name: github read token
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        run: echo TOKEN=\"$TOKEN\" > local.properties
+      - name: setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: clean build
+        run: ./gradlew clean build
+
+  apk:
+    name: upload apk
+    needs: [ build ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: upload dev apk
+        uses: actions/upload-artifact@v1
+        with:
+          name: bc_verifier_dev.apk
+          path: app/build/outputs/apk/dev/debug/app-dev-debug.apk
+      - name: upload prod apk
+        uses: action/upload-artifact@v1
+        with:
+          name: bc_verifier_prod.apk
+          path: app/build/outputs/apk/prod/debug/app-prod-debug.apk

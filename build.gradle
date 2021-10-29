@@ -11,8 +11,8 @@ buildscript {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android")
             credentials {
-                username = localProperties['GITHUB_USER']
-                password = localProperties['GITHUB_READ_TOKEN']
+                username = localProperties['USER']
+                password = localProperties['TOKEN']
             }
         }
         jcenter()
@@ -45,8 +45,8 @@ allprojects {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android")
             credentials {
-                username = localProperties['GITHUB_USER']
-                password = localProperties['GITHUB_READ_TOKEN']
+                username = localProperties['USER']
+                password = localProperties['TOKEN']
             }
         }
         jcenter()
