@@ -67,13 +67,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkForUpdate() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener {
+            appUpdateInfo = it
+
             if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 it.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
             ) {
-                appUpdateInfo = it
+
                 startForInAppUpdate(appUpdateInfo)
             }
-
             if (appUpdateInfo.updateAvailability()
                 == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
             ) {
