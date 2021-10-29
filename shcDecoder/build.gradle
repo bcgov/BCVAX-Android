@@ -147,11 +147,9 @@ afterEvaluate {
                 name = "GitHubPackages"
 
                 url = "https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android"
-                def localProperties = new Properties()
-                localProperties.load(new FileInputStream(rootProject.file("local.properties")))
                 credentials {
-                    username = localProperties['GITHUB_USER']
-                    password = localProperties['GITHUB_TOKEN']
+                    username = project.findProperty('USER') ?: System.getenv("USER")
+                    password = project.findProperty('TOKEN') ?: System.getenv("TOKEN")
                 }
             }
         }
