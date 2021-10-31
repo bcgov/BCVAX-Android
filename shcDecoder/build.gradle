@@ -27,9 +27,8 @@ android {
         dev {
             dimension "version"
             resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
-            resValue "string", "rules_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/Covid19Proof/.well-known/rules.json"
+            resValue "string", "rules_url", "https://ds9mwekyyprcy.cloudfront.net/rules.json"
         }
-
 
         prod {
             dimension "version"
@@ -147,11 +146,9 @@ afterEvaluate {
                 name = "GitHubPackages"
 
                 url = "https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android"
-                def localProperties = new Properties()
-                localProperties.load(new FileInputStream(rootProject.file("local.properties")))
                 credentials {
-                    username = localProperties['GITHUB_USER']
-                    password = localProperties['GITHUB_TOKEN']
+                    username = project.findProperty('USER') ?: System.getenv("USER")
+                    password = project.findProperty('PUBLISH_TOKEN') ?: System.getenv("PUBLISH_TOKEN")
                 }
             }
         }

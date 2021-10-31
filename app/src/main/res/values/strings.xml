@@ -26,4 +26,7 @@
     <string name="btn_privacy_policy">Privacy Policy</string>
 
     <string name="no_app_found">No app found to open link!</string>
+
+    <string name="in_app_update_message">Newer version is ready to install.</string>
+    <string name="update">Update</string>
 </resources>
