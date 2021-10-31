@@ -27,9 +27,8 @@ android {
         dev {
             dimension "version"
             resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
-            resValue "string", "rules_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/Covid19Proof/.well-known/rules.json"
+            resValue "string", "rules_url", "https://ds9mwekyyprcy.cloudfront.net/rules.json"
         }
-
 
         prod {
             dimension "version"
