@@ -69,7 +69,7 @@ class SHCDecoder(
         return isValidSignature(key, signedJwks)
     }
 
-    fun immunizationStatus(entries: List<Entry>, rule: Rule): ImmunizationStatus {
+    private fun immunizationStatus(entries: List<Entry>, rule: Rule): ImmunizationStatus {
         var mrnType = 0
         var nrvvType = 0
         var winacType = 0
