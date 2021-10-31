@@ -1,0 +1,64 @@
+name: Android CI/CD
+
+on:
+  pull_request:
+    branches:
+      - develop
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Clean build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check out
+        uses: actions/checkout@v2
+
+      - name: setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: clean build
+        run: ./gradlew clean build
+        env:
+          USER: ${{ secrets.USER }}
+          TOKEN: ${{ secrets.TOKEN }}
+
+      - name: upload dev apk
+        uses: actions/upload-artifact@v1
+        with:
+          name: bc_verifier_dev.apk
+          path: app/build/outputs/apk/dev/debug/app-dev-debug.apk
+
+      - name: upload prod apk
+        uses: actions/upload-artifact@v1
+        with:
+          name: bc_verifier_prod.apk
+          path: app/build/outputs/apk/prod/debug/app-prod-debug.apk
+
+      - name: generate release APK
+        id: assembleRelease
+        run: ./gradlew assembleRelease
+
+      - name: sign APK
+        uses: r0adkll/sign-android-release@v1
+        id: signApk
+        with:
+          releaseDirectory: app/build/outputs/apk/dev/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: upload signed APK to firebase
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: freshworks
+          file: ${{steps.signApk.outputs.signedReleaseFile}}
+

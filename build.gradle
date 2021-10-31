@@ -1,8 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     apply from: './scripts/versions.gradle'
-    def localProperties = new Properties()
-    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
     repositories {
 
         google()
@@ -11,8 +10,8 @@ buildscript {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android")
             credentials {
-                username = localProperties['GITHUB_USER']
-                password = localProperties['GITHUB_READ_TOKEN']
+                username = project.findProperty('USER') ?: System.getenv("USER")
+                password = project.findProperty('TOKEN') ?: System.getenv("TOKEN")
             }
         }
         jcenter()
@@ -36,8 +35,6 @@ buildscript {
 }
 
 allprojects {
-    def localProperties = new Properties()
-    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
     repositories {
         google()
         mavenCentral()
@@ -45,8 +42,8 @@ allprojects {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android")
             credentials {
-                username = localProperties['GITHUB_USER']
-                password = localProperties['GITHUB_READ_TOKEN']
+                username = project.findProperty('USER') ?: System.getenv("USER")
+                password = project.findProperty('TOKEN') ?: System.getenv("TOKEN")
             }
         }
         jcenter()
