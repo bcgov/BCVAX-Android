@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_main_layout"
     tools:context="ca.bc.gov.vaxcheck.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
