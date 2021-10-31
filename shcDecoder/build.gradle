@@ -148,7 +148,7 @@ afterEvaluate {
                 url = "https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android"
                 credentials {
                     username = project.findProperty('USER') ?: System.getenv("USER")
-                    password = project.findProperty('TOKEN') ?: System.getenv("TOKEN")
+                    password = project.findProperty('PUBLISH_TOKEN') ?: System.getenv("PUBLISH_TOKEN")
                 }
             }
         }
