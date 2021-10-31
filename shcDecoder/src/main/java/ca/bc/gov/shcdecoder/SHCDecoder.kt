@@ -1,6 +1,7 @@
 package ca.bc.gov.shcdecoder
 
 
+import ca.bc.gov.shcdecoder.model.Entry
 import ca.bc.gov.shcdecoder.model.ImmunizationRecord
 import ca.bc.gov.shcdecoder.model.ImmunizationStatus
 import ca.bc.gov.shcdecoder.model.Jwks
@@ -68,6 +69,54 @@ class SHCDecoder(
         return isValidSignature(key, signedJwks)
     }
 
+    fun immunizationStatus(entries: List<Entry>, rule: Rule): ImmunizationStatus {
+        var mrnType = 0
+        var nrvvType = 0
+        var winacType = 0
+
+        entries
+            .sortedBy { it.resource.occurrenceDateTime }
+            .forEach { entry ->
+                if (entry.resource.resourceType.contains(IMMUNIZATION)) {
+                    val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
+
+                    val ruleSet = rule.vaccinationRules.singleOrNull { vaccineRule ->
+                        vaxCode?.toInt() == vaccineRule.cvxCode
+                    }
+
+                    when (ruleSet?.type) {
+                        1 -> {
+                            mrnType += ruleSet.ru
+                        }
+
+                        2 -> {
+                            nrvvType += ruleSet.ru
+                        }
+
+                        3 -> {
+                            winacType += ruleSet.ru
+                        }
+                    }
+
+                    val vaxDate = entry.resource.occurrenceDateTime?.toDate()
+                    val enoughDoses = mrnType >= rule.ruRequired
+                            || nrvvType >= rule.ruRequired
+                            || winacType >= rule.ruRequired
+                    val enoughMixedDoses = rule.mixTypesAllowed
+                            && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
+                    if (enoughDoses || enoughMixedDoses) {
+                        return if (intervalPassed(vaxDate, rule)) {
+                            ImmunizationStatus.FULLY_IMMUNIZED
+                        } else {
+                            ImmunizationStatus.PARTIALLY_IMMUNIZED
+                        }
+                    }
+                }
+            }
+
+        return ImmunizationStatus.INVALID_QR_CODE
+    }
+
     /**
      * Helper method to fetch Immunization status.
      *
@@ -100,79 +149,7 @@ class SHCDecoder(
             }
         }
 
-        var mrnType = 0
-        var nrvvType = 0
-        var winacType = 0
-
-        var lastDoseDate: Date? = null
-
-        var status: ImmunizationStatus = ImmunizationStatus.INVALID_QR_CODE
-        entries.forEach { entry ->
-
-            if (entry.resource.resourceType.contains(IMMUNIZATION)) {
-                val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
-
-                val vaxDate = entry.resource.occurrenceDateTime?.toDate()
-
-                if (lastDoseDate != null) {
-                    if (vaxDate != null) {
-                        lastDoseDate = vaxDate
-                    }
-                } else {
-                    lastDoseDate = vaxDate
-                }
-
-
-                val ruleSet = rule.vaccinationRules.singleOrNull { vaccineRule ->
-                    vaxCode?.toInt() == vaccineRule.cvxCode
-                }
-
-                when (ruleSet?.type) {
-
-                    1 -> {
-                        mrnType += ruleSet.ru
-                        status = if (intervalPassed(lastDoseDate, rule)) {
-                            ImmunizationStatus.FULLY_IMMUNIZED
-                        } else {
-                            ImmunizationStatus.PARTIALLY_IMMUNIZED
-                        }
-                    }
-
-                    2 -> {
-                        nrvvType += ruleSet.ru
-                        status = if (intervalPassed(lastDoseDate, rule)) {
-                            ImmunizationStatus.FULLY_IMMUNIZED
-                        } else {
-                            ImmunizationStatus.PARTIALLY_IMMUNIZED
-                        }
-                    }
-
-                    3 -> {
-                        winacType += ruleSet.ru
-                        status = if (intervalPassed(lastDoseDate, rule)) {
-                            ImmunizationStatus.FULLY_IMMUNIZED
-                        } else {
-                            ImmunizationStatus.PARTIALLY_IMMUNIZED
-                        }
-                    }
-                }
-
-                if (rule.mixTypesAllowed && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)) {
-                    status = if (intervalPassed(lastDoseDate, rule)) {
-                        ImmunizationStatus.FULLY_IMMUNIZED
-                    } else {
-                        ImmunizationStatus.PARTIALLY_IMMUNIZED
-                    }
-                }
-            }
-        }
-
-        if (!rule.mixTypesAllowed && (mrnType > 0 && mrnType < rule.ruRequired) || (winacType > 0 && winacType < rule.ruRequired) || (nrvvType > 0 && nrvvType < rule.ruRequired)) {
-            status = ImmunizationStatus.PARTIALLY_IMMUNIZED
-            return ImmunizationRecord(
-                record.first().first, record.first().second, status
-            )
-        }
+        val status = immunizationStatus(entries, rule)
 
         return ImmunizationRecord(
             record.first().first, record.first().second, status
