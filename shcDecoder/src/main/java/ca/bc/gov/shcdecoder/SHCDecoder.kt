@@ -75,41 +75,40 @@ class SHCDecoder(
         var winacType = 0
 
         entries
+            .filter { it.resource.resourceType.contains(IMMUNIZATION) }
             .sortedBy { it.resource.occurrenceDateTime }
             .forEach { entry ->
-                if (entry.resource.resourceType.contains(IMMUNIZATION)) {
-                    val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
+                val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
 
-                    val ruleSet = rule.vaccinationRules.singleOrNull { vaccineRule ->
-                        vaxCode?.toInt() == vaccineRule.cvxCode
+                val ruleSet = rule.vaccinationRules.singleOrNull { vaccineRule ->
+                    vaxCode?.toInt() == vaccineRule.cvxCode
+                }
+
+                when (ruleSet?.type) {
+                    1 -> {
+                        mrnType += ruleSet.ru
                     }
 
-                    when (ruleSet?.type) {
-                        1 -> {
-                            mrnType += ruleSet.ru
-                        }
-
-                        2 -> {
-                            nrvvType += ruleSet.ru
-                        }
-
-                        3 -> {
-                            winacType += ruleSet.ru
-                        }
+                    2 -> {
+                        nrvvType += ruleSet.ru
                     }
 
-                    val vaxDate = entry.resource.occurrenceDateTime?.toDate()
-                    val enoughDoses = mrnType >= rule.ruRequired
-                            || nrvvType >= rule.ruRequired
-                            || winacType >= rule.ruRequired
-                    val enoughMixedDoses = rule.mixTypesAllowed
-                            && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
-                    if (enoughDoses || enoughMixedDoses) {
-                        return if (intervalPassed(vaxDate, rule)) {
-                            ImmunizationStatus.FULLY_IMMUNIZED
-                        } else {
-                            ImmunizationStatus.PARTIALLY_IMMUNIZED
-                        }
+                    3 -> {
+                        winacType += ruleSet.ru
+                    }
+                }
+
+                val vaxDate = entry.resource.occurrenceDateTime?.toDate()
+                val enoughDoses = mrnType >= rule.ruRequired
+                        || nrvvType >= rule.ruRequired
+                        || winacType >= rule.ruRequired
+                val enoughMixedDoses = rule.mixTypesAllowed
+                        && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
+                if (enoughDoses || enoughMixedDoses) {
+                    return if (intervalPassed(vaxDate, rule)) {
+                        ImmunizationStatus.FULLY_IMMUNIZED
+                    } else {
+                        ImmunizationStatus.PARTIALLY_IMMUNIZED
                     }
                 }
             }
