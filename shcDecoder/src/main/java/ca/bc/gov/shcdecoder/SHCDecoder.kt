@@ -113,7 +113,11 @@ class SHCDecoder(
                 }
             }
 
-        return ImmunizationStatus.INVALID_QR_CODE
+        return if (mrnType + nrvvType + winacType > 0) {
+            ImmunizationStatus.PARTIALLY_IMMUNIZED
+        } else {
+            ImmunizationStatus.INVALID_QR_CODE
+        }
     }
 
     /**
