@@ -39,6 +39,13 @@ class SHCDecoder(
     private val shcUri: String
 ) {
 
+    private val signedJwks: String
+    private val shcData: SHCData
+
+    init {
+        signedJwks = shcUriToBase64()
+        shcData = getShcData()
+    }
 
     companion object {
         const val TAG = "SHCDecoder"
@@ -54,19 +61,24 @@ class SHCDecoder(
 
 
     fun getIss(): String {
-        val signedJwks = shcUriToBase64(shcUri)
-
-        val shcData = decodeBase64EncodedSHCPayload(signedJwks)
-
         val shcPayload = shcData.payload
-
         return shcPayload.iss
     }
 
-    fun validateSignature(jwks: Jwks, shcUri: String): Boolean {
-        val key = getPublicKey(jwks.keys.first())
-        val signedJwks = shcUriToBase64(shcUri)
-        return isValidSignature(key, signedJwks)
+    fun validateSignature(jwks: Jwks): Boolean {
+        var validated = false
+        jwks.keys
+            .filter { it.kid == getShcData().header.kid }
+            .forEach { key ->
+                try {
+                    if (isValidSignature(getPublicKey(key), signedJwks)) {
+                        validated = true
+                    }
+                } catch (e: Exception) {
+
+                }
+            }
+        return validated
     }
 
     private fun immunizationStatus(entries: List<Entry>, rule: Rule): ImmunizationStatus {
@@ -127,10 +139,7 @@ class SHCDecoder(
      * @param rule Rule
      * @return [ImmunizationRecord] patient name & Immunization status.
      */
-    fun determineImmunizationStatus(shcUri: String, rule: Rule): ImmunizationRecord {
-        val signedJwks = shcUriToBase64(shcUri)
-
-        val shcData = decodeBase64EncodedSHCPayload(signedJwks)
+    fun determineImmunizationStatus(rule: Rule): ImmunizationRecord {
 
         val entries = shcData.payload.vc.credentialSubject.fhirBundle.entry
 
@@ -168,67 +177,6 @@ class SHCDecoder(
             calendar.add(Calendar.DAY_OF_YEAR, rule.daysSinceLastInterval)
             return (Calendar.getInstance().timeInMillis >= calendar.timeInMillis)
         }
-    }
-
-    /**
-     * Helper method to fetch Immunization status.
-     *
-     * @param shcUri String
-     * @return [ImmunizationRecord] patient name & Immunization status
-     */
-    fun determineImmunizationStatus(shcUri: String): ImmunizationRecord {
-        val signedJwks = shcUriToBase64(shcUri)
-
-        val shcData = decodeBase64EncodedSHCPayload(signedJwks)
-
-        val entries = shcData.payload.vc.credentialSubject.fhirBundle.entry
-
-        val record = entries.filter { entry ->
-            entry.resource.resourceType.contains(PATIENT)
-        }.map { entry ->
-            val name = entry.resource.name?.firstOrNull()
-            if (name != null) {
-                Pair("${name.given.joinToString(" ")} ${name.family}", entry.resource.birthDate)
-            } else {
-                Pair("Name not found!", entry.resource.birthDate)
-            }
-        }
-
-        var vaccines = 0
-        var oneDoseVaccines = 0
-
-        entries.forEach { entry ->
-
-            if (entry.resource.resourceType.contains(IMMUNIZATION)) {
-                val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
-                vaxCode?.let { code ->
-                    if (code.contentEquals(JANSSEN_CVX) || code.contentEquals(
-                            JANSSEN_SNOWMED
-                        )
-                    ) {
-                        oneDoseVaccines++
-                    } else {
-                        vaccines++
-                    }
-                }
-            }
-        }
-
-        val status = when {
-            oneDoseVaccines > 0 || vaccines > 1 -> {
-                ImmunizationStatus.FULLY_IMMUNIZED
-            }
-            vaccines > 0 -> {
-                ImmunizationStatus.PARTIALLY_IMMUNIZED
-            }
-            else -> {
-                ImmunizationStatus.INVALID_QR_CODE
-            }
-        }
-
-        return ImmunizationRecord(
-            record.first().first, record.first().second, status
-        )
     }
 
     /**
@@ -282,8 +230,8 @@ class SHCDecoder(
      * @param payLoad String encoded SHC DATA
      * @return [SHCData] shcData contains SMART HEALTH CARD DATA
      */
-    private fun decodeBase64EncodedSHCPayload(payLoad: String): SHCData {
-        val payLoads = payLoad.split('.')
+    private fun decodeBase64EncodedSHCData(): SHCData {
+        val payLoads = signedJwks.split('.')
         if (payLoads.isNullOrEmpty() || payLoads.size != 3) {
             throw SHCDecoderException(
                 SHCDecoderException.ID_INVALID_PAYLOAD_DATA_FORMAT,
@@ -297,6 +245,8 @@ class SHCDecoder(
 
         return SHCData(shcHeader, shcPayload, shcSignature)
     }
+
+    private fun getShcData(): SHCData = decodeBase64EncodedSHCData()
 
     /**
      * Helper method to decode base64 payload
@@ -355,10 +305,9 @@ class SHCDecoder(
      * [shcUriToBase64] is a helper method which convert SHC URI String to
      * encodedBase64 String.
      *
-     * @param shcUri String SHC encoded.
      * @return encodedBase64 String
      */
-    private fun shcUriToBase64(shcUri: String): String {
+    private fun shcUriToBase64(): String {
         // REMOVE SHC PREFIX
         val encodedBase64 = shcUri.removePrefix("shc:/")
 
