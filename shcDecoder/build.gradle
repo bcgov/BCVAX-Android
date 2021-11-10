@@ -30,6 +30,12 @@ android {
             resValue "string", "rules_url", "https://ds9mwekyyprcy.cloudfront.net/rules.json"
         }
 
+        stage {
+            dimension "version"
+            resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/Covid19Proof/.well-known/rules.json"
+        }
+
         prod {
             dimension "version"
             resValue "string", "issuer_url", "https://smarthealthcard.phsa.ca/v1/trusted/.well-known/issuers.json"
@@ -78,6 +84,11 @@ task sourceJar(type: Jar) {
     classifier "sources"
 }
 
+def localProperties = new Properties()
+if(project.file("local.properties").exists()){
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+}
+
 afterEvaluate {
     publishing {
         publications {
@@ -89,6 +100,35 @@ afterEvaluate {
 
                 version = versions.shcdecoder
                 artifact("$buildDir/outputs/aar/shcDecoder-dev-release.aar")
+                artifact(sourceJar)
+
+                pom.withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                    configurations.api.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+
+                    configurations.implementation.allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+
+            stageRelease(MavenPublication){
+
+                groupId = 'ca.bc.gov'
+                artifactId = 'shcdecoder-stage'
+
+                version = versions.shcdecoder
+                artifact("$buildDir/outputs/aar/shcDecoder-stage-release.aar")
                 artifact(sourceJar)
 
                 pom.withXml {
@@ -147,8 +187,8 @@ afterEvaluate {
 
                 url = "https://maven.pkg.github.com/FreshworksStudio/BCVAX-Android"
                 credentials {
-                    username = project.findProperty('USER') ?: System.getenv("USER")
-                    password = project.findProperty('PUBLISH_TOKEN') ?: System.getenv("PUBLISH_TOKEN")
+                    username = localProperties['USER'] ?: System.getenv("USER")
+                    password = localProperties['PUBLISH_TOKEN'] ?: System.getenv("PUBLISH_TOKEN")
                 }
             }
         }
