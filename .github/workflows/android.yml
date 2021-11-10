@@ -34,6 +34,12 @@ jobs:
           name: bc_verifier_dev.apk
           path: app/build/outputs/apk/dev/debug/app-dev-debug.apk
 
+      - name : upload stage apk
+        uses: actions/upload-artifact@v1
+        with:
+          name: bc_verifier_stage.apk
+          path: app/build/outputs/apk/stage/debug/app-stage-debug.apk
+
       - name: upload prod apk
         uses: actions/upload-artifact@v1
         with:

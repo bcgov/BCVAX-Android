@@ -24,7 +24,7 @@ class BcCardVerifier(
                 SHCDecoderException.MESSAGE_SIGNATURE_KEY_NOT_FOUND
             )
 
-        if (!shcDecoder.validateSignature(jwks, shcUri)) {
+        if (!shcDecoder.validateSignature(jwks)) {
             throw SHCDecoderException(
                 SHCDecoderException.ID_INVALID_SIGNATURE_KEY,
                 SHCDecoderException.MESSAGE_INVALID_SIGNATURE_KEY
@@ -36,6 +36,6 @@ class BcCardVerifier(
             SHCDecoderException.MESSAGE_SIGNATURE_KEY_NOT_FOUND
         )
 
-        return shcDecoder.determineImmunizationStatus(shcUri, ruleSet)
+        return shcDecoder.determineImmunizationStatus(ruleSet)
     }
 }

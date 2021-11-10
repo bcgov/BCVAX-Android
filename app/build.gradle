@@ -14,8 +14,8 @@ android {
         applicationId "ca.bc.gov.vaxcheck"
         minSdk 27
         targetSdk 31
-        versionCode 19
-        versionName "1.0.3"
+        versionCode 20
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,6 +33,11 @@ android {
         dev{
             dimension "version"
             versionNameSuffix "-dev"
+        }
+
+        stage{
+            dimension "version"
+            versionNameSuffix "-stage"
         }
 
         prod {
@@ -92,6 +97,7 @@ dependencies {
 //    implementation project(path: ':shcDecoder')
     
     devImplementation "ca.bc.gov:shcdecoder-dev:$versions.shcdecoder"
+    stageImplementation "ca.bc.gov:shcdecoder-stage:$versions.shcdecoder"
     prodImplementation "ca.bc.gov:shcdecoder:$versions.shcdecoder"
 
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
