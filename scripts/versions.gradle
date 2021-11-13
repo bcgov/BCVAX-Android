@@ -41,6 +41,8 @@ versions.junit = "4.13.2"
 versions.ext_junit = "1.1.3"
 versions.espresso = "3.4.0"
 versions.runner = "1.2.0"
+versions.android_x_test="1.4.0"
+versions.mockito="4.1.0"
 
 
 ext.versions = versions

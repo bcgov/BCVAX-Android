@@ -33,15 +33,21 @@ android {
         dev{
             dimension "version"
             versionNameSuffix "-dev"
+            resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://ds9mwekyyprcy.cloudfront.net/rules.json"
         }
 
         stage{
             dimension "version"
             versionNameSuffix "-stage"
+            resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/Covid19Proof/.well-known/rules.json"
         }
 
         prod {
             dimension "version"
+            resValue "string", "issuer_url", "https://smarthealthcard.phsa.ca/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://smarthealthcard.phsa.ca/v1/Covid19Proof/.well-known/rules.json"
         }
     }
 
@@ -92,13 +98,16 @@ dependencies {
     //PLAY CORE
     implementation 'com.google.android.play:core:1.10.2'
 
+    //GSOn
+    implementation "com.google.code.gson:gson:$versions.gson"
+
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
-//    implementation project(path: ':shcDecoder')
+    implementation project(path: ':shcDecoder')
     
-    devImplementation "ca.bc.gov:shcdecoder-dev:$versions.shcdecoder"
+    /*devImplementation "ca.bc.gov:shcdecoder-dev:$versions.shcdecoder"
     stageImplementation "ca.bc.gov:shcdecoder-stage:$versions.shcdecoder"
-    prodImplementation "ca.bc.gov:shcdecoder:$versions.shcdecoder"
+    prodImplementation "ca.bc.gov:shcdecoder:$versions.shcdecoder"*/
 
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 

@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 /**
- * [DataStoreRepo]
+ * [PreferenceRepository]
  *
- * @author amit metri
+ * @author Pinakin Kansara
  */
 private val Context.dataStore by preferencesDataStore("shc_decoder")
 
@@ -22,11 +22,11 @@ class PreferenceRepository(
         val CACHED_TIME_STAMP = longPreferencesKey("CACHED_TIME_STAMP")
     }
 
-    val cachedTimeStamp: Flow<Long> = context.dataStore.data.map { preference ->
+    val timeStamp: Flow<Long> = context.dataStore.data.map { preference ->
         preference[CACHED_TIME_STAMP] ?: 0
     }
 
-    suspend fun setCachedTimeStamp(timeStamp: Long) = context.dataStore.edit { preference ->
+    suspend fun setTimeStamp(timeStamp: Long) = context.dataStore.edit { preference ->
         preference[CACHED_TIME_STAMP] = timeStamp
     }
 }
