@@ -26,6 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 class SHCVerifierImpl(
     val context: Context,
@@ -94,6 +95,8 @@ class SHCVerifierImpl(
         var mrnType = 0
         var nrvvType = 0
         var winacType = 0
+        var minInterval = 0
+        var lastVaxDate: Date? = null
 
         entries
             .filter { it.resource.resourceType.contains(IMMUNIZATION) }
@@ -105,28 +108,36 @@ class SHCVerifierImpl(
                     vaxCode?.toInt() == vaccineRule.cvxCode
                 }
 
-                when (ruleSet?.type) {
-                    1 -> {
-                        mrnType += ruleSet.ru
-                    }
+                val hasNumberOfDasElapsedSinceLastDose = intervalPassed(lastVaxDate, minInterval)
 
-                    2 -> {
-                        nrvvType += ruleSet.ru
-                    }
+                if (hasNumberOfDasElapsedSinceLastDose) {
+                    when (ruleSet?.type) {
+                        1 -> {
+                            mrnType += ruleSet.ru
+                        }
 
-                    3 -> {
-                        winacType += ruleSet.ru
+                        2 -> {
+                            nrvvType += ruleSet.ru
+                        }
+
+                        3 -> {
+                            winacType += ruleSet.ru
+                        }
                     }
                 }
-
                 val vaxDate = entry.resource.occurrenceDateTime?.toDate()
+                lastVaxDate = vaxDate
+                minInterval = ruleSet?.minDays ?: 0
                 val enoughDoses = mrnType >= rule.ruRequired
                     || nrvvType >= rule.ruRequired
                     || winacType >= rule.ruRequired
                 val enoughMixedDoses = rule.mixTypesAllowed
                     && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
                 if (enoughDoses || enoughMixedDoses) {
-                    return if (intervalPassed(vaxDate, rule)) {
+                    return if (rule.intervalRequired && intervalPassed(
+                            vaxDate, rule.daysSinceLastInterval
+                        )
+                    ) {
                         ImmunizationStatus.FULLY_IMMUNIZED
                     } else {
                         ImmunizationStatus.PARTIALLY_IMMUNIZED
@@ -141,15 +152,13 @@ class SHCVerifierImpl(
         }
     }
 
-    private fun intervalPassed(date: Date?, rule: Rule): Boolean {
-        return if (!rule.intervalRequired) {
-            true
-        } else {
-            val calendar = Calendar.getInstance()
-            calendar.time = date
-            calendar.add(Calendar.DAY_OF_YEAR, rule.daysSinceLastInterval)
-            return (Calendar.getInstance().timeInMillis >= calendar.timeInMillis)
+    private fun intervalPassed(date: Date?, daysSinceLastInterval: Int): Boolean {
+        val calendar = Calendar.getInstance()
+
+        date?.time?.let {
+            calendar.timeInMillis = it + TimeUnit.DAYS.toMillis(daysSinceLastInterval.toLong())
         }
+        return (Calendar.getInstance().timeInMillis >= calendar.timeInMillis)
     }
 
     private fun getName(entries: List<Entry>): Pair<String, String?> {
