@@ -10,7 +10,7 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
+import java.util.Calendar
 
 @RunWith(AndroidJUnit4::class)
 class PreferenceRepositoryTest {

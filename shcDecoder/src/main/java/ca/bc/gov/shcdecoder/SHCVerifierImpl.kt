@@ -24,7 +24,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class SHCVerifierImpl(
     val context: Context,
@@ -120,10 +121,10 @@ class SHCVerifierImpl(
 
                 val vaxDate = entry.resource.occurrenceDateTime?.toDate()
                 val enoughDoses = mrnType >= rule.ruRequired
-                        || nrvvType >= rule.ruRequired
-                        || winacType >= rule.ruRequired
+                    || nrvvType >= rule.ruRequired
+                    || winacType >= rule.ruRequired
                 val enoughMixedDoses = rule.mixTypesAllowed
-                        && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
+                    && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
                 if (enoughDoses || enoughMixedDoses) {
                     return if (intervalPassed(vaxDate, rule)) {
                         ImmunizationStatus.FULLY_IMMUNIZED

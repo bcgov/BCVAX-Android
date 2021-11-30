@@ -104,7 +104,7 @@ dependencies {
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     implementation project(path: ':shcDecoder')
-    
+
     /*devImplementation "ca.bc.gov:shcdecoder-dev:$versions.shcdecoder"
     stageImplementation "ca.bc.gov:shcdecoder-stage:$versions.shcdecoder"
     prodImplementation "ca.bc.gov:shcdecoder:$versions.shcdecoder"*/
