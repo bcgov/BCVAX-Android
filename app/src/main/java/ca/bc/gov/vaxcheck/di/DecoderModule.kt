@@ -9,6 +9,7 @@ import ca.bc.gov.shcdecoder.model.Jwks
 import ca.bc.gov.shcdecoder.model.Rule
 import ca.bc.gov.shcdecoder.model.TrustedIssuersResponse
 import ca.bc.gov.shcdecoder.model.ValidationRuleResponse
+import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
 import com.google.gson.Gson
 import dagger.Module
@@ -62,8 +63,8 @@ class DecoderModule {
         rules: List<Rule>
     ) =
         SHCConfig(
-            " ",
-            " ",
+            context.getString(R.string.issuer_url),
+            context.getString(R.string.rules_url),
             defaultJWKSKeys,
             rules
         )
