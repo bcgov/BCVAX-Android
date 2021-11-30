@@ -4,7 +4,6 @@ import java.security.interfaces.ECPublicKey
 
 interface JWKSValidator {
 
-
     suspend fun validate(
         key: ECPublicKey,
         unSignedJWKSPayload: String,

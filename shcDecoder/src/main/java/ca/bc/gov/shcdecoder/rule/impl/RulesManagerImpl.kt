@@ -31,7 +31,7 @@ class RulesManagerImpl(
                 }
             }
             return ruleSet ?: getDefaultRule(iss)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             return getDefaultRule(iss)
         }
     }

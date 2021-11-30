@@ -128,11 +128,11 @@ class SHCVerifierImpl(
                 val vaxDate = entry.resource.occurrenceDateTime?.toDate()
                 lastVaxDate = vaxDate
                 minInterval = ruleSet?.minDays ?: 0
-                val enoughDoses = mrnType >= rule.ruRequired
-                    || nrvvType >= rule.ruRequired
-                    || winacType >= rule.ruRequired
-                val enoughMixedDoses = rule.mixTypesAllowed
-                    && (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
+                val enoughDoses = mrnType >= rule.ruRequired ||
+                    nrvvType >= rule.ruRequired ||
+                    winacType >= rule.ruRequired
+                val enoughMixedDoses = rule.mixTypesAllowed &&
+                    (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
                 if (enoughDoses || enoughMixedDoses) {
                     return if (rule.intervalRequired && intervalPassed(
                             vaxDate, rule.daysSinceLastInterval

@@ -28,7 +28,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DecoderModule {
 
-
     @Provides
     fun providesDefaultRule(@ApplicationContext context: Context): List<Rule> {
         val jsonString = context.readJsonFromAsset("ds9mwekyyprcy.cloudfront.net~rules.json")

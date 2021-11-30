@@ -1,7 +1,5 @@
 package ca.bc.gov.shcdecoder.model
 
-
-
 /**
  * [Patient]
  *

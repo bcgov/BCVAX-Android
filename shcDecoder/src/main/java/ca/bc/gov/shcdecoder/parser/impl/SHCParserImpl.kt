@@ -6,7 +6,7 @@ import ca.bc.gov.shcdecoder.model.SHCHeader
 import ca.bc.gov.shcdecoder.model.SHCPayload
 import ca.bc.gov.shcdecoder.parser.SHCParser
 import com.google.gson.Gson
-import java.util.*
+import java.util.Base64
 import java.util.zip.Inflater
 
 class SHCParserImpl : SHCParser {

@@ -5,8 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Date
 
 fun Context.hasNetwork(): Boolean {
     val connectivityManager =
@@ -14,7 +13,6 @@ fun Context.hasNetwork(): Boolean {
     val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
     return (activeNetwork != null && activeNetwork.isConnected)
 }
-
 
 /**
  * Helper function to read file from asset

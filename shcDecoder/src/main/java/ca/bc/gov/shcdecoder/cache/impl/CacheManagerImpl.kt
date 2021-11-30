@@ -6,7 +6,7 @@ import ca.bc.gov.shcdecoder.cache.CacheManager
 import ca.bc.gov.shcdecoder.cache.FileManager
 import ca.bc.gov.shcdecoder.repository.PreferenceRepository
 import kotlinx.coroutines.flow.first
-import java.util.*
+import java.util.Calendar
 
 internal class CacheManagerImpl(
     private val shcConfig: SHCConfig,
@@ -29,7 +29,7 @@ internal class CacheManagerImpl(
                     val keyUrl = if (issuer.iss.endsWith(SUFFIX_JWKS_JSON)) {
                         issuer.iss
                     } else {
-                        "${issuer.iss}${SUFFIX_JWKS_JSON}"
+                        "${issuer.iss}$SUFFIX_JWKS_JSON"
                     }
                     fileManager.downloadFile(keyUrl)
                 }

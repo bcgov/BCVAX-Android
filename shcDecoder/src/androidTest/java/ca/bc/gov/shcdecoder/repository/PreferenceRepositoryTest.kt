@@ -24,7 +24,6 @@ class PreferenceRepositoryTest {
         preferenceRepository = PreferenceRepository(context)
     }
 
-
     @Test
     fun setAndGetTimeStampSuccess() = runBlocking {
 

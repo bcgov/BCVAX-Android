@@ -1,6 +1,5 @@
 package ca.bc.gov.shcdecoder.model
 
-
 /**
  * [Resource]
  *

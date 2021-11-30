@@ -56,7 +56,6 @@ class FileManagerImpl(
         } catch (e: Exception) {
             Log.e(TAG, e.message, e)
         }
-
     }
 
     override suspend fun getIssuers(url: String): List<Issuer> {

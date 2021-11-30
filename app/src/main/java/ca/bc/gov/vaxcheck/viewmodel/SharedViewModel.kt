@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import ca.bc.gov.shcdecoder.model.ImmunizationRecord
 import ca.bc.gov.vaxcheck.data.local.DataStoreRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  *[SharedViewModel]

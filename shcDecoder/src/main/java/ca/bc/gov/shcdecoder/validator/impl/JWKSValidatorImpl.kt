@@ -8,7 +8,6 @@ import java.security.interfaces.ECPublicKey
 
 class JWKSValidatorImpl : JWKSValidator {
 
-
     override suspend fun validate(
         key: ECPublicKey,
         unSignedJWKSPayload: String,
@@ -16,6 +15,6 @@ class JWKSValidatorImpl : JWKSValidator {
     ): Boolean {
         val validator =
             DefaultJwtSignatureValidator(SignatureAlgorithm.ES256, key, Decoders.BASE64URL)
-        return validator.isValid(unSignedJWKSPayload,signature)
+        return validator.isValid(unSignedJWKSPayload, signature)
     }
 }
