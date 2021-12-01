@@ -135,10 +135,12 @@ class SHCVerifierImpl(
                     (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
                 if (enoughDoses || enoughMixedDoses) {
                     return if (!rule.intervalRequired ||
-                        (rule.intervalRequired &&
-                            intervalPassed(
-                                vaxDate, rule.daysSinceLastInterval
-                            ))
+                        (
+                            rule.intervalRequired &&
+                                intervalPassed(
+                                        vaxDate, rule.daysSinceLastInterval
+                                    )
+                            )
                     ) {
                         ImmunizationStatus.FULLY_IMMUNIZED
                     } else {
