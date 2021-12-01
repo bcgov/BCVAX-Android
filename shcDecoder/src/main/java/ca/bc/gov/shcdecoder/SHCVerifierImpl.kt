@@ -134,9 +134,11 @@ class SHCVerifierImpl(
                 val enoughMixedDoses = rule.mixTypesAllowed &&
                     (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
                 if (enoughDoses || enoughMixedDoses) {
-                    return if (rule.intervalRequired && intervalPassed(
-                            vaxDate, rule.daysSinceLastInterval
-                        )
+                    return if (!rule.intervalRequired ||
+                        (rule.intervalRequired &&
+                            intervalPassed(
+                                vaxDate, rule.daysSinceLastInterval
+                            ))
                     ) {
                         ImmunizationStatus.FULLY_IMMUNIZED
                     } else {
