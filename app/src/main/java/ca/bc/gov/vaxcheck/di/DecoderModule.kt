@@ -38,22 +38,28 @@ class DecoderModule {
 
     @Provides
     fun providesDefaultJWKSKeys(@ApplicationContext context: Context): List<DefaultJWKSKeys> {
+
         val issuersJsonString =
             context.readJsonFromAsset("phsasmarthealthcard-dev.azurewebsites.net~v1~trusted~.well-known~issuers.json")
         val issuersResponse = Gson().fromJson(issuersJsonString, TrustedIssuersResponse::class.java)
-        val defaultKeys = issuersResponse.trustedIssuers.map { issuer ->
+        val defaultKeys = mutableListOf<DefaultJWKSKeys>()
+        issuersResponse.trustedIssuers.forEach { issuer ->
             val url = if (issuer.iss.endsWith("/.well-known/jwks.json")) {
                 issuer.iss
             } else {
                 "${issuer.iss}/.well-known/jwks.json"
             }
 
-            val fileName = url.removePrefix("https://").replace("/", "~")
-            val jwksKeysJson = context.readJsonFromAsset(fileName)
-            val jwks = Gson().fromJson(jwksKeysJson, Jwks::class.java)
-            return@map DefaultJWKSKeys(issuer.iss, jwks.keys)
+            try {
+                val fileName = url.removePrefix("https://").replace("/", "~")
+                val jwksKeysJson = context.readJsonFromAsset(fileName)
+                val jwks = Gson().fromJson(jwksKeysJson, Jwks::class.java)
+                defaultKeys.add(DefaultJWKSKeys(issuer.iss, jwks.keys))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-        return defaultKeys
+        return defaultKeys.toList()
     }
 
     @Provides
