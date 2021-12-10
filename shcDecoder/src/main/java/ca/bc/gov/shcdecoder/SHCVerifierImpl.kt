@@ -17,6 +17,7 @@ import ca.bc.gov.shcdecoder.parser.impl.SHCParserImpl
 import ca.bc.gov.shcdecoder.repository.PreferenceRepository
 import ca.bc.gov.shcdecoder.rule.RulesManager
 import ca.bc.gov.shcdecoder.rule.impl.RulesManagerImpl
+import ca.bc.gov.shcdecoder.utils.addDays
 import ca.bc.gov.shcdecoder.utils.toDate
 import ca.bc.gov.shcdecoder.validator.JWKSValidator
 import ca.bc.gov.shcdecoder.validator.impl.JWKSValidatorImpl
@@ -24,9 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 class SHCVerifierImpl(
     val context: Context,
@@ -108,9 +107,13 @@ class SHCVerifierImpl(
                     vaxCode?.toInt() == vaccineRule.cvxCode
                 }
 
-                val hasNumberOfDasElapsedSinceLastDose = intervalPassed(lastVaxDate, minInterval)
+                val hasMinDaysPassed = hasPassedMinDaysRequiredBetweenDoses(
+                    entry.resource.occurrenceDateTime?.toDate(),
+                    lastVaxDate,
+                    minInterval
+                )
 
-                if (hasNumberOfDasElapsedSinceLastDose) {
+                if (hasMinDaysPassed) {
                     when (ruleSet?.type) {
                         1 -> {
                             mrnType += ruleSet.ru
@@ -138,8 +141,8 @@ class SHCVerifierImpl(
                         (
                             rule.intervalRequired &&
                                 intervalPassed(
-                                        vaxDate, rule.daysSinceLastInterval
-                                    )
+                                    vaxDate, rule.daysSinceLastInterval
+                                )
                             )
                     ) {
                         ImmunizationStatus.FULLY_IMMUNIZED
@@ -156,13 +159,24 @@ class SHCVerifierImpl(
         }
     }
 
-    private fun intervalPassed(date: Date?, daysSinceLastInterval: Int): Boolean {
-        val calendar = Calendar.getInstance()
+    private fun hasPassedMinDaysRequiredBetweenDoses(
+        currentDoseTime: Date?,
+        lastDoseTime: Date?,
+        daysSinceLastInterval: Int
+    ): Boolean {
 
-        date?.time?.let {
-            calendar.timeInMillis = it + TimeUnit.DAYS.toMillis(daysSinceLastInterval.toLong())
+        if (lastDoseTime == null) {
+            return true
         }
-        return (Calendar.getInstance().timeInMillis >= calendar.timeInMillis)
+
+        val expectedDate = lastDoseTime.addDays(daysSinceLastInterval)
+
+        return currentDoseTime?.after(expectedDate) == true
+    }
+
+    private fun intervalPassed(date: Date?, daysSinceLastInterval: Int): Boolean {
+        val expectedDate = date?.addDays(daysSinceLastInterval)
+        return (Date().after(expectedDate))
     }
 
     private fun getName(entries: List<Entry>): Pair<String, String?> {

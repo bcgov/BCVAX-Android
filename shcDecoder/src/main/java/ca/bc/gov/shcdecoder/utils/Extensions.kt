@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 
 fun Context.hasNetwork(): Boolean {
@@ -28,4 +29,11 @@ fun String.toDate(): Date? {
     } catch (e: ParseException) {
         null
     }
+}
+
+fun Date.addDays(day: Int): Date? {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+    calendar.add(Calendar.DATE, day)
+    return Date(calendar.timeInMillis)
 }
