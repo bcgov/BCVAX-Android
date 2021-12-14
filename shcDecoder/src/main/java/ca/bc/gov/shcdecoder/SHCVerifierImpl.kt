@@ -45,6 +45,7 @@ class SHCVerifierImpl(
 
     companion object {
         private const val TAG = "SHCVerifierImpl"
+        private const val CONDITION = "Condition"
         const val IMMUNIZATION = "Immunization"
         const val PATIENT = "Patient"
     }
@@ -96,6 +97,22 @@ class SHCVerifierImpl(
         var winacType = 0
         var minInterval = 0
         var lastVaxDate: Date? = null
+
+        entries
+            .filter { it.resource.resourceType.contains(CONDITION) }
+            .sortedBy { it.resource.onsetDateTime }
+            .forEach {
+                it.resource.onsetDateTime?.toDate()?.let { onsetDate ->
+                    it.resource.abatementDateTime?.toDate()?.let { abatementDate ->
+                        val currentTime = Date()
+                        val isDateValid = currentTime.time in onsetDate.time .. abatementDate.time
+
+                        if (isDateValid) {
+                            return ImmunizationStatus.FULLY_IMMUNIZED
+                        }
+                    }
+                }
+            }
 
         entries
             .filter { it.resource.resourceType.contains(IMMUNIZATION) }
