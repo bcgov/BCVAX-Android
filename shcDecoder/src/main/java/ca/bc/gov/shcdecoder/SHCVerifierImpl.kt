@@ -47,6 +47,9 @@ class SHCVerifierImpl(
         private const val TAG = "SHCVerifierImpl"
         const val IMMUNIZATION = "Immunization"
         const val PATIENT = "Patient"
+
+        private const val CONDITION = "Condition"
+        private const val YUKON_EXEMPT_SYSTEM = "https://pvc.service.yukon.ca/v1/verifier/deferrals.json"
     }
 
     init {
@@ -96,6 +99,21 @@ class SHCVerifierImpl(
         var winacType = 0
         var minInterval = 0
         var lastVaxDate: Date? = null
+
+        entries
+            .filter { it.resource.resourceType.contains(CONDITION) }
+            .forEach { entry ->
+                val onsetDateMillis = entry.resource.onsetDateTime?.toDate()?.time ?: Long.MIN_VALUE
+                val abatementDateMillis = entry.resource.abatementDateTime?.toDate()?.time ?: Long.MAX_VALUE
+
+                val isDateValid = Date().time in onsetDateMillis .. abatementDateMillis
+
+                val isValidSystem = entry.resource.code?.coding?.any{ coding -> coding.system == YUKON_EXEMPT_SYSTEM} ?: false
+
+                if (isDateValid && isValidSystem) {
+                    return ImmunizationStatus.FULLY_IMMUNIZED
+                }
+            }
 
         entries
             .filter { it.resource.resourceType.contains(IMMUNIZATION) }
