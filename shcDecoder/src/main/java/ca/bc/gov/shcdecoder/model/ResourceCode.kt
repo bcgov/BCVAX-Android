@@ -1,11 +1,11 @@
 package ca.bc.gov.shcdecoder.model
 
 /**
- * [VaccineCode]
+ * [ResourceCode]
  *
  * @author Pinakin Kansara
  */
 
-data class VaccineCode(
+data class ResourceCode(
     val coding: List<Coding>
 )

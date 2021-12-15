@@ -1,5 +1,7 @@
 package ca.bc.gov.shcdecoder.model
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * [Resource]
  *
@@ -11,7 +13,8 @@ data class Resource(
     val name: List<Name>? = null,
     val birthDate: String? = null,
     val status: String? = null,
-    val vaccineCode: VaccineCode? = null,
+    val vaccineCode: ResourceCode? = null,
+    val code: ResourceCode? = null,
     val patient: Patient? = null,
     val occurrenceDateTime: String? = null,
     val performer: List<Performer>? = null,

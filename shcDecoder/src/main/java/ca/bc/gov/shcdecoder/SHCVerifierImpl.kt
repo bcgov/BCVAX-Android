@@ -25,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.time.Instant
 import java.util.Date
 
 class SHCVerifierImpl(
@@ -45,9 +46,11 @@ class SHCVerifierImpl(
 
     companion object {
         private const val TAG = "SHCVerifierImpl"
-        private const val CONDITION = "Condition"
         const val IMMUNIZATION = "Immunization"
         const val PATIENT = "Patient"
+
+        private const val CONDITION = "Condition"
+        private const val YUKON_EXEMPT_SYSTEM = "https://pvc.service.yukon.ca/v1/verifier/deferrals.json"
     }
 
     init {
@@ -100,17 +103,16 @@ class SHCVerifierImpl(
 
         entries
             .filter { it.resource.resourceType.contains(CONDITION) }
-            .sortedBy { it.resource.onsetDateTime }
-            .forEach {
-                it.resource.onsetDateTime?.toDate()?.let { onsetDate ->
-                    it.resource.abatementDateTime?.toDate()?.let { abatementDate ->
-                        val currentTime = Date()
-                        val isDateValid = currentTime.time in onsetDate.time .. abatementDate.time
+            .forEach { entry ->
+                val onsetDateMillis = entry.resource.onsetDateTime?.toDate()?.time ?: Long.MIN_VALUE
+                val abatementDateMillis = entry.resource.abatementDateTime?.toDate()?.time ?: Long.MAX_VALUE
 
-                        if (isDateValid) {
-                            return ImmunizationStatus.FULLY_IMMUNIZED
-                        }
-                    }
+                val isDateValid = Date().time in onsetDateMillis .. abatementDateMillis
+
+                val isValidSystem = entry.resource.code?.coding?.any{ coding -> coding.system == YUKON_EXEMPT_SYSTEM} ?: false
+
+                if (isDateValid && isValidSystem) {
+                    return ImmunizationStatus.FULLY_IMMUNIZED
                 }
             }
 
