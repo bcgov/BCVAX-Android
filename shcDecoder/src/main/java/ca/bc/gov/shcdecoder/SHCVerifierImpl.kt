@@ -49,7 +49,6 @@ class SHCVerifierImpl(
         const val PATIENT = "Patient"
 
         private const val CONDITION = "Condition"
-        private const val YUKON_EXEMPT_SYSTEM = "https://pvc.service.yukon.ca/v1/verifier/deferrals.json"
     }
 
     init {
@@ -108,7 +107,7 @@ class SHCVerifierImpl(
 
                 val isDateValid = Date().time in onsetDateMillis .. abatementDateMillis
 
-                val isValidSystem = entry.resource.code?.coding?.any{ coding -> coding.system == YUKON_EXEMPT_SYSTEM} ?: false
+                val isValidSystem = entry.resource.code?.coding?.any{ coding -> coding.system.contains(config.deferralsDomain)} ?: false
 
                 if (isDateValid && isValidSystem) {
                     return ImmunizationStatus.FULLY_IMMUNIZED

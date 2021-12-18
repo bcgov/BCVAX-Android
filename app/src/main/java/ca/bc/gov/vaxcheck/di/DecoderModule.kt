@@ -9,6 +9,7 @@ import ca.bc.gov.shcdecoder.model.Jwks
 import ca.bc.gov.shcdecoder.model.Rule
 import ca.bc.gov.shcdecoder.model.TrustedIssuersResponse
 import ca.bc.gov.shcdecoder.model.ValidationRuleResponse
+import ca.bc.gov.vaxcheck.BuildConfig
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.utils.readJsonFromAsset
 import com.google.gson.Gson
@@ -71,8 +72,10 @@ class DecoderModule {
         SHCConfig(
             context.getString(R.string.issuer_url),
             context.getString(R.string.rules_url),
+            context.getString(R.string.deferrals_domain),
             defaultJWKSKeys,
-            rules
+            rules,
+            if (BuildConfig.FLAVOR == "prod") PROD_EXPIRY_TIME else TEST_EXPIRY_TIME
         )
 
     @Provides
@@ -84,4 +87,9 @@ class DecoderModule {
         context,
         shcConfig
     )
+
+    companion object {
+        private const val PROD_EXPIRY_TIME = 21600000L  // 6 Hours
+        private const val TEST_EXPIRY_TIME = 120000L    // 2 Minutes
+    }
 }
