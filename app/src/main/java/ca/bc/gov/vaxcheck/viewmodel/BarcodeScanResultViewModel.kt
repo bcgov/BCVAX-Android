@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import ca.bc.gov.shcdecoder.SHCVerifier
 import ca.bc.gov.shcdecoder.model.ImmunizationRecord
 import ca.bc.gov.shcdecoder.model.ImmunizationStatus
+import ca.bc.gov.shcdecoder.model.SHCData
+import ca.bc.gov.shcdecoder.model.VaccinationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,8 +29,8 @@ class BarcodeScanResultViewModel @Inject constructor(
     private val bcCardVerifier: SHCVerifier
 ) : ViewModel() {
 
-    private val _status = MutableSharedFlow<ImmunizationRecord>()
-    val status: SharedFlow<ImmunizationRecord> = _status.shareIn(
+    private val _status = MutableSharedFlow<Pair<VaccinationStatus,SHCData?>>()
+    val status: SharedFlow<Pair<VaccinationStatus,SHCData?>> = _status.shareIn(
         scope = viewModelScope,
         replay = 0,
         started = SharingStarted.WhileSubscribed(5000)
@@ -39,16 +41,12 @@ class BarcodeScanResultViewModel @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 if (bcCardVerifier.hasValidSignature(shcUri)) {
-                    _status.emit(bcCardVerifier.getImmunizationRecord(shcUri))
+                    _status.emit(bcCardVerifier.getStatus(shcUri))
                 }
             } catch (e: Exception) {
                 Log.e("Error", e.message.toString())
                 _status.emit(
-                    ImmunizationRecord(
-                        "record.first()",
-                        "record.first().second",
-                        ImmunizationStatus.INVALID_QR_CODE
-                    )
+                    Pair(VaccinationStatus.INVALID,null)
                 )
             }
         }

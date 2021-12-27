@@ -1,11 +1,11 @@
 package ca.bc.gov.shcdecoder.model
 
 /**
- * [Patient]
+ * [Reference]
  *
  * @author Pinakin Kansara
  */
 
-data class Patient(
+data class Reference(
     val reference: String
 )
