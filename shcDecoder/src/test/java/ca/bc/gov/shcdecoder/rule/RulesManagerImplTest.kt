@@ -3,6 +3,7 @@ package ca.bc.gov.shcdecoder.rule
 import ca.bc.gov.shcdecoder.SHCConfig
 import ca.bc.gov.shcdecoder.SUFFIX_ISSUERS
 import ca.bc.gov.shcdecoder.TEST_ISS
+import ca.bc.gov.shcdecoder.TEST_ISS_WITH_SUFFIX
 import ca.bc.gov.shcdecoder.cache.FileManager
 import ca.bc.gov.shcdecoder.config
 import ca.bc.gov.shcdecoder.defaultRule
@@ -53,7 +54,7 @@ class RulesManagerImplTest {
     @Test
     fun onGetRule_exceptionIsThrew_returnsDefaultRuleSet(): Unit = runBlocking {
         val resultRule = sut.getRule(TEST_ISS)
-        assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS)
+        assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS_WITH_SUFFIX)
     }
 
     @Test

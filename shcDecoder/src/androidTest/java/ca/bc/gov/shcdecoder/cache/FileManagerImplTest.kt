@@ -1,18 +1,15 @@
 package ca.bc.gov.shcdecoder.cache
 
 import android.content.Context
-import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ca.bc.gov.shcdecoder.cache.impl.FileManagerImpl
-import io.mockk.mockkStatic
 import org.junit.Assert.*
-
-import junit.framework.TestCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.FileNotFoundException
 
 @RunWith(AndroidJUnit4::class)
 class FileManagerImplTest {
@@ -47,9 +44,10 @@ class FileManagerImplTest {
         assertTrue(issuers.isNotEmpty())
     }
 
-    @Test
-    fun onDownloadFile_onError_logsException(): Unit = runBlocking {
+    @Test(expected = FileNotFoundException::class)
+    fun onDownloadFile_onError_throwsException(): Unit = runBlocking {
         sut.downloadFile("non_existent_filename")
+        sut.getIssuers("non_existent_filename")
     }
 
     companion object {
