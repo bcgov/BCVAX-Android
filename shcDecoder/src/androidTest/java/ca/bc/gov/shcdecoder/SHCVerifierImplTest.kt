@@ -68,9 +68,7 @@ class SHCVerifierImplTest {
     @Test
     fun getImmunizationRecord_userNotVaccinated_showsInvalidQrCode(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_NO_VACCINES_SHC_URI)
-        Assert.assertEquals(result, testRecord.copy(
-            status = ImmunizationStatus.INVALID_QR_CODE
-        ))
+        Assert.assertEquals(result, testRecord)
     }
 
     @Test

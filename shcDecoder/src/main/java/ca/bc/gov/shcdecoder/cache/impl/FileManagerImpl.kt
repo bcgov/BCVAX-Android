@@ -15,7 +15,7 @@ import java.io.FileOutputStream
 import java.net.URL
 
 class FileManagerImpl(
-    private val context: Context
+    context: Context
 ) : FileManager {
 
     private val downloadDir: File = File(context.filesDir, "Decoder")

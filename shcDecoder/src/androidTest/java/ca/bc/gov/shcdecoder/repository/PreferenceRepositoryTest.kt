@@ -3,6 +3,7 @@ package ca.bc.gov.shcdecoder.repository
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import ca.bc.gov.shcdecoder.repository.impl.PreferenceRepositoryImpl
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -21,7 +22,7 @@ class PreferenceRepositoryTest {
 
     @Before
     fun setup() {
-        preferenceRepository = PreferenceRepository(context)
+        preferenceRepository = PreferenceRepositoryImpl(context)
     }
 
     @Test
