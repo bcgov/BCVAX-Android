@@ -18,19 +18,19 @@ class JWKSValidatorImplTest : TestCase() {
     private var sut: JWKSValidator = JWKSValidatorImpl()
 
     @Test
-    fun onValidate_givenValidData_returnsTrue(): Unit = runBlocking {
+    fun `given on validate when given valid data then returns true`(): Unit = runBlocking {
         val result = sut.validate(derivePublicKey(defaultKey), TEST_UNSIGNED_PAYLOAD, TEST_JWK_SIGNATURE)
         Assert.assertEquals(true, result)
     }
 
     @Test
-    fun onValidate_givenInvalidPayload_returnsFalse(): Unit = runBlocking {
+    fun `given on validate when invalid payload then returns false`(): Unit = runBlocking {
         val result = sut.validate(derivePublicKey(defaultKey), "", TEST_JWK_SIGNATURE)
         Assert.assertEquals(false, result)
     }
 
     @Test(expected = Exception::class)
-    fun onValidate_givenInvalidSignature_throwsException(): Unit = runBlocking {
+    fun `given on validate when invalid signature then throws exception`(): Unit = runBlocking {
         val result = sut.validate(derivePublicKey(defaultKey), TEST_UNSIGNED_PAYLOAD, "")
         Assert.assertEquals(false, result)
     }

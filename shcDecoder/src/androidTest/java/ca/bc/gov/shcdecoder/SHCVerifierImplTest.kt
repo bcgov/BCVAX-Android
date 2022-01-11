@@ -39,18 +39,18 @@ class SHCVerifierImplTest {
     }
 
     @Test
-    fun hasValidSignatureCalled_signatureIsValid_returnsTrue(): Unit = runBlocking {
+    fun givenValidSignatureCalled_whenSignatureIsValid_thenReturnsTrue(): Unit = runBlocking {
         val result = sut.hasValidSignature(VALID_FULLY_IMMUNIZED_SHC_URI)
         Assert.assertEquals(result, true)
     }
 
     @Test(expected = SHCDecoderException::class)
-    fun hasValidateSignatureCalled_signatureIsForged_throwsSHCDecoderException(): Unit = runBlocking {
+    fun givenHasValidateSignatureCalled_whenSignatureIsForged_thenThrowsSHCDecoderException(): Unit = runBlocking {
         sut.hasValidSignature(FORGED_SHC_URI)
     }
 
     @Test
-    fun getImmunizationRecord_userFullyVaccinated_showsFullyImmunized(): Unit = runBlocking {
+    fun givenGetImmunizationRecord_whenUserFullyVaccinated_thenShowsFullyImmunized(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_FULLY_IMMUNIZED_SHC_URI)
         Assert.assertEquals(result, testRecord.copy(
             status = ImmunizationStatus.FULLY_IMMUNIZED
@@ -58,7 +58,7 @@ class SHCVerifierImplTest {
     }
 
     @Test
-    fun getImmunizationRecord_userPartiallyVaccinated_showsPartiallyImmunized(): Unit = runBlocking {
+    fun givenGetImmunizationRecord_whenUserPartiallyVaccinated_thenShowsPartiallyImmunized(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_PARTIALLY_IMMUNIZED_SHC_URI)
         Assert.assertEquals(result, testRecord.copy(
             status = ImmunizationStatus.PARTIALLY_IMMUNIZED
@@ -66,13 +66,13 @@ class SHCVerifierImplTest {
     }
 
     @Test
-    fun getImmunizationRecord_userNotVaccinated_showsInvalidQrCode(): Unit = runBlocking {
+    fun givenGetImmunizationRecord_whenUserNotVaccinated_thenShowsInvalidQrCode(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_NO_VACCINES_SHC_URI)
         Assert.assertEquals(result, testRecord)
     }
 
     @Test
-    fun getImmunizationRecord_userHasExempt_showsFullyImmunized(): Unit = runBlocking {
+    fun givenGetImmunizationRecord_whenUserHasExempt_thenShowsFullyImmunized(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_EXEMPT_SHC_URI)
         Assert.assertEquals(result, testRecord.copy(
             status = ImmunizationStatus.FULLY_IMMUNIZED

@@ -47,7 +47,7 @@ class KeyManagerImplTest {
     }
 
     @Test
-    fun onGetPublicKey_givenCorrectData_returnsExpectedKey(): Unit = runBlocking {
+    fun `given get public key when data is correct then returns expected key`(): Unit = runBlocking {
         prepareFileManager()
         val resultKey = sut.getPublicKey(TEST_ISS, TEST_KID)
         val expectedKey = derivePublicKey(defaultKey)
@@ -57,7 +57,7 @@ class KeyManagerImplTest {
     }
 
     @Test
-    fun onGetPublicKey_givenCorrectDataAndTestIssWithSuffix_returnsExpectedKey(): Unit = runBlocking {
+    fun `given get public key when data is correct and issuers have suffix then returns expected key`(): Unit = runBlocking {
         prepareFileManager(issuer = TEST_ISS_WITH_SUFFIX)
         val resultKey = sut.getPublicKey(TEST_ISS_WITH_SUFFIX, TEST_KID)
         val expectedKey = derivePublicKey(defaultKey)
@@ -67,7 +67,7 @@ class KeyManagerImplTest {
     }
 
     @Test
-    fun onGetPublicKey_givenInvalidData_returnsDefaultKey(): Unit = runBlocking {
+    fun `given get public key when data is invalid then returns default key`(): Unit = runBlocking {
         prepareFileManager(issuer = "")
 
         val resultKey = sut.getPublicKey(TEST_ISS, TEST_KID)
@@ -78,7 +78,7 @@ class KeyManagerImplTest {
     }
 
     @Test
-    fun onGetPublicKey_ifExceptionIsThrew_returnsDefaultKey(): Unit = runBlocking {
+    fun `given get public key when exception is threw then returns default key`(): Unit = runBlocking {
         val resultKey = sut.getPublicKey(TEST_ISS, TEST_KID)
         val expectedKey = derivePublicKey(defaultKey)
 

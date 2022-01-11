@@ -48,14 +48,14 @@ class CacheManagerImplTest {
     }
 
     @Test
-    fun onFetch_cacheIsNotExpired_doNothing(): Unit = runBlocking {
+    fun `given fetch when cache is not expired then do nothing`(): Unit = runBlocking {
         prepareDependencies(isCacheExpired = false)
         sut.fetch()
         Mockito.verifyNoInteractions(fileManager)
     }
 
     @Test
-    fun onFetch_issuersIsCorrect_setTimeStampIsCalled(): Unit = runBlocking {
+    fun `given fetch when issuers are correct then time stamp is set and file downloaded`(): Unit = runBlocking {
         prepareDependencies()
         sut.fetch()
         verify(preferenceRepository).setTimeStamp(anyLong())
@@ -63,7 +63,7 @@ class CacheManagerImplTest {
     }
 
     @Test
-    fun onFetch_issuersIsCorrectAndHaveSuffix_setTimeStampIsCalled(): Unit = runBlocking {
+    fun `given fetch when issuers are correct and have defined suffix then time stamp is set and file downloaded`(): Unit = runBlocking {
         prepareDependencies()
         sut.fetch()
         verify(preferenceRepository).setTimeStamp(anyLong())

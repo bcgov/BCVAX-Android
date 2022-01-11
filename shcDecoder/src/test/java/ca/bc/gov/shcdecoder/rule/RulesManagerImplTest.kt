@@ -36,14 +36,14 @@ class RulesManagerImplTest {
     }
 
     @Test
-    fun onGetRule_ruleTargetWithIss_returnsCorrectRuleSet(): Unit = runBlocking {
+    fun `given get rule when rule target is issuer then returns correct rule set`(): Unit = runBlocking {
         prepareFileManager()
         val resultRule = sut.getRule(TEST_ISS)
         assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS)
     }
 
     @Test
-    fun onGetRule_ruleTargetWithIssuerSuffix_returnsCorrectRuleSet(): Unit = runBlocking {
+    fun `given get rule when rule target is issuer with suffix then returns correct rule set`(): Unit = runBlocking {
         val issuer = TEST_ISS.plus(SUFFIX_ISSUERS)
         prepareFileManager(ruleTarget = issuer)
         val resultRule = sut.getRule(TEST_ISS)
@@ -52,13 +52,13 @@ class RulesManagerImplTest {
     }
 
     @Test
-    fun onGetRule_exceptionIsThrew_returnsDefaultRuleSet(): Unit = runBlocking {
+    fun `given get rule when exception is threw then returns default ruleset`(): Unit = runBlocking {
         val resultRule = sut.getRule(TEST_ISS)
         assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS_WITH_SUFFIX)
     }
 
     @Test
-    fun onGetRule_exceptionIsThrewAndDefaultRuleHasIssuerSuffix_returnsDefaultRuleSet(): Unit = runBlocking {
+    fun `given get rule when exception is threw and default rule has issuer suffix then returns default ruleset`(): Unit = runBlocking {
         val issuer = TEST_ISS.plus(SUFFIX_ISSUERS)
         prepareSystemUnderTest(config = config.copy(
             defaultRules = listOf(

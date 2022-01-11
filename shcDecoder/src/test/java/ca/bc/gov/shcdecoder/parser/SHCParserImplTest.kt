@@ -18,29 +18,29 @@ class SHCParserImplTest : TestCase() {
     private val sut: SHCParser = SHCParserImpl()
 
     @Test
-    fun onGetUnSignedJWKSPayload_givenValidShcUri_returnsCorrectPayload(): Unit = runBlocking {
+    fun `given get unsigned jwks payload when shcuri is valid then returns correct payload`(): Unit = runBlocking {
         val result = sut.getUnSignedJWKSPayload(VALID_FULLY_IMMUNIZED_SHC_URI)
         Assert.assertEquals(result, TEST_UNSIGNED_PAYLOAD)
     }
 
     @Test(expected = SHCDecoderException::class)
-    fun onGetUnSignedJWKSPayload_givenInvalidShcUri_throwsException(): Unit = runBlocking {
+    fun `given get unsigned jwks payload when shcuri is invalid then throws exception`(): Unit = runBlocking {
         sut.getUnSignedJWKSPayload("")
     }
 
     @Test
-    fun onGetJWKSignature_givenValidShcUri_returnsCorrectSignature(): Unit = runBlocking {
+    fun `given get jwks signature when shcuri is valid then returns correct signature`(): Unit = runBlocking {
         val result = sut.getJWKSignature(VALID_FULLY_IMMUNIZED_SHC_URI)
         Assert.assertEquals(result, TEST_JWK_SIGNATURE)
     }
 
     @Test(expected = SHCDecoderException::class)
-    fun onGetJWKSignature_givenInvalidShcUri_throwsException(): Unit = runBlocking {
+    fun `given get jwks signature when shcuri is invalid then throws exception`(): Unit = runBlocking {
         sut.getJWKSignature("")
     }
 
     @Test
-    fun onParse_givenValidShcUri_returnsCorrectSignatureString (): Unit = runBlocking {
+    fun `given on parse when shc is valid then returns correct signature string` (): Unit = runBlocking {
         val result = sut.parse(VALID_FULLY_IMMUNIZED_SHC_URI)
         Assert.assertEquals(result.signature, TEST_JWK_SIGNATURE)
     }
