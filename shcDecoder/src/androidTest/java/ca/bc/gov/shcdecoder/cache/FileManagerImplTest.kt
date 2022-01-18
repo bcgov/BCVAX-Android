@@ -3,6 +3,9 @@ package ca.bc.gov.shcdecoder.cache
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import ca.bc.gov.shcdecoder.TEST_ISSUERS_URL
+import ca.bc.gov.shcdecoder.TEST_KEYS_URL
+import ca.bc.gov.shcdecoder.TEST_RULES_URL
 import ca.bc.gov.shcdecoder.cache.impl.FileManagerImpl
 import org.junit.Assert.*
 import kotlinx.coroutines.runBlocking
@@ -48,12 +51,6 @@ class FileManagerImplTest {
     fun givenDownloadFile_whenError_thenThrowsException(): Unit = runBlocking {
         sut.downloadFile("non_existent_filename")
         sut.getIssuers("non_existent_filename")
-    }
-
-    companion object {
-        private const val TEST_RULES_URL = "https://ds9mwekyyprcy.cloudfront.net/rules.json"
-        private const val TEST_KEYS_URL = "https://bcvaxcardgen.freshworks.club/.well-known/jwks.json"
-        private const val TEST_ISSUERS_URL = "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
     }
 
 }
