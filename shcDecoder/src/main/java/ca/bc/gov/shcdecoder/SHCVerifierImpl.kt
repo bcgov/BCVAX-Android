@@ -18,6 +18,7 @@ import ca.bc.gov.shcdecoder.repository.PreferenceRepository
 import ca.bc.gov.shcdecoder.rule.RulesManager
 import ca.bc.gov.shcdecoder.rule.impl.RulesManagerImpl
 import ca.bc.gov.shcdecoder.utils.addDays
+import ca.bc.gov.shcdecoder.utils.inclusiveAfter
 import ca.bc.gov.shcdecoder.utils.toDate
 import ca.bc.gov.shcdecoder.validator.JWKSValidator
 import ca.bc.gov.shcdecoder.validator.impl.JWKSValidatorImpl
@@ -188,7 +189,7 @@ class SHCVerifierImpl(
 
         val expectedDate = lastDoseTime.addDays(daysSinceLastInterval)
 
-        return currentDoseTime?.after(expectedDate) == true
+        return currentDoseTime?.inclusiveAfter(expectedDate) == true
     }
 
     private fun intervalPassed(date: Date?, daysSinceLastInterval: Int): Boolean {
