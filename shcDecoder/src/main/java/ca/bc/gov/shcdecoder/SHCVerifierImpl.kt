@@ -87,17 +87,28 @@ class SHCVerifierImpl(
                 SHCDecoderException.ID_INVALID_RUL_SET,
                 SHCDecoderException.MESSAGE_INVALID_RULE_SET
             )
-        val status = getImmunizationStatus(entries, rule)
+
+        val status = getImmunizationStatus(entries, shcData.payload.exp, rule)
 
         return ImmunizationRecord(name.first, name.second, status)
     }
 
-    private fun getImmunizationStatus(entries: List<Entry>, rule: Rule): ImmunizationStatus {
+    private fun isShcExpired(expDateInSeconds: Double?): Boolean {
+        return expDateInSeconds?.times(1000)?.toLong()?.let {
+            return expDateInSeconds > 0 && Date().after(Date(it))
+        } ?: false
+    }
+
+    private fun getImmunizationStatus(entries: List<Entry>, expDateInSeconds: Double?, rule: Rule): ImmunizationStatus {
         var mrnType = 0
         var nrvvType = 0
         var winacType = 0
         var minInterval = 0
         var lastVaxDate: Date? = null
+
+        if (isShcExpired(expDateInSeconds)) {
+            return ImmunizationStatus.INVALID_QR_CODE
+        }
 
         entries
             .filter { it.resource.resourceType.contains(CONDITION) }
