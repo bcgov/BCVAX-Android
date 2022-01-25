@@ -37,3 +37,9 @@ fun Date.addDays(day: Int): Date? {
     calendar.add(Calendar.DATE, day)
     return Date(calendar.timeInMillis)
 }
+
+fun Date.inclusiveAfter(other: Date?): Boolean {
+    return other?.let {
+        this.time >= other.time
+    } ?: false
+}
