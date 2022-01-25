@@ -7,8 +7,8 @@ import ca.bc.gov.shcdecoder.TEST_ISSUERS_URL
 import ca.bc.gov.shcdecoder.TEST_KEYS_URL
 import ca.bc.gov.shcdecoder.TEST_RULES_URL
 import ca.bc.gov.shcdecoder.cache.impl.FileManagerImpl
-import org.junit.Assert
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -52,5 +52,4 @@ class FileManagerImplTest {
         sut.downloadFile("non_existent_filename")
         sut.getIssuers("non_existent_filename")
     }
-
 }

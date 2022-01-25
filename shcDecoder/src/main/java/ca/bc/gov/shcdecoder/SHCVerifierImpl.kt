@@ -117,9 +117,9 @@ class SHCVerifierImpl(
                 val onsetDateMillis = entry.resource.onsetDateTime?.toDate()?.time ?: Long.MIN_VALUE
                 val abatementDateMillis = entry.resource.abatementDateTime?.toDate()?.time ?: Long.MAX_VALUE
 
-                val isDateValid = Date().time in onsetDateMillis .. abatementDateMillis
+                val isDateValid = Date().time in onsetDateMillis..abatementDateMillis
 
-                val isValidSystem = entry.resource.code?.coding?.any{ coding -> coding.system.contains(config.deferralsDomain)} ?: false
+                val isValidSystem = entry.resource.code?.coding?.any { coding -> coding.system.contains(config.deferralsDomain) } ?: false
 
                 if (isDateValid && isValidSystem) {
                     return ImmunizationStatus.FULLY_IMMUNIZED
@@ -170,8 +170,8 @@ class SHCVerifierImpl(
                         (
                             rule.intervalRequired &&
                                 intervalPassed(
-                                    vaxDate, rule.daysSinceLastInterval
-                                )
+                                        vaxDate, rule.daysSinceLastInterval
+                                    )
                             )
                     ) {
                         ImmunizationStatus.FULLY_IMMUNIZED

@@ -17,7 +17,7 @@ private val Context.dataStore by preferencesDataStore("shc_decoder")
 
 class PreferenceRepositoryImpl(
     private val context: Context
-): PreferenceRepository{
+) : PreferenceRepository {
 
     companion object {
         val CACHED_TIME_STAMP = longPreferencesKey("CACHED_TIME_STAMP")

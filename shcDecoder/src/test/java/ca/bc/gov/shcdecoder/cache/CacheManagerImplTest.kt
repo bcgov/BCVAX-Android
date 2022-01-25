@@ -73,13 +73,13 @@ class CacheManagerImplTest {
     private fun prepareDependencies(isCacheExpired: Boolean = true, isIssuerWithSuffix: Boolean = false): Unit = runBlocking {
         doReturn(
             flow {
-                emit (
+                emit(
                     Calendar.getInstance().apply {
-                       if (isCacheExpired) {
-                           set(2000, 1, 1)
-                       } else {
-                           set(999999, 1, 1)
-                       }
+                        if (isCacheExpired) {
+                            set(2000, 1, 1)
+                        } else {
+                            set(999999, 1, 1)
+                        }
                     }.timeInMillis
                 )
             }
@@ -96,5 +96,4 @@ class CacheManagerImplTest {
 
         every { Log.e(any(), any(), any()) } returns 0
     }
-
 }

@@ -52,17 +52,23 @@ class SHCVerifierImplTest {
     @Test
     fun givenGetImmunizationRecord_whenUserFullyVaccinated_thenShowsFullyImmunized(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_FULL_IMMUNIZED_SHC_URI)
-        Assert.assertEquals(result, testRecord.copy(
-            status = ImmunizationStatus.FULLY_IMMUNIZED
-        ))
+        Assert.assertEquals(
+            result,
+            testRecord.copy(
+                status = ImmunizationStatus.FULLY_IMMUNIZED
+            )
+        )
     }
 
     @Test
     fun givenGetImmunizationRecord_whenUserPartiallyVaccinated_thenShowsPartiallyImmunized(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_PARTIALLY_IMMUNIZED_SHC_URI)
-        Assert.assertEquals(result, testRecord.copy(
-            status = ImmunizationStatus.PARTIALLY_IMMUNIZED
-        ))
+        Assert.assertEquals(
+            result,
+            testRecord.copy(
+                status = ImmunizationStatus.PARTIALLY_IMMUNIZED
+            )
+        )
     }
 
     @Test
@@ -74,8 +80,11 @@ class SHCVerifierImplTest {
     @Test
     fun givenGetImmunizationRecord_whenUserHasExempt_thenShowsFullyImmunized(): Unit = runBlocking {
         val result = sut.getImmunizationRecord(VALID_EXEMPT_SHC_URI)
-        Assert.assertEquals(result, testRecord.copy(
-            status = ImmunizationStatus.FULLY_IMMUNIZED
-        ))
+        Assert.assertEquals(
+            result,
+            testRecord.copy(
+                status = ImmunizationStatus.FULLY_IMMUNIZED
+            )
+        )
     }
 }

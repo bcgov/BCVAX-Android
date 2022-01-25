@@ -34,5 +34,4 @@ class JWKSValidatorImplTest : TestCase() {
         val result = sut.validate(derivePublicKey(defaultKey), TEST_UNSIGNED_PAYLOAD, "")
         Assert.assertEquals(false, result)
     }
-
 }

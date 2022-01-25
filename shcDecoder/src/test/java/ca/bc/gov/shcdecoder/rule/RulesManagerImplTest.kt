@@ -13,7 +13,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
@@ -60,13 +59,15 @@ class RulesManagerImplTest {
     @Test
     fun `given get rule when exception is threw and default rule has issuer suffix then returns default ruleset`(): Unit = runBlocking {
         val issuer = TEST_ISS.plus(SUFFIX_ISSUERS)
-        prepareSystemUnderTest(config = config.copy(
-            defaultRules = listOf(
-                defaultRule.copy(
-                    ruleTarget = issuer
+        prepareSystemUnderTest(
+            config = config.copy(
+                defaultRules = listOf(
+                    defaultRule.copy(
+                        ruleTarget = issuer
+                    )
                 )
             )
-        ))
+        )
         val resultRule = sut.getRule(TEST_ISS)
         Assert.assertEquals(resultRule?.ruleTarget.orEmpty(), issuer)
     }
@@ -96,5 +97,4 @@ class RulesManagerImplTest {
             )
         ).`when`(fileManager).getIssuers(anyString())
     }
-
 }

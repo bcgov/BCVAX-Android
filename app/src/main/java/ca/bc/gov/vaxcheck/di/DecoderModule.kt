@@ -89,7 +89,7 @@ class DecoderModule {
     )
 
     companion object {
-        private const val PROD_EXPIRY_TIME = 21600000L  // 6 Hours
-        private const val TEST_EXPIRY_TIME = 120000L    // 2 Minutes
+        private const val PROD_EXPIRY_TIME = 21600000L // 6 Hours
+        private const val TEST_EXPIRY_TIME = 120000L // 2 Minutes
     }
 }

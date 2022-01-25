@@ -40,9 +40,8 @@ class SHCParserImplTest : TestCase() {
     }
 
     @Test
-    fun `given on parse when shc is valid then returns correct signature string` (): Unit = runBlocking {
+    fun `given on parse when shc is valid then returns correct signature string`(): Unit = runBlocking {
         val result = sut.parse(VALID_FULLY_IMMUNIZED_SHC_URI)
         Assert.assertEquals(result.signature, TEST_JWK_SIGNATURE)
     }
-
 }

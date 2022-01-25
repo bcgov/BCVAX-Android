@@ -13,7 +13,7 @@ internal const val SUFFIX_JWKS_JSON = "/.well-known/jwks.json"
 internal const val SUFFIX_ISSUERS = "issuers.json"
 
 internal const val TEST_ISS = "https://bcvaxcardgen.freshworks.club"
-internal const val TEST_ISS_WITH_SUFFIX = "https://bcvaxcardgen.freshworks.club${SUFFIX_JWKS_JSON}"
+internal const val TEST_ISS_WITH_SUFFIX = "https://bcvaxcardgen.freshworks.club$SUFFIX_JWKS_JSON"
 internal const val TEST_KID = "3Kfdg-XwP-7gXyywtUfUADwBumDOPKMQx-iELL11W9s"
 
 internal val defaultRule = Rule(

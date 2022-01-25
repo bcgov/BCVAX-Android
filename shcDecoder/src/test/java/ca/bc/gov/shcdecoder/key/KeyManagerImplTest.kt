@@ -6,11 +6,10 @@ import ca.bc.gov.shcdecoder.TEST_KID
 import ca.bc.gov.shcdecoder.cache.FileManager
 import ca.bc.gov.shcdecoder.config
 import ca.bc.gov.shcdecoder.defaultKey
-import ca.bc.gov.shcdecoder.utils.derivePublicKey
 import ca.bc.gov.shcdecoder.key.impl.KeyManagerImpl
 import ca.bc.gov.shcdecoder.model.Issuer
+import ca.bc.gov.shcdecoder.utils.derivePublicKey
 import ca.bc.gov.shcdecoder.utils.safeCapture
-
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -97,5 +96,4 @@ class KeyManagerImplTest {
         ).`when`(fileManager).getIssuers(anyString())
         doReturn(listOf(defaultKey)).`when`(fileManager).getKeys(anyString())
     }
-
 }
