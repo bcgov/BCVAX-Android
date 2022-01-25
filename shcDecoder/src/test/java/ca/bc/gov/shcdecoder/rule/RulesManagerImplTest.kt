@@ -10,7 +10,7 @@ import ca.bc.gov.shcdecoder.defaultRule
 import ca.bc.gov.shcdecoder.model.Issuer
 import ca.bc.gov.shcdecoder.rule.impl.RulesManagerImpl
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -39,7 +39,7 @@ class RulesManagerImplTest {
     fun `given get rule when rule target is issuer then returns correct rule set`(): Unit = runBlocking {
         prepareFileManager()
         val resultRule = sut.getRule(TEST_ISS)
-        assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS)
+        Assert.assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS)
     }
 
     @Test
@@ -48,13 +48,13 @@ class RulesManagerImplTest {
         prepareFileManager(ruleTarget = issuer)
         val resultRule = sut.getRule(TEST_ISS)
         Mockito.verify(fileManager).getIssuers(anyString())
-        assertEquals(resultRule?.ruleTarget.orEmpty(), issuer)
+        Assert.assertEquals(resultRule?.ruleTarget.orEmpty(), issuer)
     }
 
     @Test
     fun `given get rule when exception is threw then returns default ruleset`(): Unit = runBlocking {
         val resultRule = sut.getRule(TEST_ISS)
-        assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS_WITH_SUFFIX)
+        Assert.assertEquals(resultRule?.ruleTarget.orEmpty(), TEST_ISS_WITH_SUFFIX)
     }
 
     @Test
@@ -68,7 +68,7 @@ class RulesManagerImplTest {
             )
         ))
         val resultRule = sut.getRule(TEST_ISS)
-        assertEquals(resultRule?.ruleTarget.orEmpty(), issuer)
+        Assert.assertEquals(resultRule?.ruleTarget.orEmpty(), issuer)
     }
 
     private fun prepareSystemUnderTest(config: SHCConfig) {

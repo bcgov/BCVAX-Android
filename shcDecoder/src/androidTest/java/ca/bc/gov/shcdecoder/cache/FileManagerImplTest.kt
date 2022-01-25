@@ -7,7 +7,7 @@ import ca.bc.gov.shcdecoder.TEST_ISSUERS_URL
 import ca.bc.gov.shcdecoder.TEST_KEYS_URL
 import ca.bc.gov.shcdecoder.TEST_RULES_URL
 import ca.bc.gov.shcdecoder.cache.impl.FileManagerImpl
-import org.junit.Assert.*
+import org.junit.Assert
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -30,21 +30,21 @@ class FileManagerImplTest {
     fun givenGetRule_whenFileDownloaded_thenReturnsRules(): Unit = runBlocking {
         sut.downloadFile(TEST_RULES_URL)
         val rules = sut.getRule(TEST_RULES_URL)
-        assertTrue(rules.isNotEmpty())
+        Assert.assertTrue(rules.isNotEmpty())
     }
 
     @Test
     fun givenGetKeys_whenFileDownloaded_thenReturnsKeys(): Unit = runBlocking {
         sut.downloadFile(TEST_KEYS_URL)
         val keys = sut.getKeys(TEST_KEYS_URL)
-        assertTrue(keys.isNotEmpty())
+        Assert.assertTrue(keys.isNotEmpty())
     }
 
     @Test
     fun givenGetIssuers_whenFileDownloaded_thenReturnsIssuers(): Unit = runBlocking {
         sut.downloadFile(TEST_ISSUERS_URL)
         val issuers = sut.getIssuers(TEST_ISSUERS_URL)
-        assertTrue(issuers.isNotEmpty())
+        Assert.assertTrue(issuers.isNotEmpty())
     }
 
     @Test(expected = FileNotFoundException::class)
