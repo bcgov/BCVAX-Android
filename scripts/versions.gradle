@@ -43,6 +43,7 @@ versions.espresso = "3.4.0"
 versions.runner = "1.2.0"
 versions.android_x_test="1.4.0"
 versions.mockito="4.1.0"
+versions.mockk="1.12.2"
 
 
 ext.versions = versions

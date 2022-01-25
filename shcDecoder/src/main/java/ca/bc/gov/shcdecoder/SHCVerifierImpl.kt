@@ -15,6 +15,7 @@ import ca.bc.gov.shcdecoder.model.Rule
 import ca.bc.gov.shcdecoder.parser.SHCParser
 import ca.bc.gov.shcdecoder.parser.impl.SHCParserImpl
 import ca.bc.gov.shcdecoder.repository.PreferenceRepository
+import ca.bc.gov.shcdecoder.repository.impl.PreferenceRepositoryImpl
 import ca.bc.gov.shcdecoder.rule.RulesManager
 import ca.bc.gov.shcdecoder.rule.impl.RulesManagerImpl
 import ca.bc.gov.shcdecoder.utils.addDays
@@ -38,9 +39,8 @@ class SHCVerifierImpl(
     private val fileManager: FileManager = FileManagerImpl(context)
     private val keyManager: KeyManager = KeyManagerImpl(shcConfig, fileManager)
     private val ruleManager: RulesManager = RulesManagerImpl(shcConfig, fileManager)
-    private val preferenceRepository = PreferenceRepository(context)
-    private val cacheManager: CacheManager =
-        CacheManagerImpl(shcConfig, preferenceRepository, fileManager)
+    private val preferenceRepository: PreferenceRepository = PreferenceRepositoryImpl(context)
+    private val cacheManager: CacheManager = CacheManagerImpl(shcConfig, preferenceRepository, fileManager)
 
     override val config = shcConfig
 

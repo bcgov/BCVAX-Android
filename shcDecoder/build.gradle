@@ -57,6 +57,8 @@ dependencies {
     testImplementation 'org.json:json:20210307'
 
     testImplementation "junit:junit:$versions.junit"
+    testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "io.mockk:mockk:$versions.mockk"
 
     androidTestImplementation "androidx.test:runner:$versions.android_x_test"
 
