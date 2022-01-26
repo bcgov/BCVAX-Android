@@ -25,7 +25,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import ca.bc.gov.shcdecoder.model.ImmunizationStatus
 import ca.bc.gov.shcdecoder.model.VaccinationStatus
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.barcodeanalyzer.BarcodeAnalyzer

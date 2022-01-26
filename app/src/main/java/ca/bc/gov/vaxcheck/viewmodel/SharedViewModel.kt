@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ca.bc.gov.shcdecoder.model.ImmunizationRecord
 import ca.bc.gov.shcdecoder.model.SHCData
 import ca.bc.gov.shcdecoder.model.VaccinationStatus
 import ca.bc.gov.vaxcheck.data.local.DataStoreRepo
@@ -29,11 +28,11 @@ class SharedViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = null
     )
-    private val _status: MutableLiveData<Pair<VaccinationStatus,SHCData?>> = MutableLiveData()
-    val status: LiveData<Pair<VaccinationStatus,SHCData?>>
+    private val _status: MutableLiveData<Pair<VaccinationStatus, SHCData?>> = MutableLiveData()
+    val status: LiveData<Pair<VaccinationStatus, SHCData?>>
         get() = _status
 
-    fun setStatus(status: Pair<VaccinationStatus,SHCData?>) {
+    fun setStatus(status: Pair<VaccinationStatus, SHCData?>) {
         _status.value = status
     }
 
