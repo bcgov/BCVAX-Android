@@ -6,23 +6,23 @@ versions.gradle = '7.0.3'
 
 versions.datastore = "1.0.0"
 
-versions.appcompat = '1.3.1'
-versions.core_ktx = "1.6.0"
-versions.constraint_layout = "2.1.0"
+versions.appcompat = '1.4.1'
+versions.core_ktx = "1.7.0"
+versions.constraint_layout = "2.1.3"
 versions.swipe_refresh_layout = "1.1.0"
 
-versions.material = "1.4.0"
+versions.material = "1.5.0"
 
 versions.navigation = "2.3.5"
 
-versions.viewmodel = "2.4.0-alpha03"
-versions.lifecycle = "2.4.0-alpha03"
-versions.livedata = "2.4.0-alpha03"
+versions.viewmodel = "2.4.0"
+versions.lifecycle = "2.4.0"
+versions.livedata = "2.4.0"
 
 
-versions.hilt = "2.37"
+versions.hilt = "2.38.1"
 
-versions.barcode_scanning = "17.0.0"
+versions.barcode_scanning = "17.0.1"
 
 versions.camerax = "1.0.1"
 
@@ -35,7 +35,9 @@ versions.gson = "2.8.8"
 versions.jjwt = "0.11.1"
 versions.bouncycastle = "1.69"
 
-versions.shcdecoder = "1.1.11"
+versions.shcdecoder = "1.1.12"
+
+versions.play_core = "1.10.3"
 
 versions.junit = "4.13.2"
 versions.ext_junit = "1.1.3"

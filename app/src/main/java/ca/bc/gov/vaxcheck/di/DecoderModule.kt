@@ -32,7 +32,7 @@ class DecoderModule {
 
     @Provides
     fun providesDefaultRule(@ApplicationContext context: Context): List<Rule> {
-        val jsonString = context.readJsonFromAsset("ds9mwekyyprcy.cloudfront.net~rules.json")
+        val jsonString = context.readJsonFromAsset(context.getString(R.string.default_rules_json))
         val ruleSet = Gson().fromJson(jsonString, ValidationRuleResponse::class.java)
         return ruleSet.ruleSet
     }
@@ -41,7 +41,7 @@ class DecoderModule {
     fun providesDefaultJWKSKeys(@ApplicationContext context: Context): List<DefaultJWKSKeys> {
 
         val issuersJsonString =
-            context.readJsonFromAsset("phsasmarthealthcard-dev.azurewebsites.net~v1~trusted~.well-known~issuers.json")
+            context.readJsonFromAsset(context.getString(R.string.default_issuer_json))
         val issuersResponse = Gson().fromJson(issuersJsonString, TrustedIssuersResponse::class.java)
         val defaultKeys = mutableListOf<DefaultJWKSKeys>()
         issuersResponse.trustedIssuers.forEach { issuer ->
@@ -72,7 +72,7 @@ class DecoderModule {
         SHCConfig(
             context.getString(R.string.issuer_url),
             context.getString(R.string.rules_url),
-            context.getString(R.string.deferrals_domain),
+            " ",
             defaultJWKSKeys,
             rules,
             if (BuildConfig.FLAVOR == "prod") PROD_EXPIRY_TIME else TEST_EXPIRY_TIME
