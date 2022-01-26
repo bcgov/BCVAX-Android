@@ -191,8 +191,8 @@ class SHCVerifierImpl(
                         (
                             rule.intervalRequired &&
                                 intervalPassed(
-                                    vaxDate, rule.daysSinceLastInterval
-                                )
+                                        vaxDate, rule.daysSinceLastInterval
+                                    )
                             )
                     ) {
                         VaccinationStatus.FULLY_VACCINATED
@@ -297,8 +297,8 @@ class SHCVerifierImpl(
                         (
                             rule.intervalRequired &&
                                 intervalPassed(
-                                    vaxDate, rule.daysSinceLastInterval
-                                )
+                                        vaxDate, rule.daysSinceLastInterval
+                                    )
                             )
                     ) {
                         ImmunizationStatus.FULLY_IMMUNIZED
