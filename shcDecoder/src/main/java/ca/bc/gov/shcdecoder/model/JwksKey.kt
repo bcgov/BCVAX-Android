@@ -7,7 +7,7 @@ package ca.bc.gov.shcdecoder.model
  */
 data class JwksKey(
 
-    val key: String,
+    val kty: String,
 
     val kid: String,
 

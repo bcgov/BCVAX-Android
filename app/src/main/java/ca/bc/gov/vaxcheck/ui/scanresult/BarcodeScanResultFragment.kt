@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import ca.bc.gov.shcdecoder.model.ImmunizationStatus
+import ca.bc.gov.shcdecoder.model.VaccinationStatus
+import ca.bc.gov.shcdecoder.model.getPatient
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.databinding.FragmentBarcodeScanResultBinding
 import ca.bc.gov.vaxcheck.utils.viewBindings
@@ -50,24 +51,27 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
             Scene.getSceneForLayout(binding.sceneRoot, R.layout.scene_no_record, requireContext())
 
         sharedViewModel.status.observe(viewLifecycleOwner, { status ->
-            if (status != null) {
-                binding.txtFullName.text = status.name
-                when (status.status) {
-                    ImmunizationStatus.FULLY_IMMUNIZED -> {
+            val (state, shcData) = status
+            if (shcData != null) {
+                val patient = shcData.getPatient()
+                val fullName = "${patient.firstName} ${patient.lastName}"
+                binding.txtFullName.text = fullName
+                when (state) {
+                    VaccinationStatus.FULLY_VACCINATED -> {
                         sceneFullyVaccinated.enter()
                         sceneFullyVaccinated.sceneRoot.findViewById<View>(R.id.buttonScanNext)
                             .setOnClickListener {
                                 findNavController().popBackStack()
                             }
                     }
-                    ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
+                    VaccinationStatus.PARTIALLY_VACCINATED -> {
                         scenePartiallyVaccinated.enter()
                         scenePartiallyVaccinated.sceneRoot.findViewById<View>(R.id.buttonScanNext)
                             .setOnClickListener {
                                 findNavController().popBackStack()
                             }
                     }
-                    ImmunizationStatus.INVALID_QR_CODE -> {
+                    VaccinationStatus.INVALID -> {
                         sceneNoRecord.enter()
                         sceneNoRecord.sceneRoot.findViewById<View>(R.id.buttonScanNext)
                             .setOnClickListener {

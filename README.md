@@ -30,10 +30,10 @@ Language: __Kotlin__
 
 Architecture: __MVVM__
 
-	-  Architecture used for app: MVVM
-		- One activity with multiple fragments is used. Business logic is present in classes under utils package. View models associated with fragments seperate the UI from business logic. 
-		- Does it differ from standard architecture? No.
-		- Include UML diagram if needed. NA
+    -  Architecture used for app: MVVM
+        - One activity with multiple fragments is used. Business logic is present in classes under utils package. View models associated with fragments seperate the UI from business logic.
+        - Does it differ from standard architecture? No.
+        - Include UML diagram if needed. NA
 
 Dependency Injection: __Hilt__
 
