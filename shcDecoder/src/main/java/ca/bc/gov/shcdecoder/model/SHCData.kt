@@ -26,7 +26,7 @@ fun SHCData.getPatient(): Patient {
         val name = entry.resource.name?.firstOrNull()
 
         if (name != null) {
-            if (name.given.joinToString(" ").isNotBlank()) {
+            if (!name.given.isNullOrEmpty() && name.given.joinToString(" ").isNotBlank()) {
                 firstName = name.given.joinToString(" ")
             }
             if (!name.family.isNullOrBlank()) {
