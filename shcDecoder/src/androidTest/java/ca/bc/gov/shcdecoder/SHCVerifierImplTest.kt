@@ -27,7 +27,6 @@ class SHCVerifierImplTest {
     private val config = SHCConfig(
         "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json",
         "https://ds9mwekyyprcy.cloudfront.net/rules.json",
-        "pvc.service.yukon.ca",
         emptyList(),
         emptyList(),
         120000L
