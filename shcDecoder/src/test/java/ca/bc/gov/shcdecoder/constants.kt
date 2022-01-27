@@ -24,7 +24,8 @@ internal val defaultRule = Rule(
     ruRequired = 2,
     ruleTarget = TEST_ISS_WITH_SUFFIX,
     version = "V1",
-    vaccinationRules = emptyList()
+    vaccinationRules = emptyList(),
+    exemptions = emptyList()
 )
 
 internal val defaultKey = JwksKey(
@@ -41,7 +42,6 @@ internal val defaultKey = JwksKey(
 internal val config = SHCConfig(
     "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json",
     "https://ds9mwekyyprcy.cloudfront.net/rules.json",
-    "pvc.service.yukon.ca",
     listOf(
         DefaultJWKSKeys(
             iss = TEST_ISS,

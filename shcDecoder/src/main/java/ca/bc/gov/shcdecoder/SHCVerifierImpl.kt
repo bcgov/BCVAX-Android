@@ -89,7 +89,11 @@ class SHCVerifierImpl(
                 SHCDecoderException.MESSAGE_INVALID_RULE_SET
             )
 
-        val status = getImmunizationStatus(entries, shcData.payload.exp, rule)
+        val status = if (areExemptsValid(entries, shcData.payload.iss, rule)) {
+            ImmunizationStatus.FULLY_IMMUNIZED
+        } else {
+            getImmunizationStatus(entries, shcData.payload.exp, rule)
+        }
 
         return ImmunizationRecord(name.first, name.second, status)
     }
@@ -98,6 +102,42 @@ class SHCVerifierImpl(
         return expDateInSeconds?.times(1000)?.toLong()?.let {
             return expDateInSeconds > 0 && Date().after(Date(it))
         } ?: false
+    }
+
+    private fun areExemptsValid(entries: List<Entry>, issuer: String, rule: Rule): Boolean {
+        val isIssuerValid = rule.exemptions?.any {
+            it?.issuer == issuer
+        } ?: false
+
+        if (!isIssuerValid) {
+            return false
+        }
+
+        entries
+            .filter {
+                it.resource.resourceType.contains(CONDITION)
+            }
+            .forEach { entry ->
+                val onsetDateMillis = entry.resource.onsetDateTime?.toDate()?.time ?: Long.MIN_VALUE
+                val abatementDateMillis = entry.resource.abatementDateTime?.toDate()?.time ?: Long.MAX_VALUE
+
+                val isDateValid = Date().time in onsetDateMillis..abatementDateMillis
+
+                val isValidSystemAndCode = entry.resource.code?.coding?.any { coding ->
+                    var result = false
+
+                    rule.exemptions?.forEach { exemptions ->
+                        result = exemptions?.codingSystems?.contains(coding.system) == true
+                            && exemptions.codes.contains(coding.code)
+                    }
+
+                    result
+                } ?: false
+
+                return isDateValid && isValidSystemAndCode
+            }
+
+        return false
     }
 
     private fun getImmunizationStatus(entries: List<Entry>, expDateInSeconds: Double?, rule: Rule): ImmunizationStatus {
@@ -110,21 +150,6 @@ class SHCVerifierImpl(
         if (isShcExpired(expDateInSeconds)) {
             return ImmunizationStatus.INVALID_QR_CODE
         }
-
-        entries
-            .filter { it.resource.resourceType.contains(CONDITION) }
-            .forEach { entry ->
-                val onsetDateMillis = entry.resource.onsetDateTime?.toDate()?.time ?: Long.MIN_VALUE
-                val abatementDateMillis = entry.resource.abatementDateTime?.toDate()?.time ?: Long.MAX_VALUE
-
-                val isDateValid = Date().time in onsetDateMillis..abatementDateMillis
-
-                val isValidSystem = entry.resource.code?.coding?.any { coding -> coding.system.contains(config.deferralsDomain) } ?: false
-
-                if (isDateValid && isValidSystem) {
-                    return ImmunizationStatus.FULLY_IMMUNIZED
-                }
-            }
 
         entries
             .filter { it.resource.resourceType.contains(IMMUNIZATION) }
