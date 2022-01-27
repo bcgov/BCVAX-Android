@@ -14,6 +14,7 @@ import ca.bc.gov.shcdecoder.model.ImmunizationStatus
 import ca.bc.gov.shcdecoder.model.Rule
 import ca.bc.gov.shcdecoder.model.SHCData
 import ca.bc.gov.shcdecoder.model.VaccinationStatus
+import ca.bc.gov.shcdecoder.model.getPatient
 import ca.bc.gov.shcdecoder.parser.SHCParser
 import ca.bc.gov.shcdecoder.parser.impl.SHCParserImpl
 import ca.bc.gov.shcdecoder.repository.PreferenceRepository
@@ -110,6 +111,14 @@ class SHCVerifierImpl(
         }
 
         val status = obtainVaccinationStatus(entries, shcData.payload.exp, rule)
+
+        val patient = shcData.getPatient()
+        if (patient.firstName == null && patient.lastName == null) {
+            throw SHCDecoderException(
+                SHCDecoderException.ID_INVALID_PAYLOAD_DATA_FORMAT,
+                SHCDecoderException.MESSAGE_INVALID_PAYLOAD_DATA_FORMAT
+            )
+        }
         return Pair(status, shcData)
     }
 
