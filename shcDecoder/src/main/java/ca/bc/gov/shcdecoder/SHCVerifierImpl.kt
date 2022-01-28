@@ -190,7 +190,7 @@ class SHCVerifierImpl(
         return if (mrnType + nrvvType + winacType > 0) {
             VaccinationStatus.PARTIALLY_VACCINATED
         } else {
-            VaccinationStatus.INVALID
+            VaccinationStatus.NOT_VACCINATED
         }
     }
 

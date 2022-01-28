@@ -71,7 +71,7 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                                 findNavController().popBackStack()
                             }
                     }
-                    VaccinationStatus.INVALID -> {
+                    else -> {
                         sceneNoRecord.enter()
                         sceneNoRecord.sceneRoot.findViewById<View>(R.id.buttonScanNext)
                             .setOnClickListener {
