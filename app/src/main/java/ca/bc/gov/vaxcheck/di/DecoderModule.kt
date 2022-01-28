@@ -72,7 +72,7 @@ class DecoderModule {
         SHCConfig(
             context.getString(R.string.issuer_url),
             context.getString(R.string.rules_url),
-            " ",
+            context.getString(R.string.deferrals_domain),
             defaultJWKSKeys,
             rules,
             if (BuildConfig.FLAVOR == "prod") PROD_EXPIRY_TIME else TEST_EXPIRY_TIME

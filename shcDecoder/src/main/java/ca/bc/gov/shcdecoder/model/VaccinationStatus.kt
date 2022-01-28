@@ -6,5 +6,6 @@ package ca.bc.gov.shcdecoder.model
 enum class VaccinationStatus {
     FULLY_VACCINATED,
     PARTIALLY_VACCINATED,
+    NOT_VACCINATED,
     INVALID
 }
