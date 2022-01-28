@@ -21,22 +21,32 @@
           "ru": 1
         },
         {
+          "cvxCode": "218",
+          "type": 1,
+          "ru": 1
+        },
+        {
           "cvxCode": "210",
-          "type": 2,
+          "type": 1,
           "ru": 1
         },
         {
           "cvxCode": "212",
-          "type": 2,
+          "type": 1,
           "ru": 2
         },
         {
           "cvxCode": "511",
-          "type": 3,
+          "type": 1,
           "ru": 1
         },
         {
           "cvxCode": "510",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "502",
           "type": 3,
           "ru": 1
         }

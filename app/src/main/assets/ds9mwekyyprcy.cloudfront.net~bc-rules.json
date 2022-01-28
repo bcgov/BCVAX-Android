@@ -3,9 +3,9 @@
   "ruleSet": [
     {
       "mixTypesAllowed": true,
-      "mixTypesRuRequired": 3,
-      "ruRequired": 3,
-      "intervalRequired": true,
+      "mixTypesRuRequired": 2,
+      "ruRequired": 2,
+      "intervalRequired": false,
       "daysSinceLastInterval": 14,
       "ruleTarget": "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json",
       "version": "V1",
@@ -13,52 +13,42 @@
         {
           "cvxCode": "208",
           "type": 1,
-          "ru": 2,
-          "minDays": "19"
+          "ru": 1
         },
         {
           "cvxCode": "207",
           "type": 1,
-          "ru": 2,
-          "minDays": "21"
-        },
-        {
-          "cvxCode": "210",
-          "type": 2,
-          "ru": 2,
-          "minDays": "28"
-        },
-        {
-          "cvxCode": "212",
-          "type": 2,
-          "ru": 3
-        },
-        {
-          "cvxCode": "217",
-          "type": 2,
-          "ru": 2
+          "ru": 1
         },
         {
           "cvxCode": "218",
-          "type": 2,
-          "ru": 2
+          "type": 1,
+          "ru": 1
         },
         {
-          "cvxCode": "219",
-          "type": 2,
+          "cvxCode": "210",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "212",
+          "type": 1,
           "ru": 2
         },
         {
           "cvxCode": "511",
-          "type": 3,
-          "ru": 1,
-          "minDays": "14"
+          "type": 1,
+          "ru": 1
         },
         {
           "cvxCode": "510",
+          "type": 1,
+          "ru": 1
+        },
+        {
+          "cvxCode": "502",
           "type": 3,
-          "ru": 1,
-          "minDays": "21"
+          "ru": 1
         }
       ],
       "exemptions": [

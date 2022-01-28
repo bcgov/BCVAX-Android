@@ -13,7 +13,7 @@ data class Resource(
     val status: String? = null,
     val vaccineCode: ResourceCode? = null,
     val code: ResourceCode? = null,
-    val patient: Patient? = null,
+    val patient: Reference? = null,
     val occurrenceDateTime: String? = null,
     val performer: List<Performer>? = null,
     val lotNumber: String? = null,
