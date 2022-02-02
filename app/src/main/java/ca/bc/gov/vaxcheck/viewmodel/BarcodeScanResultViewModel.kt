@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ca.bc.gov.shcdecoder.SHCVerifier
-import ca.bc.gov.shcdecoder.model.ImmunizationRecord
-import ca.bc.gov.shcdecoder.model.ImmunizationStatus
 import ca.bc.gov.shcdecoder.model.SHCData
 import ca.bc.gov.shcdecoder.model.VaccinationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,8 +27,8 @@ class BarcodeScanResultViewModel @Inject constructor(
     private val bcCardVerifier: SHCVerifier
 ) : ViewModel() {
 
-    private val _status = MutableSharedFlow<Pair<VaccinationStatus,SHCData?>>()
-    val status: SharedFlow<Pair<VaccinationStatus,SHCData?>> = _status.shareIn(
+    private val _status = MutableSharedFlow<Pair<VaccinationStatus, SHCData?>>()
+    val status: SharedFlow<Pair<VaccinationStatus, SHCData?>> = _status.shareIn(
         scope = viewModelScope,
         replay = 0,
         started = SharingStarted.WhileSubscribed(5000)
@@ -46,7 +44,7 @@ class BarcodeScanResultViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("Error", e.message.toString())
                 _status.emit(
-                    Pair(VaccinationStatus.INVALID,null)
+                    Pair(VaccinationStatus.INVALID, null)
                 )
             }
         }

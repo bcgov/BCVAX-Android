@@ -50,12 +50,19 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
         sceneNoRecord =
             Scene.getSceneForLayout(binding.sceneRoot, R.layout.scene_no_record, requireContext())
 
-        sharedViewModel.status.observe(viewLifecycleOwner, { status ->
+        sharedViewModel.status.observe(viewLifecycleOwner) { status ->
             val (state, shcData) = status
             if (shcData != null) {
                 val patient = shcData.getPatient()
-                val fullName = "${patient.firstName} ${patient.lastName}"
-                binding.txtFullName.text = fullName
+                val fullNameBuilder = StringBuilder()
+                if (patient.firstName != null) {
+                    fullNameBuilder.append(patient.firstName)
+                    fullNameBuilder.append(" ")
+                }
+                if (patient.lastName != null) {
+                    fullNameBuilder.append(patient.lastName)
+                }
+                binding.txtFullName.text = fullNameBuilder.toString()
                 when (state) {
                     VaccinationStatus.FULLY_VACCINATED -> {
                         sceneFullyVaccinated.enter()
@@ -92,6 +99,6 @@ class BarcodeScanResultFragment : Fragment(R.layout.fragment_barcode_scan_result
                 }
             }
             countDownTimer.start()
-        })
+        }
     }
 }
