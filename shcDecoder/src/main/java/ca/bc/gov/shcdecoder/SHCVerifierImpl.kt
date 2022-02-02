@@ -210,13 +210,8 @@ class SHCVerifierImpl(
     }
 
     private fun hasSpecialCondition(entries: List<Entry>, issuer: String, rule: Rule): Boolean {
-        val isIssuerValid = rule.exemptions?.any {
-            it?.issuer == issuer
-        } ?: false
-
-        if (!isIssuerValid) {
-            return false
-        }
+        var isDateValid = false
+        var isValidSystemAndCode = false
 
         entries
             .filter {
@@ -226,23 +221,22 @@ class SHCVerifierImpl(
                 val onsetDateMillis = entry.resource.onsetDateTime?.toDate()?.time ?: Long.MIN_VALUE
                 val abatementDateMillis = entry.resource.abatementDateTime?.toDate()?.time ?: Long.MAX_VALUE
 
-                val isDateValid = Date().time in onsetDateMillis..abatementDateMillis
+                isDateValid = Date().time in onsetDateMillis..abatementDateMillis
 
-                val isValidSystemAndCode = entry.resource.code?.coding?.any { coding ->
+                isValidSystemAndCode = entry.resource.code?.coding?.any { coding ->
                     var result = false
 
                     rule.exemptions?.forEach { exemptions ->
                         result = exemptions?.codingSystems?.contains(coding.system) == true
                             && exemptions.codes.contains(coding.code)
+                            && exemptions.issuer == issuer
                     }
 
                     result
                 } ?: false
-
-                return isDateValid && isValidSystemAndCode
             }
 
-        return false
+        return isDateValid && isValidSystemAndCode
     }
 
     @Deprecated(
