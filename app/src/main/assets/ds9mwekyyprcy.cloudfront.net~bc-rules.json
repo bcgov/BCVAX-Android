@@ -50,50 +50,6 @@
           "type": 3,
           "ru": 1
         }
-      ],
-      "exemptions": [
-        {
-          "issuer": "https://pvc.service.yukon.ca/test/issuer",
-          "codingSystems": [
-            "https://pvc.service.yukon.ca/test/v1/verifier/deferrals.json",
-            "https://pvc.service.yukon.ca/v1/verifier/deferrals.json"
-          ],
-          "codes": [
-            "YK-1",
-            "YK-2",
-            "YK-3",
-            "YK-4",
-            "YK-5"
-          ]
-        },
-        {
-          "issuer": "https://pvc.service.yukon.ca/issuer",
-          "codingSystems": [
-            "https://pvc.service.yukon.ca/v1/verifier/deferrals.json"
-          ],
-          "codes": [
-            "YK-1",
-            "YK-2",
-            "YK-3",
-            "YK-4",
-            "YK-5"
-          ]
-        },
-        {
-          "issuer": "https://bcvaxcardgen.freshworks.club",
-          "codingSystems": [
-            "https://pvc.service.yukon.ca/test/v1/verifier/deferrals.json",
-            "https://pvc.service.yukon.ca/v1/verifier/deferrals.json",
-            "https://pvc.service.yukon.ca/"
-          ],
-          "codes": [
-            "YK-1",
-            "YK-2",
-            "YK-3",
-            "YK-4",
-            "YK-5"
-          ]
-        }
       ]
     }
   ],

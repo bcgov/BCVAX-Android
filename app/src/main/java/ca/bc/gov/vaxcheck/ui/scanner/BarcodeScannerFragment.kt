@@ -147,7 +147,6 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
                     )
                 }
 
-                VaccinationStatus.NOT_VACCINATED,
                 VaccinationStatus.INVALID -> {
                     onFailure()
                 }
