@@ -5,8 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Calendar
+import java.util.Date
 
 fun Context.hasNetwork(): Boolean {
     val connectivityManager =
@@ -14,7 +14,6 @@ fun Context.hasNetwork(): Boolean {
     val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
     return (activeNetwork != null && activeNetwork.isConnected)
 }
-
 
 /**
  * Helper function to read file from asset
@@ -30,4 +29,17 @@ fun String.toDate(): Date? {
     } catch (e: ParseException) {
         null
     }
+}
+
+fun Date.addDays(day: Int): Date? {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+    calendar.add(Calendar.DATE, day)
+    return Date(calendar.timeInMillis)
+}
+
+fun Date.inclusiveAfter(other: Date?): Boolean {
+    return other?.let {
+        this.time >= other.time
+    } ?: false
 }

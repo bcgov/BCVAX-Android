@@ -9,5 +9,6 @@ package ca.bc.gov.shcdecoder.model
 data class SHCPayload(
     val iss: String,
     val nbf: Double,
-    val vc: Vc
+    val vc: Vc,
+    val exp: Double?
 )

@@ -25,7 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import ca.bc.gov.shcdecoder.model.ImmunizationStatus
+import ca.bc.gov.shcdecoder.model.VaccinationStatus
 import ca.bc.gov.vaxcheck.R
 import ca.bc.gov.vaxcheck.barcodeanalyzer.BarcodeAnalyzer
 import ca.bc.gov.vaxcheck.barcodeanalyzer.ScanningResultListener
@@ -37,10 +37,10 @@ import ca.bc.gov.vaxcheck.viewmodel.BarcodeScanResultViewModel
 import ca.bc.gov.vaxcheck.viewmodel.SharedViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 /**
  * [BarcodeScannerFragment]
@@ -137,16 +137,17 @@ class BarcodeScannerFragment : Fragment(R.layout.fragment_barcode_scanner), Scan
 
     private suspend fun collectImmunizationStatus() {
         viewModel.status.collect { status ->
-            when (status.status) {
-                ImmunizationStatus.FULLY_IMMUNIZED,
-                ImmunizationStatus.PARTIALLY_IMMUNIZED -> {
+            val (state, data) = status
+            when (state) {
+                VaccinationStatus.FULLY_VACCINATED,
+                VaccinationStatus.PARTIALLY_VACCINATED -> {
                     sharedViewModel.setStatus(status)
                     findNavController().navigate(
                         R.id.action_barcodeScannerFragment_to_barcodeScanResultFragment
                     )
                 }
 
-                ImmunizationStatus.INVALID_QR_CODE -> {
+                VaccinationStatus.INVALID -> {
                     onFailure()
                 }
             }

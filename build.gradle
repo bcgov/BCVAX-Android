@@ -45,21 +45,34 @@ allprojects {
         }
         jcenter()
     }
+    apply plugin: "com.diffplug.spotless"
 }
 
-apply plugin: "com.diffplug.spotless"
+
 
 spotless {
-//    ratchetFrom 'origin/main'
 
     kotlin {
-        target 'src/main/**/*.kt'
-
-        ktlint().userData(['android': 'true', 'color': 'true', 'reporter': 'checkstyle', 'insert_final_newline': 'false'])
+        target '**/*.kt'
+        ktlint()
         trimTrailingWhitespace()
+        indentWithSpaces()
     }
+
     kotlinGradle {
         target '*.gradle.kts'
         ktlint()
+    }
+
+    format 'misc', {
+        target '**/*.gradle', '**/*.md', '**/.gitignore'
+        indentWithSpaces()
+        trimTrailingWhitespace()
+    }
+
+    format 'xml', {
+        target '**/*.xml'
+        indentWithSpaces()
+        trimTrailingWhitespace()
     }
 }
