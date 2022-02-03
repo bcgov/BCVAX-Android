@@ -1,6 +1,5 @@
 package ca.bc.gov.shcdecoder
 
-import ca.bc.gov.shcdecoder.model.ImmunizationRecord
 import ca.bc.gov.shcdecoder.model.SHCData
 import ca.bc.gov.shcdecoder.model.VaccinationStatus
 
