@@ -9,8 +9,6 @@ import ca.bc.gov.shcdecoder.cache.impl.FileManagerImpl
 import ca.bc.gov.shcdecoder.key.KeyManager
 import ca.bc.gov.shcdecoder.key.impl.KeyManagerImpl
 import ca.bc.gov.shcdecoder.model.Entry
-import ca.bc.gov.shcdecoder.model.ImmunizationRecord
-import ca.bc.gov.shcdecoder.model.ImmunizationStatus
 import ca.bc.gov.shcdecoder.model.Rule
 import ca.bc.gov.shcdecoder.model.SHCData
 import ca.bc.gov.shcdecoder.model.VaccinationStatus
@@ -78,27 +76,6 @@ class SHCVerifierImpl(
             )
 
         return jwksValidator.validate(key, unSignedJWKSPayload, jwkSignature)
-    }
-
-    override suspend fun getImmunizationRecord(shcUri: String): ImmunizationRecord {
-
-        val shcData = shcParser.parse(shcUri)
-        val entries = shcData.payload.vc.credentialSubject.fhirBundle.entry
-        val name = getName(entries)
-
-        val rule = ruleManager.getRule(shcData.payload.iss)
-            ?: throw SHCDecoderException(
-                SHCDecoderException.ID_INVALID_RUL_SET,
-                SHCDecoderException.MESSAGE_INVALID_RULE_SET
-            )
-
-        val status = if (hasSpecialCondition(entries, shcData.payload.iss, rule)) {
-            ImmunizationStatus.FULLY_IMMUNIZED
-        } else {
-            getImmunizationStatus(entries, shcData.payload.exp, rule)
-        }
-
-        return ImmunizationRecord(name.first, name.second, status)
     }
 
     override suspend fun getStatus(shcUri: String): Pair<VaccinationStatus, SHCData> {
@@ -237,88 +214,6 @@ class SHCVerifierImpl(
             }
 
         return isDateValid && isValidSystemAndCode
-    }
-
-    @Deprecated(
-        message = "This method will get removed in 2.0",
-        replaceWith = ReplaceWith("obtainVaccinationStatus(entries, shcData.payload.exp, rule)"),
-        level = DeprecationLevel.WARNING
-    )
-    private fun getImmunizationStatus(
-        entries: List<Entry>,
-        expDateInSeconds: Double?,
-        rule: Rule
-    ): ImmunizationStatus {
-        var mrnType = 0
-        var nrvvType = 0
-        var winacType = 0
-        var minInterval = 0
-        var lastVaxDate: Date? = null
-
-        if (isShcExpired(expDateInSeconds)) {
-            return ImmunizationStatus.INVALID_QR_CODE
-        }
-
-        entries
-            .filter { it.resource.resourceType.contains(IMMUNIZATION) }
-            .sortedBy { it.resource.occurrenceDateTime }
-            .forEach { entry ->
-                val vaxCode = entry.resource.vaccineCode?.coding?.firstOrNull()?.code
-
-                val ruleSet = rule.vaccinationRules.singleOrNull { vaccineRule ->
-                    vaxCode?.toInt() == vaccineRule.cvxCode
-                }
-
-                val hasMinDaysPassed = hasPassedMinDaysRequiredBetweenDoses(
-                    entry.resource.occurrenceDateTime?.toDate(),
-                    lastVaxDate,
-                    minInterval
-                )
-
-                if (hasMinDaysPassed) {
-                    when (ruleSet?.type) {
-                        1 -> {
-                            mrnType += ruleSet.ru
-                        }
-
-                        2 -> {
-                            nrvvType += ruleSet.ru
-                        }
-
-                        3 -> {
-                            winacType += ruleSet.ru
-                        }
-                    }
-                }
-                val vaxDate = entry.resource.occurrenceDateTime?.toDate()
-                lastVaxDate = vaxDate
-                minInterval = ruleSet?.minDays ?: 0
-                val enoughDoses = mrnType >= rule.ruRequired ||
-                    nrvvType >= rule.ruRequired ||
-                    winacType >= rule.ruRequired
-                val enoughMixedDoses = rule.mixTypesAllowed &&
-                    (mrnType + nrvvType + winacType >= rule.mixTypesRuRequired)
-                if (enoughDoses || enoughMixedDoses) {
-                    return if (!rule.intervalRequired ||
-                        (
-                            rule.intervalRequired &&
-                                intervalPassed(
-                                        vaxDate, rule.daysSinceLastInterval
-                                    )
-                            )
-                    ) {
-                        ImmunizationStatus.FULLY_IMMUNIZED
-                    } else {
-                        ImmunizationStatus.PARTIALLY_IMMUNIZED
-                    }
-                }
-            }
-
-        return if (mrnType + nrvvType + winacType > 0) {
-            ImmunizationStatus.PARTIALLY_IMMUNIZED
-        } else {
-            ImmunizationStatus.INVALID_QR_CODE
-        }
     }
 
     private fun hasPassedMinDaysRequiredBetweenDoses(
