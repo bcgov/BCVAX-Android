@@ -204,9 +204,9 @@ class SHCVerifierImpl(
                     var result = false
 
                     rule.exemptions?.forEach { exemptions ->
-                        result = exemptions?.codingSystems?.contains(coding.system) == true
-                            && exemptions.codes?.contains(coding.code) == true
-                            && exemptions.issuer == issuer
+                        result = exemptions?.codingSystems?.contains(coding.system) == true &&
+                            exemptions.codes?.contains(coding.code) == true &&
+                            exemptions.issuer == issuer
                     }
 
                     result
