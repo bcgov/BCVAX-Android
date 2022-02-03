@@ -35,7 +35,7 @@ versions.gson = "2.8.8"
 versions.jjwt = "0.11.1"
 versions.bouncycastle = "1.69"
 
-versions.shcdecoder = "1.1.13"
+versions.shcdecoder = "1.2.0"
 
 versions.play_core = "1.10.3"
 
