@@ -6,13 +6,16 @@ import ca.bc.gov.shcdecoder.cache.FileManager
 import ca.bc.gov.shcdecoder.model.Issuer
 import ca.bc.gov.shcdecoder.model.Jwks
 import ca.bc.gov.shcdecoder.model.JwksKey
+import ca.bc.gov.shcdecoder.model.RevocationsResponse
 import ca.bc.gov.shcdecoder.model.Rule
 import ca.bc.gov.shcdecoder.model.TrustedIssuersResponse
 import ca.bc.gov.shcdecoder.model.ValidationRuleResponse
+import ca.bc.gov.shcdecoder.utils.epochToDate
 import com.google.gson.Gson
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
+import java.util.Date
 
 class FileManagerImpl(
     context: Context
@@ -75,6 +78,19 @@ class FileManagerImpl(
         val validationRulesResponse =
             Gson().fromJson(jsonString, ValidationRuleResponse::class.java)
         return validationRulesResponse.ruleSet
+    }
+
+    override suspend fun getRevocations(url: String): List<Pair<String, Date?>> {
+        val jsonString = getJsonStringFromFile(url)
+        val revocationsResponse = Gson().fromJson(jsonString, RevocationsResponse::class.java)
+        return revocationsResponse.rids.map { rid ->
+            if (rid.contains(".")) {
+                val ridSplit = rid.split(".")
+                ridSplit.first() to ridSplit[1].epochToDate()
+            } else {
+                rid to null
+            }
+        }
     }
 
     private fun getJsonStringFromFile(url: String): String {

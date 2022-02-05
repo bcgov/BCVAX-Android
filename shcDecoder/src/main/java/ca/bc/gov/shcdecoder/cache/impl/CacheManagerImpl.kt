@@ -4,6 +4,8 @@ import android.util.Log
 import ca.bc.gov.shcdecoder.SHCConfig
 import ca.bc.gov.shcdecoder.cache.CacheManager
 import ca.bc.gov.shcdecoder.cache.FileManager
+import ca.bc.gov.shcdecoder.model.Issuer
+import ca.bc.gov.shcdecoder.model.JwksKey
 import ca.bc.gov.shcdecoder.repository.PreferenceRepository
 import kotlinx.coroutines.flow.first
 import java.util.Calendar
@@ -17,21 +19,18 @@ internal class CacheManagerImpl(
     companion object {
         const val SUFFIX_JWKS_JSON = "/.well-known/jwks.json"
         const val SUFFIX_ISSUER_JSON = "issuers.json"
+        const val REVOCATION_JSON_PATH = "/.well-known/crl/"
         private const val TAG = "CacheManagerImpl"
     }
 
     override suspend fun fetch() {
         if (isCacheExpired()) {
             try {
-                fileManager.downloadFile(shcConfig.issuerEndPoint)
-                val issuers = fileManager.getIssuers(shcConfig.issuerEndPoint)
+                val issuers = fetchIssuers()
+
                 issuers.forEach { issuer ->
-                    val keyUrl = if (issuer.iss.endsWith(SUFFIX_JWKS_JSON)) {
-                        issuer.iss
-                    } else {
-                        "${issuer.iss}$SUFFIX_JWKS_JSON"
-                    }
-                    fileManager.downloadFile(keyUrl)
+                    val keys = fetchKeys(issuer)
+                    fetchRevocations(issuer, keys)
                 }
 
                 fileManager.downloadFile(shcConfig.rulesEndPoint)
@@ -39,6 +38,34 @@ internal class CacheManagerImpl(
             } catch (e: Exception) {
                 Log.e(TAG, e.message, e)
             }
+        }
+    }
+
+    private suspend fun fetchIssuers(): List<Issuer> {
+        fileManager.downloadFile(shcConfig.issuerEndPoint)
+        return fileManager.getIssuers(shcConfig.issuerEndPoint)
+    }
+
+    private suspend fun fetchKeys(issuer: Issuer): List<JwksKey> {
+        val keyUrl = if (issuer.iss.endsWith(SUFFIX_JWKS_JSON)) {
+            issuer.iss
+        } else {
+            "${issuer.iss}$SUFFIX_JWKS_JSON"
+        }
+
+        fileManager.downloadFile(keyUrl)
+        return fileManager.getKeys(keyUrl)
+    }
+
+    private suspend fun fetchRevocations(issuer: Issuer, keys: List<JwksKey>) {
+        keys.forEach { key ->
+            // todo: implement CTR (if null just do normal behaviour)
+
+            val revocationURL = issuer.iss.removeSuffix(SUFFIX_ISSUER_JSON).let { formattedIss ->
+                "$formattedIss$REVOCATION_JSON_PATH${key.kid}"
+            }
+
+            fileManager.downloadFile(revocationURL)
         }
     }
 

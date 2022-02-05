@@ -22,6 +22,18 @@ fun Context.hasNetwork(): Boolean {
 fun Context.readJsonFromAsset(fileName: String) =
     this.assets.open(fileName).bufferedReader().use { it.readText() }
 
+/**
+ *  Converts Epoch Timestamp To Date
+ *  Epoch is in seconds instead of millis
+ */
+fun String.epochToDate(): Date? {
+    return try {
+        Date(this.toLong().times(1000))
+    } catch (e: ParseException) {
+        null
+    }
+}
+
 fun String.toDate(): Date? {
     return try {
         val formatter = SimpleDateFormat("yyyy-MM-dd")
