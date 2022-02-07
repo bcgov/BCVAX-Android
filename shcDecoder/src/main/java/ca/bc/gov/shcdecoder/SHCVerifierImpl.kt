@@ -17,6 +17,8 @@ import ca.bc.gov.shcdecoder.parser.SHCParser
 import ca.bc.gov.shcdecoder.parser.impl.SHCParserImpl
 import ca.bc.gov.shcdecoder.repository.PreferenceRepository
 import ca.bc.gov.shcdecoder.repository.impl.PreferenceRepositoryImpl
+import ca.bc.gov.shcdecoder.revocations.RevocationManager
+import ca.bc.gov.shcdecoder.revocations.impl.RevocationManagerImpl
 import ca.bc.gov.shcdecoder.rule.RulesManager
 import ca.bc.gov.shcdecoder.rule.impl.RulesManagerImpl
 import ca.bc.gov.shcdecoder.utils.addDays
@@ -38,6 +40,7 @@ class SHCVerifierImpl(
     private val shcParser: SHCParser = SHCParserImpl()
     private val jwksValidator: JWKSValidator = JWKSValidatorImpl()
     private val fileManager: FileManager = FileManagerImpl(context)
+    private val revocationManager: RevocationManager = RevocationManagerImpl(fileManager)
     private val keyManager: KeyManager = KeyManagerImpl(shcConfig, fileManager)
     private val ruleManager: RulesManager = RulesManagerImpl(shcConfig, fileManager)
     private val preferenceRepository: PreferenceRepository = PreferenceRepositoryImpl(context)
@@ -87,8 +90,19 @@ class SHCVerifierImpl(
                 SHCDecoderException.MESSAGE_INVALID_RULE_SET
             )
 
+        val revocations = revocationManager.getRevocations(shcData.payload.iss, shcData.header.kid)
+        //val revocations = revocationManager.getRevocations("https://bcvaxcardgen.freshworks.club", "3Kfdg-XwP-7gXyywtUfUADwBumDOPKMQx-iELL11W9s.json")
+
         if (hasSpecialCondition(entries, shcData.payload.iss, rule)) {
             return Pair(VaccinationStatus.FULLY_VACCINATED, shcData)
+        }
+
+        when {
+            isRevocated(1, revocations) ->
+                return Pair(VaccinationStatus.INVALID, shcData)
+
+            hasSpecialCondition(entries, shcData.payload.iss, rule) ->
+                return Pair(VaccinationStatus.FULLY_VACCINATED, shcData)
         }
 
         val status = obtainVaccinationStatus(entries, shcData.payload.exp, rule)
@@ -183,6 +197,12 @@ class SHCVerifierImpl(
     private fun isShcExpired(expDateInSeconds: Double?): Boolean {
         return expDateInSeconds?.times(1000)?.toLong()?.let {
             return expDateInSeconds > 0 && Date().after(Date(it))
+        } ?: false
+    }
+
+    private fun isRevocated(id: Int?, revocationsResponse: List<Pair<String, Date?>>): Boolean {
+        return id?.let {
+            false
         } ?: false
     }
 

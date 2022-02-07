@@ -7,6 +7,7 @@ import ca.bc.gov.shcdecoder.cache.FileManager
 import ca.bc.gov.shcdecoder.model.Issuer
 import ca.bc.gov.shcdecoder.model.JwksKey
 import ca.bc.gov.shcdecoder.repository.PreferenceRepository
+import ca.bc.gov.shcdecoder.revocations.getRevocationsUrl
 import kotlinx.coroutines.flow.first
 import java.util.Calendar
 
@@ -19,7 +20,6 @@ internal class CacheManagerImpl(
     companion object {
         const val SUFFIX_JWKS_JSON = "/.well-known/jwks.json"
         const val SUFFIX_ISSUER_JSON = "issuers.json"
-        const val REVOCATION_JSON_PATH = "/.well-known/crl/"
         private const val TAG = "CacheManagerImpl"
     }
 
@@ -61,9 +61,8 @@ internal class CacheManagerImpl(
         keys.forEach { key ->
             // todo: implement CTR (if null just do normal behaviour)
 
-            val revocationURL = issuer.iss.removeSuffix(SUFFIX_ISSUER_JSON).let { formattedIss ->
-                "$formattedIss$REVOCATION_JSON_PATH${key.kid}"
-            }
+            //val revocationURL = getRevocationsUrl("https://bcvaxcardgen.freshworks.club", "3Kfdg-XwP-7gXyywtUfUADwBumDOPKMQx-iELL11W9s.json")
+            val revocationURL = getRevocationsUrl(issuer.iss, key.kid)
 
             fileManager.downloadFile(revocationURL)
         }

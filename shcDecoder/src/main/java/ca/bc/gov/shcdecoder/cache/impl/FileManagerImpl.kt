@@ -81,10 +81,11 @@ class FileManagerImpl(
     }
 
     override suspend fun getRevocations(url: String): List<Pair<String, Date?>> {
+        //val jsonString = getJsonStringFromFile(getRevocationsUrl("https://bcvaxcardgen.freshworks.club", "3Kfdg-XwP-7gXyywtUfUADwBumDOPKMQx-iELL11W9s.json"))
         val jsonString = getJsonStringFromFile(url)
         val revocationsResponse = Gson().fromJson(jsonString, RevocationsResponse::class.java)
         return revocationsResponse.rids.map { rid ->
-            if (rid.contains(".")) {
+            if (rid.contains(".") && (rid.startsWith(".").not() && rid.endsWith(".").not())) {
                 val ridSplit = rid.split(".")
                 ridSplit.first() to ridSplit[1].epochToDate()
             } else {
