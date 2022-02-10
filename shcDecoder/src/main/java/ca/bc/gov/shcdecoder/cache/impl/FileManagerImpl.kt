@@ -64,41 +64,45 @@ class FileManagerImpl(
     override suspend fun getIssuers(url: String): List<Issuer> {
         val jsonString = getJsonStringFromFile(url)
         val issuerResponse = Gson().fromJson(jsonString, TrustedIssuersResponse::class.java)
-        return issuerResponse.trustedIssuers
+        return issuerResponse?.trustedIssuers.orEmpty()
     }
 
     override suspend fun getKeys(url: String): List<JwksKey> {
         val jsonString = getJsonStringFromFile(url)
         val keyResponse = Gson().fromJson(jsonString, Jwks::class.java)
-        return keyResponse.keys
+        return keyResponse?.keys.orEmpty()
     }
 
     override suspend fun getRule(url: String): List<Rule> {
         val jsonString = getJsonStringFromFile(url)
         val validationRulesResponse =
             Gson().fromJson(jsonString, ValidationRuleResponse::class.java)
-        return validationRulesResponse.ruleSet
+        return validationRulesResponse?.ruleSet.orEmpty()
     }
 
     override suspend fun getRevocations(url: String): List<Pair<String, Date?>> {
-        //val jsonString = getJsonStringFromFile(getRevocationsUrl("https://bcvaxcardgen.freshworks.club", "3Kfdg-XwP-7gXyywtUfUADwBumDOPKMQx-iELL11W9s.json"))
         val jsonString = getJsonStringFromFile(url)
         val revocationsResponse = Gson().fromJson(jsonString, RevocationsResponse::class.java)
-        return revocationsResponse.rids.map { rid ->
+        return revocationsResponse?.rids?.map { rid ->
             if (rid.contains(".") && (rid.startsWith(".").not() && rid.endsWith(".").not())) {
                 val ridSplit = rid.split(".")
                 ridSplit.first() to ridSplit[1].epochToDate()
             } else {
                 rid to null
             }
-        }
+        }.orEmpty()
     }
 
     private fun getJsonStringFromFile(url: String): String {
-        val fileName = getFileNameFromUrl(url)
-        val file = File(downloadDir, fileName)
-        val bufferedReader = file.bufferedReader()
-        return bufferedReader.use { it.readText() }
+        return try {
+            val fileName = getFileNameFromUrl(url)
+            val file = File(downloadDir, fileName)
+            val bufferedReader = file.bufferedReader()
+            bufferedReader.use { it.readText() }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            return String()
+        }
     }
 
     private fun getFileNameFromUrl(url: String) = url.removePrefix("https://")

@@ -91,14 +91,9 @@ class SHCVerifierImpl(
             )
 
         val revocations = revocationManager.getRevocations(shcData.payload.iss, shcData.header.kid)
-        //val revocations = revocationManager.getRevocations("https://bcvaxcardgen.freshworks.club", "3Kfdg-XwP-7gXyywtUfUADwBumDOPKMQx-iELL11W9s.json")
-
-        if (hasSpecialCondition(entries, shcData.payload.iss, rule)) {
-            return Pair(VaccinationStatus.FULLY_VACCINATED, shcData)
-        }
 
         when {
-            isRevocated(1, revocations) ->
+            isRevocated(shcData.payload.vc.rid, revocations) ->
                 return Pair(VaccinationStatus.INVALID, shcData)
 
             hasSpecialCondition(entries, shcData.payload.iss, rule) ->
@@ -200,9 +195,12 @@ class SHCVerifierImpl(
         } ?: false
     }
 
-    private fun isRevocated(id: Int?, revocationsResponse: List<Pair<String, Date?>>): Boolean {
-        return id?.let {
-            false
+    private fun isRevocated(rid: String?, revocationsResponse: List<Pair<String, Date?>>): Boolean {
+        return rid?.let {
+            val revocationData = revocationsResponse.find { it.first == rid }
+            val isRevocationNotExpired = revocationData?.second?.after(Date()) ?: true
+
+            return revocationData?.first.isNullOrEmpty().not() && isRevocationNotExpired
         } ?: false
     }
 

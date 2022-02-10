@@ -1,6 +1,5 @@
 package ca.bc.gov.shcdecoder.cache.impl
 
-import android.util.Log
 import ca.bc.gov.shcdecoder.SHCConfig
 import ca.bc.gov.shcdecoder.cache.CacheManager
 import ca.bc.gov.shcdecoder.cache.FileManager
@@ -25,19 +24,16 @@ internal class CacheManagerImpl(
 
     override suspend fun fetch() {
         if (isCacheExpired()) {
-            try {
-                val issuers = fetchIssuers()
+            fileManager.downloadFile(shcConfig.rulesEndPoint)
 
-                issuers.forEach { issuer ->
-                    val keys = fetchKeys(issuer)
-                    fetchRevocations(issuer, keys)
-                }
+            val issuers = fetchIssuers()
 
-                fileManager.downloadFile(shcConfig.rulesEndPoint)
-                preferenceRepository.setTimeStamp(Calendar.getInstance().timeInMillis)
-            } catch (e: Exception) {
-                Log.e(TAG, e.message, e)
+            issuers.forEach { issuer ->
+                val keys = fetchKeys(issuer)
+                fetchRevocations(issuer, keys)
             }
+
+            preferenceRepository.setTimeStamp(Calendar.getInstance().timeInMillis)
         }
     }
 
@@ -61,7 +57,6 @@ internal class CacheManagerImpl(
         keys.forEach { key ->
             // todo: implement CTR (if null just do normal behaviour)
 
-            //val revocationURL = getRevocationsUrl("https://bcvaxcardgen.freshworks.club", "3Kfdg-XwP-7gXyywtUfUADwBumDOPKMQx-iELL11W9s.json")
             val revocationURL = getRevocationsUrl(issuer.iss, key.kid)
 
             fileManager.downloadFile(revocationURL)
