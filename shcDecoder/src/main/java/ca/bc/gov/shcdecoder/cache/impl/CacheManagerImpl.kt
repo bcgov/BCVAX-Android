@@ -19,7 +19,6 @@ internal class CacheManagerImpl(
     companion object {
         const val SUFFIX_JWKS_JSON = "/.well-known/jwks.json"
         const val SUFFIX_ISSUER_JSON = "issuers.json"
-        private const val TAG = "CacheManagerImpl"
     }
 
     override suspend fun fetch() {
@@ -55,11 +54,16 @@ internal class CacheManagerImpl(
 
     private suspend fun fetchRevocations(issuer: Issuer, keys: List<JwksKey>) {
         keys.forEach { key ->
-            // todo: implement CTR (if null just do normal behaviour)
+            val revocationsURL = getRevocationsUrl(issuer.iss, key.kid)
 
-            val revocationURL = getRevocationsUrl(issuer.iss, key.kid)
-
-            fileManager.downloadFile(revocationURL)
+            if (fileManager.exists(revocationsURL)) {
+                val ctr = fileManager.getRevocationsCtr(revocationsURL)
+                if (ctr != key.ctr) {
+                    fileManager.downloadFile(revocationsURL)
+                }
+            } else {
+                fileManager.downloadFile(revocationsURL)
+            }
         }
     }
 

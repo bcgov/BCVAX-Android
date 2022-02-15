@@ -18,7 +18,8 @@ import java.net.URL
 import java.util.Date
 
 class FileManagerImpl(
-    context: Context
+    context: Context,
+    private val gson: Gson
 ) : FileManager {
 
     private val downloadDir: File = File(context.filesDir, "Decoder")
@@ -62,27 +63,22 @@ class FileManagerImpl(
     }
 
     override suspend fun getIssuers(url: String): List<Issuer> {
-        val jsonString = getJsonStringFromFile(url)
-        val issuerResponse = Gson().fromJson(jsonString, TrustedIssuersResponse::class.java)
+        val issuerResponse = getDataFromFile(url, TrustedIssuersResponse::class.java)
         return issuerResponse?.trustedIssuers.orEmpty()
     }
 
     override suspend fun getKeys(url: String): List<JwksKey> {
-        val jsonString = getJsonStringFromFile(url)
-        val keyResponse = Gson().fromJson(jsonString, Jwks::class.java)
+        val keyResponse = getDataFromFile(url, Jwks::class.java)
         return keyResponse?.keys.orEmpty()
     }
 
     override suspend fun getRule(url: String): List<Rule> {
-        val jsonString = getJsonStringFromFile(url)
-        val validationRulesResponse =
-            Gson().fromJson(jsonString, ValidationRuleResponse::class.java)
+        val validationRulesResponse = getDataFromFile(url, ValidationRuleResponse::class.java)
         return validationRulesResponse?.ruleSet.orEmpty()
     }
 
     override suspend fun getRevocations(url: String): List<Pair<String, Date?>> {
-        val jsonString = getJsonStringFromFile(url)
-        val revocationsResponse = Gson().fromJson(jsonString, RevocationsResponse::class.java)
+        val revocationsResponse = getDataFromFile(url, RevocationsResponse::class.java)
         return revocationsResponse?.rids?.map { rid ->
             if (rid.contains(".") && (rid.startsWith(".").not() && rid.endsWith(".").not())) {
                 val ridSplit = rid.split(".")
@@ -93,15 +89,24 @@ class FileManagerImpl(
         }.orEmpty()
     }
 
-    private fun getJsonStringFromFile(url: String): String {
+    override suspend fun getRevocationsCtr(url: String): Long? {
+        val revocationsResponse = getDataFromFile(url, RevocationsResponse::class.java)
+        return revocationsResponse?.ctr
+    }
+
+    override suspend fun exists(url: String) =
+        File(downloadDir, getFileNameFromUrl(url)).exists()
+
+    private fun <T> getDataFromFile(url: String, classType: Class<T>): T? {
         return try {
             val fileName = getFileNameFromUrl(url)
             val file = File(downloadDir, fileName)
             val bufferedReader = file.bufferedReader()
-            bufferedReader.use { it.readText() }
+            val json = bufferedReader.use { it.readText() }
+            gson.fromJson(json, classType)
         } catch (exception: Exception) {
             exception.printStackTrace()
-            return String()
+            return null
         }
     }
 

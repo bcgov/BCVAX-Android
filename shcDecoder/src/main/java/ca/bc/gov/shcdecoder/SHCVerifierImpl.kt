@@ -26,6 +26,7 @@ import ca.bc.gov.shcdecoder.utils.inclusiveAfter
 import ca.bc.gov.shcdecoder.utils.toDate
 import ca.bc.gov.shcdecoder.validator.JWKSValidator
 import ca.bc.gov.shcdecoder.validator.impl.JWKSValidatorImpl
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -39,7 +40,7 @@ class SHCVerifierImpl(
 
     private val shcParser: SHCParser = SHCParserImpl()
     private val jwksValidator: JWKSValidator = JWKSValidatorImpl()
-    private val fileManager: FileManager = FileManagerImpl(context)
+    private val fileManager: FileManager = FileManagerImpl(context, Gson())
     private val revocationManager: RevocationManager = RevocationManagerImpl(fileManager)
     private val keyManager: KeyManager = KeyManagerImpl(shcConfig, fileManager)
     private val ruleManager: RulesManager = RulesManagerImpl(shcConfig, fileManager)

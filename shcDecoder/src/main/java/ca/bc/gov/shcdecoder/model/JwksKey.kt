@@ -21,5 +21,7 @@ data class JwksKey(
 
     val y: String,
 
-    val x5c: List<String>
+    val x5c: List<String>,
+
+    val ctr: Long?
 )

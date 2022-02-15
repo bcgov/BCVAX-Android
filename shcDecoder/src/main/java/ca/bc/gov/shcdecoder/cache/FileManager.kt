@@ -16,4 +16,8 @@ interface FileManager {
     suspend fun getRule(url: String): List<Rule>
 
     suspend fun getRevocations(url: String): List<Pair<String, Date?>>
+
+    suspend fun getRevocationsCtr(url: String): Long?
+
+    suspend fun exists(url: String): Boolean
 }
