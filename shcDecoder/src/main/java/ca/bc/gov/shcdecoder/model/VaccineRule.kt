@@ -7,5 +7,6 @@ package ca.bc.gov.shcdecoder.model
 data class VaccineRule(
     val cvxCode: Int,
     val type: Int,
-    val ru: Int
+    val ru: Int,
+    val minDays: Int?
 )

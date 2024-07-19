@@ -14,8 +14,8 @@ android {
         applicationId "ca.bc.gov.vaxcheck"
         minSdk 27
         targetSdk 31
-        versionCode 20
-        versionName "1.0.4"
+        versionCode 21
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,26 +30,41 @@ android {
     flavorDimensions "version"
     productFlavors {
 
-        dev{
+        dev {
             dimension "version"
             versionNameSuffix "-dev"
+            resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://ds9mwekyyprcy.cloudfront.net/bc-rules.json"
+            resValue "string", "default_issuer_json", "phsasmarthealthcard-dev.azurewebsites.net~v1~trusted~.well-known~issuers.json"
+            resValue "string", "default_rules_json", "ds9mwekyyprcy.cloudfront.net~bc-rules.json"
+            resValue "string", "deferrals_domain", "pvc.service.yukon.ca"
         }
 
-        stage{
+        stage {
             dimension "version"
             versionNameSuffix "-stage"
+            resValue "string", "issuer_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://phsasmarthealthcard-dev.azurewebsites.net/v1/Covid19Proof/.well-known/rules.json"
+            resValue "string", "default_issuer_json", "phsasmarthealthcard-dev.azurewebsites.net~v1~trusted~.well-known~issuers.json"
+            resValue "string", "default_rules_json", "phsasmarthealthcard-dev.azurewebsites.net~v1~Covid19Proof~.well-known~rules.json"
+            resValue "string", "deferrals_domain", "pvc.service.yukon.ca"
         }
 
         prod {
             dimension "version"
+            resValue "string", "issuer_url", "https://smarthealthcard.phsa.ca/v1/trusted/.well-known/issuers.json"
+            resValue "string", "rules_url", "https://smarthealthcard.phsa.ca/v1/Covid19Proof/.well-known/rules.json"
+            resValue "string", "default_issuer_json", "smarthealthcard.phsa.ca~v1~trusted~.well-known~issuers.json"
+            resValue "string", "default_rules_json", "smarthealthcard.phsa.ca~v1~Covid19Proof~.well-known~rules.json"
+            resValue "string", "deferrals_domain", "pvc.service.yukon.ca"
         }
     }
-
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -64,7 +79,7 @@ android {
 }
 
 dependencies {
-//    implementation fileTree(dir: "src/**/libs", include: ["*.jar", "*.aar"])
+
     implementation "androidx.core:core-ktx:$versions.core_ktx"
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
@@ -90,23 +105,21 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
 
     //PLAY CORE
-    implementation 'com.google.android.play:core:1.10.2'
+    implementation "com.google.android.play:core:$versions.play_core"
+
+    //GSOn
+    implementation "com.google.code.gson:gson:$versions.gson"
 
     //Dagger Hilt
     implementation "com.google.dagger:hilt-android:$versions.hilt"
-//    implementation project(path: ':shcDecoder')
-    
-    devImplementation "ca.bc.gov:shcdecoder-dev:$versions.shcdecoder"
-    stageImplementation "ca.bc.gov:shcdecoder-stage:$versions.shcdecoder"
-    prodImplementation "ca.bc.gov:shcdecoder:$versions.shcdecoder"
-
     kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+
+    implementation project(path: ':shcDecoder')
 
     //Google BarcodeScanner
     //TODO:- we may replace it with dynamic model download library
     //implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.1'
     implementation "com.google.mlkit:barcode-scanning:$versions.barcode_scanning"
-
 
     //Camerax
     //TODO: decide on usage of lifecycle, view and extensions lib
